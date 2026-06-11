@@ -8,7 +8,7 @@ export default async function handler(req, res) {
   const { messages, system } = req.body;
   const apiKey = process.env.ANTHROPIC_API_KEY;
 
-  if (!apiKey) { res.status(500).json({ error: 'API key not configured' }); return; }
+  if (!apiKey) { res.status(500).json({ error: 'API key not configured on server' }); return; }
 
   try {
     const response = await fetch('https://api.anthropic.com/v1/messages', {
@@ -20,7 +20,7 @@ export default async function handler(req, res) {
       },
       body: JSON.stringify({
         model: 'claude-sonnet-4-20250514',
-        max_tokens: 1000,
+        max_tokens: 1500,
         system,
         messages
       })

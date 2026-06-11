@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>臨床知識看板</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css">
+<style>
+:root{
+  --bg:#ffffff;--bg2:#f8f8f7;--bg3:#f1f0eb;
+  --text:#1a1a1a;--text2:#6b6b6b;--text3:#9b9b9b;
+  --border:rgba(0,0,0,0.12);--border2:rgba(0,0,0,0.2);
+  --blue:#185FA5;--blue-dark:#0C447C;--blue-bg:#E6F1FB;--blue-text:#0C447C;
+  --green-bg:#E1F5EE;--green-text:#085041;
+  --amber-bg:#FAEEDA;--amber-text:#633806;--amber:#BA7517;
+  --red:#A32D2D;--red-bg:#FCEBEB;
+  --purple-bg:#EEEDFE;--purple-text:#3C3489;
+  --radius:8px;--radius-lg:12px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter',sans-serif;background:var(--bg3);color:var(--text);min-height:100vh}
+.app{max-width:1100px;margin:0 auto;padding:1.5rem}
+.header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;flex-wrap:wrap;gap:8px}
+.header h1{font-size:18px;font-weight:500}
+.header p{font-size:13px;color:var(--text2);margin-top:2px}
+.top-bar{display:flex;gap:8px;margin-bottom:1.25rem;flex-wrap:wrap;align-items:center}
+.search-wrap{flex:1;min-width:160px;position:relative}
+.search-wrap i{position:absolute;left:10px;top:50%;transform:translateY(-50%);font-size:15px;color:var(--text3);pointer-events:none}
+#search-input{width:100%;padding:7px 10px 7px 32px;font-size:14px;border:0.5px solid var(--border2);border-radius:var(--radius);background:var(--bg);color:var(--text);outline:none}
+select,input{font-family:'Inter',sans-serif}
+select{font-size:13px;padding:6px 10px;border:0.5px solid var(--border2);border-radius:var(--radius);background:var(--bg);color:var(--text);cursor:pointer;outline:none}
+.btn-primary{background:var(--blue);color:#fff;border:none;padding:7px 14px;border-radius:var(--radius);font-size:13px;font-weight:500;cursor:pointer;display:inline-flex;align-items:center;gap:6px;white-space:nowrap;font-family:'Inter',sans-serif}
+.btn-primary:hover{background:var(--blue-dark)}
+.btn-outline{background:none;border:0.5px solid var(--border2);padding:6px 10px;border-radius:var(--radius);cursor:pointer;font-size:13px;color:var(--text2);display:inline-flex;align-items:center;gap:4px;font-family:'Inter',sans-serif}
+.btn-outline:hover{background:var(--bg2)}
+.btn-danger{background:none;border:0.5px solid var(--red);padding:6px 10px;border-radius:var(--radius);cursor:pointer;font-size:13px;color:var(--red);display:inline-flex;align-items:center;gap:4px;font-family:'Inter',sans-serif}
+.btn-danger:hover{background:var(--red-bg)}
+.cards-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:1rem}
+.card{background:var(--bg);border:0.5px solid var(--border);border-radius:var(--radius-lg);padding:1rem 1.25rem;cursor:pointer;transition:border-color 0.15s;position:relative}
+.card:hover{border-color:var(--border2)}
+.card.review-due{border:1.5px solid var(--amber)}
+.review-badge{position:absolute;top:10px;left:10px;font-size:10px;background:var(--amber-bg);color:var(--amber-text);padding:2px 6px;border-radius:var(--radius);font-weight:500}
+.card-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:8px;gap:8px}
+.card-title{font-size:14px;font-weight:500;line-height:1.4;flex:1}
+.card-actions{display:flex;gap:4px;flex-shrink:0}
+.icon-btn{font-size:15px;cursor:pointer;color:var(--text3);background:none;border:none;padding:2px;line-height:1;font-family:'Inter',sans-serif}
+.icon-btn:hover{color:var(--text)}
+.icon-btn.starred{color:#EF9F27}
+.tag{display:inline-block;font-size:11px;padding:2px 8px;border-radius:var(--radius);background:var(--blue-bg);color:var(--blue-text);margin-right:4px;margin-bottom:4px}
+.tag.dept{background:var(--green-bg);color:var(--green-text)}
+.tag.linked{background:var(--purple-bg);color:var(--purple-text);cursor:pointer}
+.difficulty{display:flex;gap:3px;margin-top:8px}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--border2)}
+.dot.on{background:var(--blue)}.dot.on.high{background:var(--red)}.dot.on.mid{background:var(--amber)}
+.card-preview{font-size:12px;color:var(--text2);margin-top:6px;line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.card-footer{font-size:11px;color:var(--text3);margin-top:8px;display:flex;align-items:center;justify-content:space-between}
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:100;display:flex;align-items:flex-start;justify-content:center;padding:2rem 1rem;overflow-y:auto}
+.modal{background:var(--bg);border-radius:var(--radius-lg);width:100%;max-width:740px;padding:1.5rem;position:relative}
+.modal-close{position:absolute;top:1rem;right:1rem;background:none;border:none;font-size:20px;cursor:pointer;color:var(--text2)}
+.modal h2{font-size:17px;font-weight:500;margin-bottom:6px}
+.dim-tabs{display:flex;gap:6px;flex-wrap:wrap;margin:1rem 0 .75rem}
+.dim-tab{font-size:12px;padding:4px 10px;border-radius:var(--radius);border:0.5px solid var(--border2);background:var(--bg2);color:var(--text2);cursor:pointer;font-family:'Inter',sans-serif}
+.dim-tab.active{background:var(--blue);color:#fff;border-color:var(--blue)}
+.dim-content{background:var(--bg2);border-radius:var(--radius);padding:1rem;min-height:110px;font-size:13px;line-height:1.9}
+.source-badge{display:inline-block;font-size:10px;padding:1px 6px;border-radius:var(--radius);margin-left:3px;font-weight:500}
+.badge-orig{background:var(--green-bg);color:var(--green-text)}
+.badge-ai{background:var(--blue-bg);color:var(--blue-text)}
+.notes-area,textarea{width:100%;font-size:13px;padding:10px;border:0.5px solid var(--border2);border-radius:var(--radius);background:var(--bg);color:var(--text);resize:vertical;min-height:80px;font-family:'Inter',sans-serif;outline:none}
+.input-panel{background:var(--bg);border:0.5px solid var(--border);border-radius:var(--radius-lg);padding:1.25rem;margin-bottom:1.5rem}
+.input-panel h3{font-size:14px;font-weight:500;margin-bottom:12px}
+.input-tabs{display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap}
+.input-tab{font-size:12px;padding:4px 10px;border-radius:var(--radius);border:0.5px solid var(--border2);background:transparent;color:var(--text2);cursor:pointer;font-family:'Inter',sans-serif}
+.input-tab.active{background:var(--blue);color:#fff;border-color:var(--blue)}
+.input-row{display:flex;gap:8px;margin-top:10px;align-items:center;flex-wrap:wrap}
+.processing{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text2);padding:8px 0}
+.spinner{width:16px;height:16px;border:2px solid var(--border2);border-top-color:var(--blue);border-radius:50%;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.settings-panel{background:var(--bg2);border:0.5px solid var(--border2);border-radius:var(--radius);padding:1rem;margin-bottom:1rem}
+.settings-panel label{font-size:12px;color:var(--text2);display:block;margin-bottom:4px;margin-top:8px}
+.settings-panel label.section{font-size:13px;font-weight:500;color:var(--text);margin-top:14px;margin-bottom:2px}
+.pw-wrap{position:relative;display:flex;align-items:center}
+.pw-wrap input{width:100%;font-size:13px;padding:6px 36px 6px 10px;border:0.5px solid var(--border2);border-radius:var(--radius);background:var(--bg);color:var(--text);outline:none}
+.pw-toggle{position:absolute;right:8px;background:none;border:none;cursor:pointer;font-size:16px;color:var(--text2);padding:0}
+.plain-input{width:100%;font-size:13px;padding:6px 10px;border:0.5px solid var(--border2);border-radius:var(--radius);background:var(--bg);color:var(--text);outline:none}
+.dept-manager{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.dept-chip{display:inline-flex;align-items:center;gap:4px;font-size:12px;padding:3px 8px;border-radius:var(--radius);background:var(--bg);border:0.5px solid var(--border2)}
+.dept-chip button{background:none;border:none;cursor:pointer;font-size:12px;color:var(--text2);padding:0}
+.dept-chip button:hover{color:var(--red)}
+.dept-add-row{display:flex;gap:6px;margin-top:6px}
+.dept-add-row input{font-size:13px;padding:5px 10px;border:0.5px solid var(--border2);border-radius:var(--radius);background:var(--bg);color:var(--text);flex:1;outline:none;font-family:'Inter',sans-serif}
+.edit-field{width:100%;font-size:13px;padding:8px 10px;border:0.5px solid var(--border2);border-radius:var(--radius);background:var(--bg);color:var(--text);resize:vertical;min-height:70px;font-family:'Inter',sans-serif;margin-bottom:6px;outline:none}
+.export-wrap{position:relative}
+.export-menu{position:absolute;right:0;top:calc(100% + 4px);background:var(--bg);border:0.5px solid var(--border2);border-radius:var(--radius);z-index:10;min-width:210px;overflow:hidden;box-shadow:0 4px 12px rgba(0,0,0,0.08)}
+.export-menu button{display:block;width:100%;text-align:left;padding:8px 14px;font-size:13px;background:none;border:none;cursor:pointer;color:var(--text);font-family:'Inter',sans-serif}
+.export-menu button:hover{background:var(--bg2)}
+.review-banner{background:var(--amber-bg);border:0.5px solid var(--amber);border-radius:var(--radius);padding:.75rem 1rem;margin-bottom:1rem;display:flex;align-items:center;gap:10px}
+.review-banner p{font-size:13px;color:var(--amber-text);flex:1}
+.conn-status{display:inline-flex;align-items:center;gap:4px;font-size:11px;padding:3px 8px;border-radius:var(--radius);cursor:pointer}
+.conn-ok{background:var(--green-bg);color:var(--green-text)}
+.conn-err{background:var(--red-bg);color:var(--red)}
+.empty-state{text-align:center;padding:3rem 1rem;color:var(--text2)}
+.empty-state i{font-size:40px;display:block;margin-bottom:12px;color:var(--border2)}
+.link-picker{background:var(--bg2);border-radius:var(--radius);padding:.75rem;max-height:160px;overflow-y:auto;margin-top:4px}
+.link-item{display:flex;align-items:center;gap:8px;padding:4px 0;font-size:13px;cursor:pointer}
+.batch-area{min-height:120px}
+.progress-bar{height:4px;background:var(--border);border-radius:2px;overflow:hidden;margin-top:8px}
+.progress-fill{height:100%;background:var(--blue);transition:width .3s}
+.key-preview{font-size:11px;color:var(--text3);margin-top:4px;font-family:monospace}
+.drop-zone{border:0.5px dashed var(--border2);border-radius:var(--radius);padding:1.5rem;text-align:center;cursor:pointer}
+.drop-zone i{font-size:24px;color:var(--text3);display:block;margin-bottom:8px}
+.drop-zone p{font-size:13px;color:var(--text2)}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="header">
+    <div>
+      <h1><i class="ti ti-stethoscope" style="margin-right:6px"></i>臨床知識看板</h1>
+      <p>AI 六維度自動萃取 · 雲端同步</p>
+    </div>
+    <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+      <span class="conn-status conn-err" id="conn-status" onclick="toggleSettings()"><i class="ti ti-database-off"></i> 離線模式</span>
+      <div class="export-wrap">
+        <button class="btn-outline" onclick="toggleExportMenu()"><i class="ti ti-download"></i> 匯出</button>
+        <div class="export-menu" id="export-menu" style="display:none">
+          <button onclick="exportData(false,'json')"><i class="ti ti-file-type-js"></i> 全部（JSON）</button>
+          <button onclick="exportData(false,'md')"><i class="ti ti-markdown"></i> 全部（Markdown）</button>
+          <button onclick="exportData(true,'json')"><i class="ti ti-filter"></i> 篩選結果（JSON）</button>
+          <button onclick="exportData(true,'md')"><i class="ti ti-filter"></i> 篩選結果（MD）</button>
+        </div>
+      </div>
+      <button class="btn-outline" onclick="toggleSettings()"><i class="ti ti-settings"></i> 設定</button>
+    </div>
+  </div>
+
+  <div id="settings-panel" class="settings-panel" style="display:none">
+    <label class="section">☁️ Supabase 雲端資料庫</label>
+    <label>Project URL</label>
+    <input class="plain-input" type="text" id="sb-url" placeholder="https://xxxxxx.supabase.co" />
+    <label>Anon Public Key</label>
+    <div class="pw-wrap">
+      <input type="text" id="sb-key" placeholder="eyJhbGci..." oninput="showKeyHint()" />
+      <button class="pw-toggle" onclick="toggleVis('sb-key')"><i class="ti ti-eye"></i></button>
+    </div>
+    <div id="key-hint" class="key-preview"></div>
+    <label class="section">🤖 AI 設定</label>
+    <label>Gemini API Key</label>
+    <div class="pw-wrap">
+      <input type="text" id="gemini-key" placeholder="AIzaSy..." />
+      <button class="pw-toggle" onclick="toggleVis('gemini-key')"><i class="ti ti-eye"></i></button>
+    </div>
+    <label class="section">📊 Google Sheets 同步</label>
+    <label>Make.com Webhook URL</label>
+    <input class="plain-input" type="text" id="webhook" placeholder="https://hook.make.com/..." />
+    <label class="section">🏥 科別管理</label>
+    <div class="dept-manager" id="dept-manager"></div>
+    <div class="dept-add-row">
+      <input type="text" id="new-dept" placeholder="新增科別…" onkeydown="if(event.key==='Enter')addDept()" />
+      <button class="btn-primary" style="padding:5px 12px" onclick="addDept()"><i class="ti ti-plus"></i></button>
+    </div>
+    <button class="btn-primary" style="margin-top:12px" onclick="saveSettings()"><i class="ti ti-check"></i> 儲存並重新連線</button>
+  </div>
+
+  <div id="review-banner" class="review-banner" style="display:none">
+    <i class="ti ti-bell" style="font-size:20px;color:var(--amber)"></i>
+    <p id="review-text"></p>
+  </div>
+
+  <div class="input-panel">
+    <h3><i class="ti ti-plus" style="margin-right:6px"></i>新增臨床知識</h3>
+    <div class="input-tabs">
+      <button class="input-tab active" onclick="switchTab(this,'text')">文字 / 貼上</button>
+      <button class="input-tab" onclick="switchTab(this,'url')">URL</button>
+      <button class="input-tab" onclick="switchTab(this,'image')">圖片</button>
+      <button class="input-tab" onclick="switchTab(this,'pdf')">PDF</button>
+      <button class="input-tab" onclick="switchTab(this,'batch')">批次匯入</button>
+    </div>
+    <div id="in-text"><textarea id="text-input" style="min-height:80px" placeholder="貼上文獻摘要、指引內容、或臨床筆記…"></textarea></div>
+    <div id="in-url" style="display:none"><input class="plain-input" type="text" id="url-input" placeholder="https://..." /></div>
+    <div id="in-image" style="display:none">
+      <div class="drop-zone" onclick="document.getElementById('img-file').click()">
+        <i class="ti ti-photo"></i><p>點擊上傳圖片（截圖、掃描等）</p>
+        <input type="file" id="img-file" accept="image/*" style="display:none" onchange="handleImg(this)" />
+      </div>
+      <div id="img-preview" style="display:none;margin-top:8px"></div>
+    </div>
+    <div id="in-pdf" style="display:none">
+      <div class="drop-zone" onclick="document.getElementById('pdf-file').click()">
+        <i class="ti ti-file-type-pdf"></i><p>點擊上傳 PDF</p>
+        <input type="file" id="pdf-file" accept=".pdf" style="display:none" onchange="handlePdf(this)" />
+      </div>
+      <p id="pdf-name" style="font-size:12px;color:var(--text2);margin-top:6px"></p>
+    </div>
+    <div id="in-batch" style="display:none">
+      <p style="font-size:12px;color:var(--text2);margin-bottom:6px">每篇文章之間用 <code>---</code> 分隔，AI 會逐一處理</p>
+      <textarea id="batch-input" class="batch-area" placeholder="第一篇文章…&#10;---&#10;第二篇文章…"></textarea>
+      <div class="progress-bar" id="batch-bar" style="display:none"><div class="progress-fill" id="batch-fill" style="width:0%"></div></div>
+      <p id="batch-txt" style="font-size:12px;color:var(--text2);margin-top:4px"></p>
+    </div>
+    <div class="input-row">
+      <select id="dept-select"></select>
+      <select id="diff-select">
+        <option value="1">★ 一般</option><option value="2">★★ 重要</option><option value="3" selected>★★★ 必考</option>
+      </select>
+      <button class="btn-primary" id="process-btn" onclick="handleProcess()"><i class="ti ti-sparkles"></i> AI 萃取</button>
+    </div>
+    <div id="proc-status" style="display:none" class="processing">
+      <div class="spinner"></div><span id="proc-txt">AI 分析中…</span>
+    </div>
+  </div>
+
+  <div class="top-bar">
+    <div class="search-wrap">
+      <i class="ti ti-search"></i>
+      <input id="search-input" placeholder="搜尋關鍵字…" oninput="renderCards()" />
+    </div>
+    <select id="filter-dept" onchange="renderCards()"><option value="">所有科別</option></select>
+    <select id="filter-star" onchange="renderCards()"><option value="">全部</option><option value="starred">僅收藏</option></select>
+    <select id="filter-diff" onchange="renderCards()">
+      <option value="">所有重要性</option><option value="3">★★★ 必考</option><option value="2">★★ 重要</option><option value="1">★ 一般</option>
+    </select>
+    <span id="card-count" style="font-size:13px;color:var(--text2);white-space:nowrap"></span>
+  </div>
+
+  <div id="cards-grid" class="cards-grid"></div>
+  <div id="empty-state" class="empty-state" style="display:none">
+    <i class="ti ti-notes"></i><p>尚無符合條件的臨床卡片</p>
+  </div>
+</div>
+
+<!-- 檢視 Modal -->
+<div id="view-bg" class="modal-bg" style="display:none" onclick="if(event.target===this)closeView()">
+  <div class="modal">
+    <button class="modal-close" onclick="closeView()"><i class="ti ti-x"></i></button>
+    <h2 id="vm-title"></h2>
+    <div id="vm-tags" style="margin-bottom:4px"></div>
+    <div id="vm-links" style="margin-bottom:4px"></div>
+    <div class="dim-tabs" id="vm-dims"></div>
+    <div class="dim-content" id="vm-content"></div>
+    <div style="margin-top:1rem">
+      <p style="font-size:12px;font-weight:500;color:var(--text2)"><i class="ti ti-notes"></i> 我的臨床心得</p>
+      <textarea class="notes-area" id="vm-notes" placeholder="記下臨床觀察、記憶法、值班心得…" oninput="autoSaveNotes()"></textarea>
+    </div>
+    <div id="anki-sec" style="display:none;margin-top:1rem">
+      <div style="background:var(--bg2);border-radius:var(--radius);padding:1rem">
+        <p style="font-size:12px;font-weight:500;color:var(--text2);margin-bottom:8px">Anki 閃卡預覽</p>
+        <div id="anki-list"></div>
+        <button class="btn-outline" style="margin-top:8px;font-size:12px" onclick="copyAnki()"><i class="ti ti-download"></i> 複製 CSV</button>
+      </div>
+    </div>
+    <div style="margin-top:1rem;display:flex;gap:8px;flex-wrap:wrap">
+      <button class="btn-outline" onclick="openEdit()"><i class="ti ti-edit"></i> 編輯</button>
+      <button class="btn-outline" onclick="toggleAnki()"><i class="ti ti-cards"></i> Anki</button>
+      <button class="btn-outline" onclick="copyCard()"><i class="ti ti-copy"></i> 複製</button>
+      <button class="btn-outline" onclick="markReview()"><i class="ti ti-bell"></i> 標記複習</button>
+      <button class="btn-danger" onclick="deleteCard()"><i class="ti ti-trash"></i> 刪除</button>
+    </div>
+  </div>
+</div>
+
+<!-- 編輯 Modal -->
+<div id="edit-bg" class="modal-bg" style="display:none" onclick="if(event.target===this)closeEdit()">
+  <div class="modal">
+    <button class="modal-close" onclick="closeEdit()"><i class="ti ti-x"></i></button>
+    <h2 style="margin-bottom:1rem">編輯卡片</h2>
+    <label style="font-size:12px;color:var(--text2)">標題</label>
+    <input type="text" id="edit-title" class="plain-input" style="margin-bottom:10px" />
+    <div style="display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap">
+      <div style="flex:1;min-width:120px"><label style="font-size:12px;color:var(--text2)">科別</label><select id="edit-dept" style="width:100%;margin-top:4px"></select></div>
+      <div style="flex:1;min-width:120px"><label style="font-size:12px;color:var(--text2)">重要性</label><select id="edit-diff" style="width:100%;margin-top:4px"><option value="1">★ 一般</option><option value="2">★★ 重要</option><option value="3">★★★ 必考</option></select></div>
+    </div>
+    <label style="font-size:12px;color:var(--text2)">連結其他卡片</label>
+    <div class="link-picker" id="link-picker"></div>
+    <div id="edit-fields" style="margin-top:10px"></div>
+    <div style="display:flex;gap:8px;margin-top:12px">
+      <button class="btn-primary" onclick="saveEdit()"><i class="ti ti-check"></i> 儲存</button>
+      <button class="btn-outline" onclick="closeEdit()">取消</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const DIMS=['診斷','處置','Work-up','臨床價值','核心知識點','臨床應用＋記憶法'];
+const KEYS=['diagnosis','management','workup','pearl','keypoints','clinical_app'];
+const KLABELS=['診斷 Diagnosis','處置 Management','Work-up 檢查','臨床價值 Pearl','核心知識點','臨床應用＋記憶法'];
+let cards=[],currentCard=null,currentDim=0,imgB64=null,pdfB64=null,inType='text',notesTimer=null;
+let SB_URL='',SB_KEY='';
+let depts=['大腸直腸外科','一般外科','內科','急診','心臟科','神經科','感染科','婦產科','小兒科','其他'];
+
+const cfg=k=>localStorage.getItem(k)||'';
+const setCfg=(k,v)=>localStorage.setItem(k,v);
+
+function showKeyHint(){
+  const v=document.getElementById('sb-key').value.trim();
+  const el=document.getElementById('key-hint');
+  el.textContent=v.length>10?`長度：${v.length} 字元　開頭：${v.slice(0,8)}...${v.slice(-4)}`:'';
+}
+function toggleVis(id){
+  const inp=document.getElementById(id);
+  inp.type=inp.type==='password'?'text':'password';
+}
+
+function loadDepts(){const s=cfg('clinical_depts');if(s)depts=JSON.parse(s);}
+function saveDepts(){setCfg('clinical_depts',JSON.stringify(depts));}
+function renderDeptChips(){
+  document.getElementById('dept-manager').innerHTML=depts.map((d,i)=>
+    `<span class="dept-chip">${d}<button onclick="removeDept(${i})"><i class="ti ti-x"></i></button></span>`
+  ).join('');
+}
+function renderDeptSelects(){
+  const o='<option value="">科別標籤</option>'+depts.map(d=>`<option>${d}</option>`).join('');
+  document.getElementById('dept-select').innerHTML=o;
+  document.getElementById('filter-dept').innerHTML='<option value="">所有科別</option>'+depts.map(d=>`<option>${d}</option>`).join('');
+  const ed=document.getElementById('edit-dept');if(ed)ed.innerHTML=o;
+}
+function addDept(){
+  const v=document.getElementById('new-dept').value.trim();
+  if(!v||depts.includes(v))return;
+  depts.push(v);saveDepts();renderDeptChips();renderDeptSelects();
+  document.getElementById('new-dept').value='';
+}
+function removeDept(i){depts.splice(i,1);saveDepts();renderDeptChips();renderDeptSelects();}
+
+function toggleSettings(){
+  const p=document.getElementById('settings-panel');
+  const open=p.style.display==='none';
+  p.style.display=open?'block':'none';
+  if(open){
+    document.getElementById('sb-url').value=cfg('sb_url');
+    document.getElementById('sb-key').value=cfg('sb_key');
+    showKeyHint();
+    document.getElementById('gemini-key').value=cfg('gemini_api_key');
+    document.getElementById('webhook').value=cfg('webhook_url');
+    renderDeptChips();
+  }
+}
+
+async function saveSettings(){
+  const url=document.getElementById('sb-url').value.trim().replace(/\/$/,'');
+  const key=document.getElementById('sb-key').value.trim();
+  const gem=document.getElementById('gemini-key').value.trim();
+  const wh=document.getElementById('webhook').value.trim();
+  if(url)setCfg('sb_url',url);
+  if(key)setCfg('sb_key',key);
+  if(gem)setCfg('gemini_api_key',gem);
+  setCfg('webhook_url',wh);
+  SB_URL=url;SB_KEY=key;
+  document.getElementById('settings-panel').style.display='none';
+  await loadCards();
+}
+
+async function sbFetch(path,opts={}){
+  const r=await fetch(SB_URL+'/rest/v1/'+path,{
+    headers:{'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY,'Content-Type':'application/json','Prefer':'return=representation',...(opts.headers||{})},
+    ...opts
+  });
+  if(!r.ok){const t=await r.text();throw new Error(t);}
+  const ct=r.headers.get('content-type')||'';
+  return ct.includes('json')?r.json():r.text();
+}
+
+async function loadCards(){
+  const url=cfg('sb_url'),key=cfg('sb_key');
+  if(!url||!key){setConn(false);loadLocal();renderCards();return;}
+  SB_URL=url.replace(/\/$/,'');SB_KEY=key;
+  try{
+    cards=await sbFetch('cards?order=created_at.desc');
+    setConn(true);checkReview();renderCards();
+  }catch(e){
+    console.error('Supabase:',e.message);
+    setConn(false);loadLocal();renderCards();
+  }
+}
+
+function setConn(ok){
+  const el=document.getElementById('conn-status');
+  el.className='conn-status '+(ok?'conn-ok':'conn-err');
+  el.innerHTML=ok?'<i class="ti ti-database"></i> Supabase 已連線':'<i class="ti ti-database-off"></i> 離線模式';
+}
+
+function loadLocal(){try{const s=cfg('clinical_cards_v3');if(s)cards=JSON.parse(s);}catch(e){}}
+function saveLocal(){try{setCfg('clinical_cards_v3',JSON.stringify(cards));}catch(e){}}
+
+async function saveCard(card){
+  try{
+    const{id,...rest}=card;
+    if(id&&!String(id).startsWith('local_')){
+      await sbFetch('cards?id=eq.'+id,{method:'PATCH',body:JSON.stringify(rest)});
+    } else {
+      const nr={...rest};delete nr.id;
+      const r=await sbFetch('cards',{method:'POST',body:JSON.stringify(nr)});
+      if(r&&r[0])card.id=r[0].id;
+    }
+  }catch(e){saveLocal();}
+  syncWebhook(card);
+}
+
+async function deleteFromDB(id){
+  try{await sbFetch('cards?id=eq.'+id,{method:'DELETE'});}catch(e){}
+}
+
+function syncWebhook(card){
+  const wh=cfg('webhook_url');
+  if(!wh||wh.includes('docs.google.com'))return;
+  fetch(wh,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(card)}).catch(()=>{});
+}
+
+function checkReview(){
+  const due=cards.filter(c=>c.review_due&&new Date(c.review_due)<=new Date());
+  const b=document.getElementById('review-banner');
+  if(due.length){b.style.display='flex';document.getElementById('review-text').textContent=`${due.length} 張卡片等待複習！`;}
+  else b.style.display='none';
+}
+
+function switchTab(btn,type){
+  document.querySelectorAll('.input-tab').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  ['text','url','image','pdf','batch'].forEach(t=>document.getElementById('in-'+t).style.display='none');
+  document.getElementById('in-'+type).style.display='block';
+  inType=type;
+}
+
+function handleImg(input){
+  const f=input.files[0];if(!f)return;
+  const r=new FileReader();
+  r.onload=e=>{
+    imgB64=e.target.result.split(',')[1];
+    const p=document.getElementById('img-preview');
+    p.style.display='block';
+    p.innerHTML=`<img src="${e.target.result}" style="max-height:120px;border-radius:var(--radius)" />`;
+  };r.readAsDataURL(f);
+}
+function handlePdf(input){
+  const f=input.files[0];if(!f)return;
+  document.getElementById('pdf-name').textContent='已選取：'+f.name;
+  const r=new FileReader();r.onload=e=>{pdfB64=e.target.result.split(',')[1]};r.readAsDataURL(f);
+}
+
+async function handleProcess(){
+  if(inType==='batch'){await processBatch();return;}
+  await processSingle();
+}
+
+const SYS=`你是頂尖醫學中心的資深主治醫師兼醫學教育專家。將提供的醫學內容萃取為臨床實用的結構化摘要。
+請嚴格以以下 JSON 格式回應，不得有任何額外文字：
+{"title":"主題標題（20字內）","diagnosis":"【診斷】條列式","management":"【處置】條列式","workup":"【Work-up】條列式","pearl":"【臨床價值/盲點】條列式","keypoints":"【核心知識點】條列式","clinical_app":"【臨床應用＋記憶法＋必考延伸含Guideline版本】條列式","anki_cards":[{"front":"問題","back":"答案"},{"front":"問題","back":"答案"},{"front":"問題","back":"答案"}]}
+規則：1.條列以「- 」開頭精簡行動導向 2.原文後加[原文]；補充加[AI補充 (來源年份)] 3.Anki共3題聚焦臨床決策點`;
+
+async function callAI(content){
+  const key=cfg('gemini_api_key');
+  if(!key){alert('請先在設定中填入 Gemini API Key！');toggleSettings();return null;}
+  try{
+    const res=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,system:SYS,messages:[{role:'user',content}]})
+    });
+    const data=await res.json();
+    const txt=data.content.filter(i=>i.type==='text').map(i=>i.text).join('');
+    return JSON.parse(txt.replace(/```json|```/g,'').trim());
+  }catch(e){alert('AI 處理失敗：'+e.message);return null;}
+}
+
+function buildCard(p,hint,dept,diff){
+  return{id:'local_'+Date.now(),title:p.title||hint.slice(0,40)||'臨床卡片',dept,diff,starred:false,
+    diagnosis:p.diagnosis||'',management:p.management||'',workup:p.workup||'',pearl:p.pearl||'',
+    keypoints:p.keypoints||'',clinical_app:p.clinical_app||'',anki_cards:p.anki_cards||[],
+    notes:'',linked_cards:[],review_due:null,created_at:new Date().toISOString()};
+}
+
+async function processSingle(){
+  const dept=document.getElementById('dept-select').value;
+  const diff=parseInt(document.getElementById('diff-select').value);
+  let content=[],hint='';
+  if(inType==='text'){const t=document.getElementById('text-input').value.trim();if(!t){alert('請輸入文字');return;}content=[{type:'text',text:t}];hint=t;}
+  else if(inType==='url'){const u=document.getElementById('url-input').value.trim();if(!u){alert('請輸入網址');return;}content=[{type:'text',text:'分析：'+u}];hint=u;}
+  else if(inType==='image'){if(!imgB64){alert('請先上傳圖片');return;}content=[{type:'image',source:{type:'base64',media_type:'image/jpeg',data:imgB64}},{type:'text',text:'分析此醫學圖片'}];hint='圖片';}
+  else if(inType==='pdf'){if(!pdfB64){alert('請先上傳PDF');return;}content=[{type:'document',source:{type:'base64',media_type:'application/pdf',data:pdfB64}},{type:'text',text:'分析此PDF'}];hint='PDF';}
+  setBusy(true,'AI 分析中…');
+  const p=await callAI(content);
+  if(p){const c=buildCard(p,hint,dept,diff);cards.unshift(c);await saveCard(c);renderCards();clearIn();}
+  setBusy(false);
+}
+
+async function processBatch(){
+  const raw=document.getElementById('batch-input').value.trim();
+  if(!raw){alert('請輸入批次內容');return;}
+  const chunks=raw.split(/\n---\n/).map(s=>s.trim()).filter(Boolean);
+  const dept=document.getElementById('dept-select').value;
+  const diff=parseInt(document.getElementById('diff-select').value);
+  document.getElementById('batch-bar').style.display='block';
+  document.getElementById('process-btn').disabled=true;
+  for(let i=0;i<chunks.length;i++){
+    document.getElementById('batch-txt').textContent=`處理第 ${i+1}／${chunks.length} 篇…`;
+    document.getElementById('batch-fill').style.width=((i/chunks.length)*100)+'%';
+    const p=await callAI([{type:'text',text:chunks[i]}]);
+    if(p){const c=buildCard(p,chunks[i],dept,diff);cards.unshift(c);await saveCard(c);}
+    await new Promise(r=>setTimeout(r,800));
+  }
+  document.getElementById('batch-fill').style.width='100%';
+  document.getElementById('batch-txt').textContent=`完成！共 ${chunks.length} 張`;
+  document.getElementById('process-btn').disabled=false;
+  document.getElementById('batch-input').value='';
+  renderCards();
+  setTimeout(()=>{document.getElementById('batch-bar').style.display='none';document.getElementById('batch-txt').textContent='';},3000);
+}
+
+function setBusy(on,msg=''){
+  document.getElementById('process-btn').disabled=on;
+  document.getElementById('proc-status').style.display=on?'flex':'none';
+  if(msg)document.getElementById('proc-txt').textContent=msg;
+}
+function clearIn(){
+  document.getElementById('text-input').value='';document.getElementById('url-input').value='';
+  imgB64=null;pdfB64=null;
+  document.getElementById('img-preview').style.display='none';
+  document.getElementById('pdf-name').textContent='';
+}
+
+function getFiltered(){
+  const s=document.getElementById('search-input').value.toLowerCase();
+  const d=document.getElementById('filter-dept').value;
+  const st=document.getElementById('filter-star').value;
+  const df=document.getElementById('filter-diff').value;
+  return cards.filter(c=>{
+    if(d&&c.dept!==d)return false;
+    if(st==='starred'&&!c.starred)return false;
+    if(df&&String(c.diff)!==df)return false;
+    if(s&&!(c.title+' '+(c.diagnosis||'')+(c.keypoints||'')).toLowerCase().includes(s))return false;
+    return true;
+  });
+}
+
+function renderCards(){
+  const f=getFiltered();
+  const grid=document.getElementById('cards-grid');
+  const empty=document.getElementById('empty-state');
+  document.getElementById('card-count').textContent=f.length+'張卡片';
+  if(!f.length){grid.innerHTML='';empty.style.display='block';return;}
+  empty.style.display='none';
+  const now=new Date();
+  grid.innerHTML=f.map(c=>{
+    const dots=[1,2,3].map(i=>`<span class="dot${i<=c.diff?' on'+(c.diff===3?' high':c.diff===2?' mid':''):''}"></span>`).join('');
+    const due=c.review_due&&new Date(c.review_due)<=now;
+    const linked=(c.linked_cards||[]).length;
+    const id=JSON.stringify(c.id).replace(/"/g,'&quot;');
+    return `<div class="card${due?' review-due':''}" onclick="openCard(${id})">
+      ${due?'<span class="review-badge"><i class="ti ti-bell"></i> 待複習</span>':''}
+      <div class="card-header" style="${due?'margin-top:18px':''}">
+        <div class="card-title">${c.title}</div>
+        <div class="card-actions">
+          ${linked?`<span style="font-size:11px;color:var(--text3);padding-top:2px"><i class="ti ti-link"></i>${linked}</span>`:''}
+          <button class="icon-btn" onclick="editById(event,${id})"><i class="ti ti-edit"></i></button>
+          <button class="icon-btn${c.starred?' starred':''}" onclick="toggleStar(event,${id})"><i class="ti ti-star${c.starred?'-filled':''}"></i></button>
+        </div>
+      </div>
+      <div>${c.dept?`<span class="tag dept">${c.dept}</span>`:''}</div>
+      <div class="card-preview">${(c.diagnosis||'').replace(/\[原文\]|\[AI補充[^\]]*\]/g,'').slice(0,80)}…</div>
+      <div class="difficulty">${dots}</div>
+      <div class="card-footer">
+        <span><i class="ti ti-clock"></i> ${(c.created_at||'').slice(0,10)}</span>
+        ${c.notes?'<span><i class="ti ti-notes"></i> 有筆記</span>':''}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function toggleStar(e,id){
+  e.stopPropagation();
+  const c=cards.find(x=>String(x.id)===String(id));
+  if(!c)return;c.starred=!c.starred;saveCard(c);renderCards();
+}
+
+function openCard(id){
+  currentCard=cards.find(c=>String(c.id)===String(id));
+  if(!currentCard)return;
+  currentDim=0;
+  document.getElementById('vm-title').textContent=currentCard.title;
+  document.getElementById('vm-tags').innerHTML=
+    (currentCard.dept?`<span class="tag dept">${currentCard.dept}</span>`:'')+
+    `<span class="tag">${['★ 一般','★★ 重要','★★★ 必考'][currentCard.diff-1]}</span>`;
+  document.getElementById('vm-links').innerHTML=(currentCard.linked_cards||[]).map(lid=>{
+    const lc=cards.find(c=>String(c.id)===String(lid));
+    return lc?`<span class="tag linked" onclick="openCard('${lc.id}')"><i class="ti ti-link"></i> ${lc.title}</span>`:'';
+  }).join('');
+  renderDimTabs();renderDimContent();
+  document.getElementById('vm-notes').value=currentCard.notes||'';
+  document.getElementById('anki-sec').style.display='none';
+  document.getElementById('view-bg').style.display='flex';
+}
+
+function renderDimTabs(){
+  document.getElementById('vm-dims').innerHTML=DIMS.map((d,i)=>
+    `<button class="dim-tab${i===currentDim?' active':''}" onclick="switchDim(${i})">${d}</button>`
+  ).join('');
+}
+function switchDim(i){currentDim=i;renderDimTabs();renderDimContent();}
+function renderDimContent(){
+  if(!currentCard)return;
+  const raw=currentCard[KEYS[currentDim]]||'（無資料）';
+  document.getElementById('vm-content').innerHTML=raw
+    .replace(/\[原文\]/g,'<span class="source-badge badge-orig">原文</span>')
+    .replace(/\[AI補充([^\]]*)\]/g,'<span class="source-badge badge-ai">AI補充$1</span>')
+    .replace(/\n- /g,'<br>• ').replace(/^- /,'• ').replace(/\n/g,'<br>');
+}
+function closeView(){document.getElementById('view-bg').style.display='none';}
+
+function autoSaveNotes(){
+  clearTimeout(notesTimer);
+  notesTimer=setTimeout(async()=>{
+    if(!currentCard)return;
+    currentCard.notes=document.getElementById('vm-notes').value;
+    await saveCard(currentCard);renderCards();
+  },1000);
+}
+
+async function markReview(){
+  if(!currentCard)return;
+  const d=new Date();d.setDate(d.getDate()+3);
+  currentCard.review_due=d.toISOString();
+  await saveCard(currentCard);checkReview();renderCards();
+  alert('已標記！3天後提醒複習。');
+}
+
+function copyCard(){
+  if(!currentCard)return;
+  navigator.clipboard.writeText(DIMS.map((d,i)=>`【${d}】\n${currentCard[KEYS[i]]||'—'}`).join('\n\n')).then(()=>alert('已複製！'));
+}
+
+async function deleteCard(){
+  if(!currentCard||!confirm('確定刪除「'+currentCard.title+'」？'))return;
+  await deleteFromDB(currentCard.id);
+  cards=cards.filter(c=>String(c.id)!==String(currentCard.id));
+  renderCards();closeView();
+}
+
+function toggleAnki(){
+  const s=document.getElementById('anki-sec');
+  s.style.display=s.style.display==='none'?'block':'none';
+  if(!currentCard?.anki_cards?.length){document.getElementById('anki-list').innerHTML='<p style="font-size:12px;color:var(--text2)">無 Anki 題目</p>';return;}
+  document.getElementById('anki-list').innerHTML=currentCard.anki_cards.map((a,i)=>
+    `<div style="margin-bottom:10px;border-left:2px solid var(--blue);padding-left:10px">
+      <p style="font-size:12px;font-weight:500;margin-bottom:2px">Q${i+1}：${a.front}</p>
+      <p style="font-size:12px;color:var(--text2)">A：${a.back}</p>
+    </div>`
+  ).join('');
+}
+function copyAnki(){
+  if(!currentCard)return;
+  navigator.clipboard.writeText((currentCard.anki_cards||[]).map(a=>`"${a.front}","${a.back}"`).join('\n')).then(()=>alert('已複製 CSV！'));
+}
+
+function editById(e,id){
+  e.stopPropagation();
+  currentCard=cards.find(c=>String(c.id)===String(id));
+  if(currentCard)openEdit();
+}
+function openEdit(){
+  if(!currentCard)return;
+  document.getElementById('edit-title').value=currentCard.title;
+  renderDeptSelects();
+  document.getElementById('edit-dept').value=currentCard.dept||'';
+  document.getElementById('edit-diff').value=String(currentCard.diff);
+  const linked=currentCard.linked_cards||[];
+  document.getElementById('link-picker').innerHTML=cards.filter(c=>String(c.id)!==String(currentCard.id)).map(c=>
+    `<label class="link-item"><input type="checkbox" value="${c.id}" ${linked.some(l=>String(l)===String(c.id))?'checked':''} /> ${c.title}</label>`
+  ).join('')||'<p style="font-size:12px;color:var(--text2)">尚無其他卡片可連結</p>';
+  document.getElementById('edit-fields').innerHTML=KEYS.map((k,i)=>
+    `<label style="font-size:12px;color:var(--text2)">${KLABELS[i]}</label>
+     <textarea class="edit-field" id="ef-${k}">${currentCard[k]||''}</textarea>`
+  ).join('');
+  document.getElementById('view-bg').style.display='none';
+  document.getElementById('edit-bg').style.display='flex';
+}
+async function saveEdit(){
+  if(!currentCard)return;
+  currentCard.title=document.getElementById('edit-title').value.trim()||currentCard.title;
+  currentCard.dept=document.getElementById('edit-dept').value;
+  currentCard.diff=parseInt(document.getElementById('edit-diff').value);
+  currentCard.linked_cards=Array.from(document.getElementById('link-picker').querySelectorAll('input:checked')).map(i=>i.value);
+  KEYS.forEach(k=>{const el=document.getElementById('ef-'+k);if(el)currentCard[k]=el.value;});
+  await saveCard(currentCard);renderCards();closeEdit();
+}
+function closeEdit(){document.getElementById('edit-bg').style.display='none';}
+
+function toggleExportMenu(){
+  const m=document.getElementById('export-menu');
+  m.style.display=m.style.display==='none'?'block':'none';
+  if(m.style.display==='block')setTimeout(()=>document.addEventListener('click',()=>{m.style.display='none';},{once:true}),50);
+}
+function exportData(filtered,fmt){
+  document.getElementById('export-menu').style.display='none';
+  const data=filtered?getFiltered():cards;
+  let content,ext;
+  if(fmt==='json'){content=JSON.stringify(data,null,2);ext='json';}
+  else{
+    content=data.map(c=>`# ${c.title}\n\n**科別：** ${c.dept||'未分類'} | **重要性：** ${'★'.repeat(c.diff)}\n\n`+
+      DIMS.map((d,i)=>`## ${d}\n${c[KEYS[i]]||'—'}`).join('\n\n')+
+      (c.notes?`\n\n## 我的筆記\n${c.notes}`:'')+'\n\n---\n'
+    ).join('\n');ext='md';
+  }
+  const blob=new Blob([content],{type:'text/plain'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');a.href=url;a.download=`clinical_${new Date().toISOString().slice(0,10)}.${ext}`;
+  a.click();URL.revokeObjectURL(url);
+}
+
+loadDepts();renderDeptSelects();loadCards();
+</script>
+</body>
+</html>

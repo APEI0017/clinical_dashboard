@@ -23,19 +23,32 @@ export default async function handler(req, res) {
       }
     }
 
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 25000);
+
     const response = await fetch(
       `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`,
       {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ contents: [{ parts }] })
+        body: JSON.stringify({
+          contents: [{ parts }],
+          generationConfig: { temperature: 0.3, maxOutputTokens: 1500 }
+        }),
+        signal: controller.signal
       }
     );
+    clearTimeout(timeout);
+
     const data = await response.json();
     if (data.error) { res.status(500).json({ error: data.error.message }); return; }
     const text = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
     res.status(200).json({ content: [{ type: 'text', text }] });
   } catch (e) {
-    res.status(500).json({ error: e.message });
+    if (e.name === 'AbortError') {
+      res.status(504).json({ error: 'Gemini 回應逾時（25秒），請稍後再試' });
+    } else {
+      res.status(500).json({ error: e.message });
+    }
   }
 }

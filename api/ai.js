@@ -9,40 +9,48 @@ export default async function handler(req, res) {
   const apiKey = process.env.OPENROUTER_API_KEY;
   if (!apiKey) { res.status(500).json({ error: 'OpenRouter API key not configured' }); return; }
 
-  try {
-    const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 25000);
+  const models = [
+    'meta-llama/llama-3.3-70b-instruct:free',
+    'mistralai/mistral-7b-instruct:free',
+    'qwen/qwen-2.5-72b-instruct:free'
+  ];
 
-    const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${apiKey}`,
-        'HTTP-Referer': 'https://clinical-dashboard.vercel.app',
-        'X-Title': 'Clinical Dashboard'
-      },
-      body: JSON.stringify({
-        model: 'google/gemini-2.0-flash-exp:free',
-        messages: [
-          { role: 'system', content: system },
-          ...messages
-        ],
-        max_tokens: 1500,
-        temperature: 0.3
-      }),
-      signal: controller.signal
-    });
-    clearTimeout(timeout);
+  for (const model of models) {
+    try {
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), 25000);
 
-    const data = await response.json();
-    if (data.error) { res.status(500).json({ error: data.error.message }); return; }
-    const text = data.choices?.[0]?.message?.content || '';
-    res.status(200).json({ content: [{ type: 'text', text }] });
-  } catch (e) {
-    if (e.name === 'AbortError') {
-      res.status(504).json({ error: '回應逾時，請稍後再試' });
-    } else {
-      res.status(500).json({ error: e.message });
+      const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${apiKey}`,
+          'HTTP-Referer': 'https://clinical-dashboard.vercel.app',
+          'X-Title': 'Clinical Dashboard'
+        },
+        body: JSON.stringify({
+          model,
+          messages: [
+            { role: 'system', content: system },
+            ...messages
+          ],
+          max_tokens: 1500,
+          temperature: 0.3
+        }),
+        signal: controller.signal
+      });
+      clearTimeout(timeout);
+
+      const data = await response.json();
+      if (data.error) continue;
+      const text = data.choices?.[0]?.message?.content || '';
+      if (!text) continue;
+      res.status(200).json({ content: [{ type: 'text', text }] });
+      return;
+    } catch (e) {
+      continue;
     }
   }
+
+  res.status(500).json({ error: '所有模型目前無法使用，請稍後再試' });
 }

@@ -452,9 +452,9 @@ async function callAI(content){
   const key=cfg('gemini_api_key');
   if(!key){alert('請先在設定中填入 Gemini API Key！');toggleSettings();return null;}
   try{
-    const res=await fetch('https://api.anthropic.com/v1/messages',{
+    const res=await fetch('/api/ai',{
       method:'POST',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,system:SYS,messages:[{role:'user',content}]})
+      body:JSON.stringify({system:SYS,messages:[{role:'user',content}]})
     });
     const data=await res.json();
     const txt=data.content.filter(i=>i.type==='text').map(i=>i.text).join('');

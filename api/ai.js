@@ -6,47 +6,41 @@ export default async function handler(req, res) {
   if (req.method !== 'POST') { res.status(405).json({ error: 'Method not allowed' }); return; }
 
   const { messages, system } = req.body;
-  const apiKey = process.env.GEMINI_API_KEY;
-  if (!apiKey) { res.status(500).json({ error: 'Gemini API key not configured on server' }); return; }
+  const apiKey = process.env.OPENROUTER_API_KEY;
+  if (!apiKey) { res.status(500).json({ error: 'OpenRouter API key not configured' }); return; }
 
   try {
-    const parts = [];
-    if (system) parts.push({ text: system + '\n\n' });
-    for (const m of messages) {
-      if (typeof m.content === 'string') {
-        parts.push({ text: m.content });
-      } else if (Array.isArray(m.content)) {
-        for (const c of m.content) {
-          if (c.type === 'text') parts.push({ text: c.text });
-          else if (c.type === 'image') parts.push({ inlineData: { mimeType: c.source.media_type, data: c.source.data } });
-        }
-      }
-    }
-
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), 25000);
 
-    const response = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`,
-      {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          contents: [{ parts }],
-          generationConfig: { temperature: 0.3, maxOutputTokens: 1500 }
-        }),
-        signal: controller.signal
-      }
-    );
+    const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${apiKey}`,
+        'HTTP-Referer': 'https://clinical-dashboard.vercel.app',
+        'X-Title': 'Clinical Dashboard'
+      },
+      body: JSON.stringify({
+        model: 'google/gemini-2.0-flash-exp:free',
+        messages: [
+          { role: 'system', content: system },
+          ...messages
+        ],
+        max_tokens: 1500,
+        temperature: 0.3
+      }),
+      signal: controller.signal
+    });
     clearTimeout(timeout);
 
     const data = await response.json();
     if (data.error) { res.status(500).json({ error: data.error.message }); return; }
-    const text = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
+    const text = data.choices?.[0]?.message?.content || '';
     res.status(200).json({ content: [{ type: 'text', text }] });
   } catch (e) {
     if (e.name === 'AbortError') {
-      res.status(504).json({ error: 'Gemini 回應逾時（25秒），請稍後再試' });
+      res.status(504).json({ error: '回應逾時，請稍後再試' });
     } else {
       res.status(500).json({ error: e.message });
     }

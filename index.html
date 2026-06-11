@@ -251,20 +251,42 @@ input,select,textarea,button{font-family:'Inter',sans-serif}
     </div>
     <div class="section-body" id="prompt-sec-body">
       <div class="prompt-box">
-        <p>把備忘錄內容貼到 AI，請它用這個格式整理，再把回覆貼到下方新增區。</p>
-        <div class="prompt-text" id="prompt-text">你是資深臨床主治醫師兼醫學教育專家。請把以下臨床筆記整理成結構化摘要，輸出以下七個段落，每段用【】標示，條列式、精簡行動導向。原文內容後加[原文]，補充的 Guideline 或知識加[AI補充 (來源 年份)]：
+        <p>選擇情境，複製 Prompt 貼到 Claude / ChatGPT，再把回覆貼到下方新增區。</p>
+        <div style="display:flex;gap:6px;margin-bottom:10px">
+          <button class="imp-btn active-amber" id="ptab-basic" onclick="switchPromptTab('basic')" style="font-size:12px">📝 備忘錄整理</button>
+          <button class="imp-btn" id="ptab-merge" onclick="switchPromptTab('merge')" style="font-size:12px">🔗 融合版（備忘錄＋OpenEvidence）</button>
+        </div>
+        <div id="prompt-basic">
+          <div class="prompt-text">你是資深臨床主治醫師兼醫學教育專家。請把以下臨床筆記整理成結構化摘要，輸出以下七個段落，每段用【】標示，條列式、精簡行動導向。原文內容後加[原文]，補充的 Guideline 或知識加[AI補充 (來源 年份)]：
 
 【診斷】
 【處置】
 【Work-up】
 【臨床價值】
-【核心知識點】
+【核心知識點】（值班決策框架，凌晨三點能立刻用的步驟和口訣）
 【臨床應用要點與記憶法】
-【必考知識延伸】
+【必考知識延伸】（含 Guideline 版本與證據來源）
 
 我的臨床筆記：
 （貼上你的備忘錄內容）</div>
-        <button class="btn-ghost" style="margin-top:8px;font-size:12px" onclick="copyPrompt()"><i class="ti ti-copy"></i> 複製 Prompt</button>
+          <button class="btn-ghost" style="margin-top:8px;font-size:12px" onclick="copyPromptById('prompt-basic')"><i class="ti ti-copy"></i> 複製</button>
+        </div>
+        <div id="prompt-merge" style="display:none">
+          <div class="prompt-text">你是住院醫師的臨床教師兼醫學教育專家。請把以下兩個來源融合成一份結構化摘要，輸出以下七個段落，每段用【】標示，條列式、精簡行動導向。原文內容後加[原文]，補充的知識加[AI補充 (來源 年份)]。
+
+融合原則：
+- 【診斷】【處置】【Work-up】【臨床價值】優先用臨床筆記，補充 OpenEvidence 細節
+- 【核心知識點】寫值班決策框架（凌晨三點能立刻用的步驟和數字）
+- 【臨床應用要點與記憶法】寫口訣和記憶法
+- 【必考知識延伸】放 OpenEvidence 的 Guideline 細節、爭議點與證據來源
+
+【我的臨床筆記】
+（貼上備忘錄內容）
+
+【OpenEvidence 內容】
+（貼上 OpenEvidence 查詢結果）</div>
+          <button class="btn-ghost" style="margin-top:8px;font-size:12px" onclick="copyPromptById('prompt-merge')"><i class="ti ti-copy"></i> 複製</button>
+        </div>
       </div>
     </div>
   </div>
@@ -841,8 +863,19 @@ async function saveEdit(){
 }
 function closeEdit(){document.getElementById('edit-bg').style.display='none';}
 
+function switchPromptTab(tab){
+  document.getElementById('prompt-basic').style.display=tab==='basic'?'block':'none';
+  document.getElementById('prompt-merge').style.display=tab==='merge'?'block':'none';
+  document.getElementById('ptab-basic').className='imp-btn'+(tab==='basic'?' active-amber':'');
+  document.getElementById('ptab-merge').className='imp-btn'+(tab==='merge'?' active-amber':'');
+}
+function copyPromptById(id){
+  const text=document.getElementById(id).querySelector('.prompt-text').textContent;
+  navigator.clipboard.writeText(text).then(()=>alert('Prompt 已複製！'));
+}
 function copyPrompt(){
-  navigator.clipboard.writeText(document.getElementById('prompt-text').textContent).then(()=>alert('Prompt 已複製！'));
+  const text=document.querySelector('#prompt-basic .prompt-text')?.textContent||'';
+  navigator.clipboard.writeText(text).then(()=>alert('Prompt 已複製！'));
 }
 
 function toggleExportMenu(){

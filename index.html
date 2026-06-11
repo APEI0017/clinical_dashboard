@@ -449,14 +449,14 @@ const SYS=`你是頂尖醫學中心的資深主治醫師兼醫學教育專家。
 規則：1.條列以「- 」開頭精簡行動導向 2.原文後加[原文]；補充加[AI補充 (來源年份)] 3.Anki共3題聚焦臨床決策點`;
 
 async function callAI(content){
-  const key=cfg('gemini_api_key');
-  if(!key){alert('請先在設定中填入 Gemini API Key！');toggleSettings();return null;}
   try{
     const res=await fetch('/api/ai',{
       method:'POST',headers:{'Content-Type':'application/json'},
       body:JSON.stringify({system:SYS,messages:[{role:'user',content}]})
     });
     const data=await res.json();
+    if(data.error){alert('AI 處理失敗：'+data.error);return null;}
+    if(!data.content||!Array.isArray(data.content)){alert('AI 回傳格式錯誤，請稍後再試');return null;}
     const txt=data.content.filter(i=>i.type==='text').map(i=>i.text).join('');
     return JSON.parse(txt.replace(/```json|```/g,'').trim());
   }catch(e){alert('AI 處理失敗：'+e.message);return null;}

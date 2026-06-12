@@ -64,7 +64,7 @@ input,select,textarea,button{font-family:'Inter',sans-serif}
 .field-label{font-size:11px;color:var(--text3);font-weight:500;text-transform:uppercase;letter-spacing:0.3px}
 .plain-input{width:100%;font-size:13px;padding:7px 10px;border:0.5px solid var(--border2);border-radius:var(--radius);background:var(--bg);color:var(--text);outline:none}
 .plain-input:focus{border-color:var(--blue)}
-.paste-area{width:100%;font-size:13px;padding:10px;border:0.5px solid var(--border2);border-radius:var(--radius);background:var(--bg);color:var(--text);resize:vertical;min-height:140px;line-height:1.7;outline:none}
+.paste-area{width:100%;font-size:13px;padding:10px;border:0.5px solid var(--border2);border-radius:var(--radius);background:var(--bg);color:var(--text);resize:none;min-height:80px;line-height:1.7;outline:none;overflow:hidden}
 .paste-area:focus{border-color:var(--blue)}
 
 /* Context tags */
@@ -283,15 +283,16 @@ input,select,textarea,button{font-family:'Inter',sans-serif}
           <button class="imp-btn" id="ptab-merge" onclick="switchPromptTab('merge')" style="font-size:12px">🔗 融合版（備忘錄＋OpenEvidence）</button>
         </div>
         <div id="prompt-basic">
-          <div class="prompt-text">你是資深臨床主治醫師兼醫學教育專家。請把以下臨床筆記整理成結構化摘要，輸出以下七個段落，每段用【】標示，條列式、精簡行動導向。原文內容後加[原文]，補充的 Guideline 或知識加[AI補充 (來源 年份)]：
+          <div class="prompt-text">你是資深臨床主治醫師兼醫學教育專家。請把以下臨床筆記整理成結構化摘要，輸出以下七個段落，每段用【】標示，條列式、精簡行動導向。原文內容後加[原文]，補充的 Guideline 或知識加[AI補充 (來源 年份)]。
 
-【診斷】
-【處置】
-【Work-up】
-【臨床價值】
-【核心知識點】（值班決策框架，凌晨三點能立刻用的步驟和口訣）
-【臨床應用要點與記憶法】
-【必考知識延伸】（含 Guideline 版本與證據來源）
+七個維度的定義如下，請嚴格遵守各自的範圍，不要重疊：
+【診斷】怎麼診斷、鑑別診斷要點
+【處置】治療流程、一線藥物劑量、手術適應症
+【Work-up】檢查順序、抽血項目、影像學選擇
+【臨床價值】盲點（Pitfall）、容易漏掉的細節、人文關懷面向
+【核心知識點】定義、分類、關鍵數字（這是考試會直接考的內容）
+【記憶法】口訣、聯想法、比喻（幫助記憶，不重複前面的內容）
+【必考延伸】Guideline 版本與年份、爭議點、證據來源
 
 我的臨床筆記：
 （貼上你的備忘錄內容）</div>
@@ -300,11 +301,14 @@ input,select,textarea,button{font-family:'Inter',sans-serif}
         <div id="prompt-merge" style="display:none">
           <div class="prompt-text">你是住院醫師的臨床教師兼醫學教育專家。請把以下兩個來源融合成一份結構化摘要，輸出以下七個段落，每段用【】標示，條列式、精簡行動導向。原文內容後加[原文]，補充的知識加[AI補充 (來源 年份)]。
 
-融合原則：
-- 【診斷】【處置】【Work-up】【臨床價值】優先用臨床筆記，補充 OpenEvidence 細節
-- 【核心知識點】寫值班決策框架（凌晨三點能立刻用的步驟和數字）
-- 【臨床應用要點與記憶法】寫口訣和記憶法
-- 【必考知識延伸】放 OpenEvidence 的 Guideline 細節、爭議點與證據來源
+七個維度的定義如下，請嚴格遵守各自的範圍，不要重疊：
+【診斷】怎麼診斷、鑑別診斷要點（優先用臨床筆記，補充 OpenEvidence）
+【處置】治療流程、一線藥物劑量（優先用臨床筆記，補充 OpenEvidence）
+【Work-up】檢查順序、抽血、影像學（優先用臨床筆記，補充 OpenEvidence）
+【臨床價值】盲點（Pitfall）、漏掉的細節、人文面向（優先用臨床筆記）
+【核心知識點】定義、分類、關鍵數字（考試直接考的，融合兩個來源的精華）
+【記憶法】口訣、聯想法、比喻（幫助記憶，不重複前面的內容）
+【必考延伸】OpenEvidence 的 Guideline 版本年份、爭議點、證據來源
 
 【我的臨床筆記】
 （貼上備忘錄內容）
@@ -353,7 +357,7 @@ input,select,textarea,button{font-family:'Inter',sans-serif}
         </div>
       </div>
       <div class="field-label" style="margin-bottom:6px">內容</div>
-      <textarea class="paste-area" id="paste-input" placeholder="【診斷】&#10;- ...&#10;&#10;【處置】&#10;- ...&#10;&#10;（貼上 AI 整理好的七維度內容）" oninput="parsePreview()"></textarea>
+      <textarea class="paste-area" id="paste-input" placeholder="【診斷】placeholder="【診斷】&#10;- ...&#10;&#10;【處置】&#10;- ...&#10;&#10;（貼上 AI 整理好的七維度內容）"#10;- ...placeholder="【診斷】&#10;- ...&#10;&#10;【處置】&#10;- ...&#10;&#10;（貼上 AI 整理好的七維度內容）"#10;placeholder="【診斷】&#10;- ...&#10;&#10;【處置】&#10;- ...&#10;&#10;（貼上 AI 整理好的七維度內容）"#10;【處置】placeholder="【診斷】&#10;- ...&#10;&#10;【處置】&#10;- ...&#10;&#10;（貼上 AI 整理好的七維度內容）"#10;- ...placeholder="【診斷】&#10;- ...&#10;&#10;【處置】&#10;- ...&#10;&#10;（貼上 AI 整理好的七維度內容）"#10;placeholder="【診斷】&#10;- ...&#10;&#10;【處置】&#10;- ...&#10;&#10;（貼上 AI 整理好的七維度內容）"#10;貼上 AI 整理好的七維度內容" oninput="parsePreview();autoResize(this)" onpaste="handlePaste(event)"></textarea>
       <div class="parse-preview" id="parse-preview"></div>
       <div style="display:flex;justify-content:flex-end;margin-top:12px">
         <button class="btn-primary" onclick="saveCard()"><i class="ti ti-device-floppy"></i> 儲存卡片</button>
@@ -464,7 +468,8 @@ input,select,textarea,button{font-family:'Inter',sans-serif}
 </div>
 
 <script>
-const DIMS=['診斷','處置','Work-up','臨床價值','核心知識點','臨床應用要點與記憶法','必考知識延伸'];
+const DIMS=['診斷','處置','Work-up','臨床價值','核心知識點','記憶法','必考延伸'];
+const DIM_DESC=['怎麼診斷、鑑別診斷','治療流程、藥物劑量','檢查順序、影像學','盲點Pitfall人文','定義分類數字（考試重點）','口訣聯想比喻','Guideline版本爭議證據'];
 const KEYS=['diagnosis','management','workup','pearl','keypoints','clinical_app','must_know'];
 const IMP_LABEL={red:'🔴 不能忘',amber:'🟡 要記得',gray:'⚪ 參考用'};
 const REVIEW_DAYS=14; // 超過14天未查閱自動提醒
@@ -1009,6 +1014,33 @@ function exportData(filtered,fmt){
   const url=URL.createObjectURL(blob);
   const a=document.createElement('a');a.href=url;a.download=`clinical_${new Date().toISOString().slice(0,10)}.${ext}`;
   a.click();URL.revokeObjectURL(url);
+}
+
+// Auto resize textarea
+function autoResize(el){
+  el.style.height='auto';
+  el.style.height=(el.scrollHeight)+'px';
+}
+
+// Clean paste from ChatGPT: preserve bold markdown, clean extra whitespace
+function handlePaste(e){
+  // Let default paste happen first
+  setTimeout(()=>{
+    const ta=document.getElementById('paste-input');
+    let text=ta.value;
+    // Normalize: remove excessive blank lines (3+ -> 2)
+    text=text.replace(/
+{3,}/g,'
+
+');
+    // Normalize: ensure 【 starts on new line
+    text=text.replace(/([^
+])【/g,'$1
+【');
+    ta.value=text;
+    autoResize(ta);
+    parsePreview();
+  },10);
 }
 
 // Init

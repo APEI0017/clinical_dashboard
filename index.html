@@ -27,7 +27,7 @@ input,select,textarea,button{font-family:'Inter',sans-serif}
 .header h1{font-size:17px;font-weight:600;letter-spacing:-0.3px}
 .header p{font-size:12px;color:var(--text3);margin-top:2px}
 .quick-bar{background:var(--bg);border:0.5px solid var(--border);border-radius:var(--radius-lg);padding:.75rem 1rem;margin-bottom:.75rem;display:flex;gap:8px;align-items:center;box-shadow:var(--shadow)}
-.quick-input{flex:1;border:none;outline:none;font-size:14px;background:transparent;color:var(--text)}
+.quick-input{flex:1;border:none;outline:none;font-size:14px;background:transparent;color:var(--text);font-family:'Inter',sans-serif;min-height:28px;max-height:120px}
 .quick-input::placeholder{color:var(--text3)}
 .quick-btn{background:var(--blue);color:#fff;border:none;padding:6px 14px;border-radius:var(--radius);font-size:13px;font-weight:500;cursor:pointer;flex-shrink:0}
 .quick-btn:hover{background:var(--blue-dark)}
@@ -54,22 +54,32 @@ input,select,textarea,button{font-family:'Inter',sans-serif}
 .field-label{font-size:11px;color:var(--text3);font-weight:500;text-transform:uppercase;letter-spacing:0.3px}
 .plain-input{width:100%;font-size:13px;padding:7px 10px;border:0.5px solid var(--border2);border-radius:var(--radius);background:var(--bg);color:var(--text);outline:none}
 .plain-input:focus{border-color:var(--blue)}
-.paste-area{width:100%;font-size:13px;padding:10px;border:0.5px solid var(--border2);border-radius:var(--radius);background:var(--bg);color:var(--text);resize:none;min-height:100px;line-height:1.7;outline:none;overflow:hidden}
+.paste-area{width:100%;font-size:13px;padding:10px;border:0.5px solid var(--border2);border-radius:var(--radius);background:var(--bg);color:var(--text);resize:none;min-height:100px;max-height:400px;line-height:1.7;outline:none;overflow-y:auto}
 .paste-area:focus{border-color:var(--blue)}
 .ctx-wrap{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
-.ctx-tag{display:inline-flex;align-items:center;gap:4px;font-size:12px;padding:4px 10px;border-radius:20px;border:0.5px solid var(--border2);background:var(--bg2);color:var(--text2);cursor:pointer;user-select:none;transition:all 0.15s}
+.ctx-tag{display:inline-flex;align-items:center;gap:4px;font-size:12px;padding:4px 10px;border-radius:20px;border:0.5px solid var(--border2);background:var(--bg2);color:var(--text2);cursor:grab;user-select:none;transition:all 0.15s;position:relative}
 .ctx-tag:hover{border-color:var(--blue);color:var(--blue)}
 .ctx-tag.active{background:var(--blue);color:#fff;border-color:var(--blue)}
+.ctx-tag.dragging{opacity:0.4;cursor:grabbing}
+.ctx-tag.drag-over{border-color:var(--blue);transform:scale(1.05)}
+.ctx-tag-edit{font-size:12px;padding:3px 8px;border-radius:20px;border:0.5px solid var(--blue);outline:none;width:80px;background:var(--bg);color:var(--text)}
 .ctx-tag-add{display:inline-flex;align-items:center;gap:4px;font-size:12px;padding:4px 10px;border-radius:20px;border:0.5px dashed var(--border2);color:var(--text3);cursor:pointer;background:none}
 .ctx-tag-add:hover{border-color:var(--blue);color:var(--blue)}
 .ctx-add-input{font-size:12px;padding:4px 8px;border:0.5px solid var(--blue);border-radius:20px;outline:none;width:100px;background:var(--bg)}
 .imp-wrap{display:flex;gap:6px;flex-wrap:wrap}
-.imp-btn{display:inline-flex;align-items:center;gap:5px;font-size:12px;padding:5px 12px;border-radius:20px;border:0.5px solid var(--border2);background:var(--bg2);color:var(--text2);cursor:pointer;user-select:none;transition:all 0.15s}
+.imp-btn{display:inline-flex;align-items:center;gap:5px;font-size:12px;padding:5px 12px;border-radius:20px;border:0.5px solid var(--border2);background:var(--bg2);color:var(--text2);cursor:grab;user-select:none;transition:all 0.15s}
+.imp-btn:hover{filter:brightness(0.95)}
 .imp-btn.active-red{background:var(--red-bg);color:var(--red);border-color:var(--red)}
 .imp-btn.active-amber{background:var(--amber-bg);color:var(--amber-text);border-color:var(--amber)}
 .imp-btn.active-gray{background:var(--bg2);color:var(--text2);border-color:var(--border2)}
+.imp-btn.dragging{opacity:0.4;cursor:grabbing}
+.imp-btn.drag-over{transform:scale(1.05)}
 .imp-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
 .imp-dot.red{background:var(--red)}.imp-dot.amber{background:var(--amber)}.imp-dot.gray{background:var(--text3)}
+.imp-dot.orange{background:#E07B24}.imp-dot.green{background:#1A7C4A}.imp-dot.blue{background:var(--blue)}
+.color-picker{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
+.color-swatch{width:20px;height:20px;border-radius:50%;cursor:pointer;border:2px solid transparent;transition:all 0.15s}
+.color-swatch:hover,.color-swatch.selected{border-color:var(--text);transform:scale(1.2)}
 .parse-preview{background:var(--bg2);border-radius:var(--radius);padding:10px 12px;margin-top:8px;font-size:12px;display:none}
 .parse-preview.show{display:block}
 .parse-row{display:flex;gap:6px;align-items:center;margin-bottom:2px}
@@ -175,10 +185,13 @@ input,select,textarea,button{font-family:'Inter',sans-serif}
     </div>
   </div>
 
-  <div class="quick-bar">
-    <i class="ti ti-pencil" style="font-size:16px;color:var(--text3);flex-shrink:0"></i>
-    <input class="quick-input" id="quick-input" placeholder="快速記錄臨床觀察…（Enter 儲存）" onkeydown="if(event.key==='Enter')quickSave()"/>
-    <button class="quick-btn" onclick="quickSave()">記錄</button>
+  <div class="quick-bar" style="align-items:flex-end">
+    <i class="ti ti-pencil" style="font-size:16px;color:var(--text3);flex-shrink:0;margin-bottom:4px"></i>
+    <textarea class="quick-input" id="quick-input" placeholder="快速記錄臨床觀察…（Ctrl+Enter 儲存）" rows="1"
+      oninput="this.style.height='auto';this.style.height=Math.min(this.scrollHeight,120)+'px'"
+      onkeydown="if((event.ctrlKey||event.metaKey)&&event.key==='Enter'){event.preventDefault();quickSave();}"
+      style="resize:none;overflow:hidden;line-height:1.5;padding-top:6px;padding-bottom:6px"></textarea>
+    <button class="quick-btn" onclick="quickSave()" style="margin-bottom:0;flex-shrink:0">記錄</button>
   </div>
 
   <div id="review-banner" class="review-banner" style="display:none">
@@ -302,11 +315,7 @@ input,select,textarea,button{font-family:'Inter',sans-serif}
       </div>
       <div style="margin-bottom:14px">
         <div class="field-label" style="margin-bottom:6px">重要程度</div>
-        <div class="imp-wrap">
-          <button class="imp-btn active-red" onclick="setImp('red')" id="imp-red"><span class="imp-dot red"></span>🔴 不能忘</button>
-          <button class="imp-btn" onclick="setImp('amber')" id="imp-amber"><span class="imp-dot amber"></span>🟡 要記得</button>
-          <button class="imp-btn" onclick="setImp('gray')" id="imp-gray"><span class="imp-dot gray"></span>⚪ 參考用</button>
-        </div>
+        <div class="imp-wrap" id="imp-select-wrap"></div>
       </div>
       <div class="field-label" style="margin-bottom:6px">內容</div>
       <textarea class="paste-area" id="paste-input"
@@ -403,11 +412,7 @@ input,select,textarea,button{font-family:'Inter',sans-serif}
     </div>
     <div style="margin-bottom:14px">
       <div class="field-label" style="margin-bottom:6px">重要程度</div>
-      <div class="imp-wrap">
-        <button class="imp-btn" onclick="setEditImp('red')" id="eimp-red"><span class="imp-dot red"></span>🔴 不能忘</button>
-        <button class="imp-btn" onclick="setEditImp('amber')" id="eimp-amber"><span class="imp-dot amber"></span>🟡 要記得</button>
-        <button class="imp-btn" onclick="setEditImp('gray')" id="eimp-gray"><span class="imp-dot gray"></span>⚪ 參考用</button>
-      </div>
+      <div class="imp-wrap" id="imp-edit-wrap"></div>
     </div>
     <div class="field-label" style="margin-bottom:4px">連結其他卡片</div>
     <div class="link-picker" id="link-picker"></div>
@@ -431,6 +436,21 @@ var selectedImp = 'red', editImp = 'red';
 var filterImps = new Set(), filterCtxs = new Set();
 var selectedCtxs = new Set(), editCtxs = new Set();
 var contexts = ['🏥 急診','🌙 值班','🔪 外科','💊 內科','👶 小兒','📚 自學'];
+var importanceLevels = [
+  {id:'red',   label:'不能忘', color:'red',   bg:'var(--red-bg)',   text:'var(--red)',         border:'var(--red)'},
+  {id:'amber', label:'要記得', color:'amber', bg:'var(--amber-bg)', text:'var(--amber-text)',   border:'var(--amber)'},
+  {id:'gray',  label:'參考用', color:'gray',  bg:'var(--bg2)',      text:'var(--text2)',        border:'var(--border2)'}
+];
+var COLOR_MAP = {
+  red:   {bg:'var(--red-bg)',    text:'var(--red)',       border:'var(--red)',     dot:'#A32D2D'},
+  orange:{bg:'#FEF0E6',          text:'#7A3A10',          border:'#E07B24',        dot:'#E07B24'},
+  amber: {bg:'var(--amber-bg)',  text:'var(--amber-text)',border:'var(--amber)',   dot:'#BA7517'},
+  green: {bg:'var(--green-bg)',  text:'var(--green-text)',border:'var(--green-text)',dot:'#1A7C4A'},
+  blue:  {bg:'var(--blue-bg)',   text:'var(--blue-text)', border:'var(--blue)',    dot:'#185FA5'},
+  gray:  {bg:'var(--bg2)',       text:'var(--text2)',     border:'var(--border2)', dot:'#9b9b9b'}
+};
+var COLOR_NAMES = {red:'🔴',orange:'🟠',amber:'🟡',green:'🟢',blue:'🔵',gray:'⚪'};
+var dragSrcImp = null;
 var showNotesPreview = false;
 
 function cfg(k){ return localStorage.getItem(k) || ''; }
@@ -461,7 +481,7 @@ function quickSave(){
   cards.unshift(card);
   dbSaveCard(card);
   renderCards();
-  inp.value = '';
+  inp.value = ''; inp.style.height = 'auto';
 }
 
 function checkSmartReview(){
@@ -558,7 +578,9 @@ function autoResizeById(id){
 
 function onPasteInput(el){
   el.style.height = 'auto';
-  el.style.height = el.scrollHeight+'px';
+  var maxH = 400;
+  el.style.height = Math.min(el.scrollHeight, maxH)+'px';
+  el.style.overflowY = el.scrollHeight > maxH ? 'auto' : 'hidden';
   parsePreview();
 }
 
@@ -575,29 +597,222 @@ function onPasteEvent(){
   }, 50);
 }
 
-function setImp(val){
-  selectedImp = val;
-  ['red','amber','gray'].forEach(function(v){
-    document.getElementById('imp-'+v).className = 'imp-btn'+(v===val?' active-'+v:'');
+function loadImportanceLevels(){
+  var s = cfg('importance_levels');
+  if(s) importanceLevels = JSON.parse(s);
+}
+function saveImportanceLevels(){
+  setCfg('importance_levels', JSON.stringify(importanceLevels));
+}
+
+function renderImpSelect(containerId, prefix, currentVal, onSelect){
+  var wrap = document.getElementById(containerId);
+  if(!wrap) return;
+  var html = importanceLevels.map(function(lv){
+    var isActive = lv.id === currentVal;
+    var cm = COLOR_MAP[lv.color] || COLOR_MAP.gray;
+    return '<span class="imp-btn'+(isActive?' active-'+lv.color:'')+'"'
+      +' id="'+prefix+lv.id+'"'
+      +' draggable="true"'
+      +' onclick="selectImp(\''+prefix+'\',\''+lv.id+'\','+JSON.stringify(onSelect)+')"'
+      +' ondblclick="startEditImp(event,\''+lv.id+'\',\''+prefix+'\','+JSON.stringify(onSelect)+')"'
+      +' ondragstart="impDragStart(event,\''+lv.id+'\',\''+prefix+'\','+JSON.stringify(onSelect)+')"'
+      +' ondragover="impDragOver(event)"'
+      +' ondrop="impDrop(event,\''+lv.id+'\',\''+prefix+'\','+JSON.stringify(onSelect)+')"'
+      +' ondragleave="impDragLeave(event)"'
+      +' ondragend="impDragEnd(event)"'
+      +' title="雙擊編輯・拖動排序"'
+      +' style="'+(isActive?'background:'+cm.bg+';color:'+cm.text+';border-color:'+cm.border+';':'')+'">'
+      +'<span class="imp-dot" style="background:'+cm.dot+'"></span>'
+      + COLOR_NAMES[lv.color] + ' ' + lv.label
+      +'<span onclick="removeImp(event,\''+lv.id+'\',\''+prefix+'\','+JSON.stringify(onSelect)+')" style="margin-left:4px;font-size:10px;opacity:0.5" title="刪除">×</span>'
+      +'</span>';
+  }).join('');
+  html += '<span class="ctx-tag-add" onclick="addImpLevel(\''+prefix+'\','+JSON.stringify(onSelect)+')" style="font-size:12px"><i class="ti ti-plus" style="font-size:11px"></i> 新增</span>';
+  wrap.innerHTML = html;
+}
+
+function selectImp(prefix, val, cb){
+  if(prefix === 'imp-') selectedImp = val;
+  else editImp = val;
+  renderImpSelect(prefix==='imp-'?'imp-select-wrap':'imp-edit-wrap', prefix, val, cb);
+}
+
+function impDragStart(e, id, prefix, cb){ dragSrcImp={id:id,prefix:prefix,cb:cb}; setTimeout(function(){ if(e.target) e.target.classList.add('dragging'); },0); e.dataTransfer.effectAllowed='move'; }
+function impDragOver(e){ e.preventDefault(); e.currentTarget.classList.add('drag-over'); }
+function impDragLeave(e){ e.currentTarget.classList.remove('drag-over'); }
+function impDragEnd(e){ document.querySelectorAll('.imp-btn').forEach(function(el){ el.classList.remove('dragging','drag-over'); }); }
+function impDrop(e, targetId, prefix, cb){
+  e.preventDefault(); e.currentTarget.classList.remove('drag-over');
+  if(!dragSrcImp || dragSrcImp.id === targetId) return;
+  var fromIdx = importanceLevels.findIndex(function(x){ return x.id===dragSrcImp.id; });
+  var toIdx = importanceLevels.findIndex(function(x){ return x.id===targetId; });
+  if(fromIdx===-1||toIdx===-1) return;
+  var item = importanceLevels.splice(fromIdx,1)[0];
+  importanceLevels.splice(toIdx,0,item);
+  dragSrcImp=null;
+  saveImportanceLevels();
+  var cur = prefix==='imp-'?selectedImp:editImp;
+  renderImpSelect(prefix==='imp-'?'imp-select-wrap':'imp-edit-wrap', prefix, cur, cb);
+}
+
+function startEditImp(e, id, prefix, cb){
+  e.stopPropagation();
+  var lv = importanceLevels.find(function(x){ return x.id===id; });
+  if(!lv) return;
+  // 顯示編輯面板
+  var span = e.currentTarget;
+  var panel = document.createElement('div');
+  panel.style.cssText='background:var(--bg);border:0.5px solid var(--border2);border-radius:var(--radius);padding:10px;position:absolute;z-index:50;box-shadow:0 4px 12px rgba(0,0,0,0.12);min-width:180px';
+  panel.innerHTML='<div style="font-size:11px;color:var(--text3);margin-bottom:6px">編輯標籤</div>'
+    +'<input id="imp-edit-label" style="width:100%;font-size:13px;padding:5px 8px;border:0.5px solid var(--border2);border-radius:var(--radius);margin-bottom:8px;outline:none" value="'+lv.label+'"/>'
+    +'<div class="color-picker">'
+    +Object.keys(COLOR_MAP).map(function(c){ return '<span class="color-swatch'+(lv.color===c?' selected':'')+'" style="background:'+COLOR_MAP[c].dot+'" onclick="pickImpColor(\''+id+'\',\''+c+'\',\''+prefix+'\','+JSON.stringify(cb)+')" title="'+c+'"></span>'; }).join('')
+    +'</div>'
+    +'<div style="display:flex;gap:6px;margin-top:8px">'
+    +'<button onclick="saveImpEdit(\''+id+'\',\''+prefix+'\','+JSON.stringify(cb)+')" style="font-size:12px;padding:4px 10px;background:var(--blue);color:#fff;border:none;border-radius:var(--radius);cursor:pointer">確認</button>'
+    +'<button onclick="closeImpEdit(\''+prefix+'\','+JSON.stringify(cb)+')" style="font-size:12px;padding:4px 10px;background:none;border:0.5px solid var(--border2);border-radius:var(--radius);cursor:pointer">取消</button>'
+    +'</div>';
+  document.body.appendChild(panel);
+  var rect = span.getBoundingClientRect();
+  panel.style.top = (rect.bottom + window.scrollY + 4)+'px';
+  panel.style.left = (rect.left + window.scrollX)+'px';
+  panel.querySelector('#imp-edit-label').focus();
+  window._impEditId = id;
+}
+
+function pickImpColor(id, color, prefix, cb){
+  var lv = importanceLevels.find(function(x){ return x.id===id; });
+  if(lv){ lv.color=color; Object.assign(lv, COLOR_MAP[color]); }
+  document.querySelectorAll('.color-swatch').forEach(function(el){
+    el.classList.toggle('selected', el.getAttribute('title')===color);
   });
 }
 
-function setEditImp(val){
-  editImp = val;
-  ['red','amber','gray'].forEach(function(v){
-    document.getElementById('eimp-'+v).className = 'imp-btn'+(v===val?' active-'+v:'');
-  });
+function saveImpEdit(id, prefix, cb){
+  var lv = importanceLevels.find(function(x){ return x.id===id; });
+  var labelEl = document.getElementById('imp-edit-label');
+  if(lv && labelEl) lv.label = labelEl.value.trim() || lv.label;
+  saveImportanceLevels();
+  closeImpEdit(prefix, cb);
 }
+
+function closeImpEdit(prefix, cb){
+  var panels = document.querySelectorAll('body > div[style*="position:absolute"]');
+  panels.forEach(function(p){ p.remove(); });
+  var cur = prefix==='imp-'?selectedImp:editImp;
+  renderImpSelect(prefix==='imp-'?'imp-select-wrap':'imp-edit-wrap', prefix, cur, cb);
+}
+
+function addImpLevel(prefix, cb){
+  var id = 'imp_'+Date.now();
+  importanceLevels.push({id:id, label:'新等級', color:'gray', bg:'var(--bg2)', text:'var(--text2)', border:'var(--border2)'});
+  saveImportanceLevels();
+  var cur = prefix==='imp-'?selectedImp:editImp;
+  renderImpSelect(prefix==='imp-'?'imp-select-wrap':'imp-edit-wrap', prefix, cur, cb);
+}
+
+function removeImp(e, id, prefix, cb){
+  e.stopPropagation();
+  if(importanceLevels.length <= 1){ alert('至少保留一個等級'); return; }
+  if(!confirm('刪除此等級？')) return;
+  importanceLevels = importanceLevels.filter(function(x){ return x.id!==id; });
+  if(selectedImp===id) selectedImp = importanceLevels[0].id;
+  if(editImp===id) editImp = importanceLevels[0].id;
+  saveImportanceLevels();
+  var cur = prefix==='imp-'?selectedImp:editImp;
+  renderImpSelect(prefix==='imp-'?'imp-select-wrap':'imp-edit-wrap', prefix, cur, cb);
+}
+
+function setImp(val){ selectedImp=val; renderImpSelect('imp-select-wrap','imp-',val,'new'); }
+function setEditImp(val){ editImp=val; renderImpSelect('imp-edit-wrap','eimp-',val,'edit'); }
 
 function loadContexts(){ var s=cfg('clinical_contexts'); if(s) contexts=JSON.parse(s); }
 function saveContexts(){ setCfg('clinical_contexts', JSON.stringify(contexts)); }
 
+var DEFAULT_CONTEXTS = ['🏥 急診','🌙 值班','🔪 外科','💊 內科','👶 小兒','📚 自學'];
+var dragSrcCtx = null;
+
 function renderCtxSelect(){
-  document.getElementById('ctx-select-wrap').innerHTML =
-    contexts.map(function(c){
-      return '<span class="ctx-tag'+(selectedCtxs.has(c)?' active':'')+'" onclick="toggleCtxSelect(\''+c+'\')">'+c+'</span>';
-    }).join('') +
-    '<span class="ctx-tag-add" id="ctx-add-btn" onclick="showCtxAddInput()"><i class="ti ti-plus" style="font-size:11px"></i> 新增</span>';
+  var html = contexts.map(function(c){
+    var isDefault = DEFAULT_CONTEXTS.includes(c);
+    var active = selectedCtxs.has(c) ? ' active' : '';
+    return '<span class="ctx-tag'+active+'"'
+      +' draggable="true"'
+      +' onclick="toggleCtxSelect(this,\''+c+'\',event)"'
+      +' ondblclick="startEditCtx(event,\''+c+'\',\'select\')"'
+      +' ondragstart="ctxDragStart(event,\''+c+'\',\'select\')"'
+      +' ondragover="ctxDragOver(event)"'
+      +' ondrop="ctxDrop(event,\''+c+'\',\'select\')"'
+      +' ondragleave="ctxDragLeave(event)"'
+      +' ondragend="ctxDragEnd(event)"'
+      +' title="雙擊編輯・拖動排序">'
+      + c
+      + (!isDefault ? '<span onclick="removeCtx(event,\''+c+'\')">×</span>' : '')
+      + '</span>';
+  }).join('');
+  html += '<span class="ctx-tag-add" id="ctx-add-btn" onclick="showCtxAddInput()"><i class="ti ti-plus" style="font-size:11px"></i> 新增</span>';
+  document.getElementById('ctx-select-wrap').innerHTML = html;
+}
+
+function toggleCtxSelect(el, c, e){
+  if(e && e.target !== el) return;
+  selectedCtxs.has(c) ? selectedCtxs.delete(c) : selectedCtxs.add(c);
+  renderCtxSelect();
+}
+
+function ctxDragStart(e, c, mode){
+  dragSrcCtx = {c:c, mode:mode};
+  setTimeout(function(){ if(e.target) e.target.classList.add('dragging'); }, 0);
+  e.dataTransfer.effectAllowed = 'move';
+}
+function ctxDragOver(e){ e.preventDefault(); e.currentTarget.classList.add('drag-over'); }
+function ctxDragLeave(e){ e.currentTarget.classList.remove('drag-over'); }
+function ctxDragEnd(e){ document.querySelectorAll('.ctx-tag').forEach(function(el){ el.classList.remove('dragging','drag-over'); }); }
+function ctxDrop(e, targetCtx, mode){
+  e.preventDefault();
+  e.currentTarget.classList.remove('drag-over');
+  if(!dragSrcCtx || dragSrcCtx.c === targetCtx) return;
+  var fromIdx = contexts.indexOf(dragSrcCtx.c);
+  var toIdx = contexts.indexOf(targetCtx);
+  if(fromIdx === -1 || toIdx === -1) return;
+  contexts.splice(fromIdx, 1);
+  contexts.splice(toIdx, 0, dragSrcCtx.c);
+  dragSrcCtx = null;
+  saveContexts(); renderCtxSelect(); renderFilterCtx();
+}
+
+function startEditCtx(e, c, mode){
+  e.stopPropagation();
+  var span = e.currentTarget;
+  var input = document.createElement('input');
+  input.className = 'ctx-tag-edit';
+  input.value = c;
+  input.onclick = function(ev){ ev.stopPropagation(); };
+  input.onblur = function(){ commitEditCtx(c, input.value.trim(), mode); };
+  input.onkeydown = function(ev){
+    if(ev.key === 'Enter') input.blur();
+    if(ev.key === 'Escape'){ renderCtxSelect(); renderFilterCtx(); }
+  };
+  span.parentNode.replaceChild(input, span);
+  input.focus(); input.select();
+}
+
+function commitEditCtx(oldVal, newVal, mode){
+  if(!newVal || newVal === oldVal){ renderCtxSelect(); return; }
+  var idx = contexts.indexOf(oldVal);
+  if(idx !== -1) contexts[idx] = newVal;
+  if(selectedCtxs.has(oldVal)){ selectedCtxs.delete(oldVal); selectedCtxs.add(newVal); }
+  if(filterCtxs.has(oldVal)){ filterCtxs.delete(oldVal); filterCtxs.add(newVal); }
+  saveContexts(); renderCtxSelect(); renderFilterCtx();
+}
+
+function removeCtx(e, c){
+  e.stopPropagation();
+  if(!confirm('刪除標籤「'+c+'」？')) return;
+  contexts = contexts.filter(function(x){ return x !== c; });
+  selectedCtxs.delete(c); filterCtxs.delete(c);
+  saveContexts(); renderCtxSelect(); renderFilterCtx();
 }
 
 function renderCtxEdit(){
@@ -751,7 +966,11 @@ async function dbSaveCard(card){
       var r = await sbFetch('cards', {method:'POST', body:JSON.stringify(rest)});
       if(r && r[0]) card.id = r[0].id;
     }
-  } catch(e){ saveLocal(); }
+  } catch(e){
+    console.error('dbSaveCard error:', e.message);
+    alert('儲存失敗：'+e.message+'\n\n請截圖給我看');
+    saveLocal();
+  }
 }
 
 async function dbDeleteCard(id){
@@ -966,7 +1185,8 @@ function openEdit(){
   if(!currentCard) return;
   document.getElementById('edit-title').value=currentCard.title;
   document.getElementById('edit-case').value=currentCard.case_number||'';
-  editImp=currentCard.importance||'gray'; setEditImp(editImp);
+  editImp=currentCard.importance||'gray';
+  renderImpSelect('imp-edit-wrap','eimp-',editImp,'edit');
   editCtxs=new Set(Array.isArray(currentCard.contexts)?currentCard.contexts:[]);
   renderCtxEdit();
   var linked=currentCard.linked_cards||[];
@@ -1040,8 +1260,10 @@ function exportData(filtered,fmt){
 
 // Init
 loadContexts();
+loadImportanceLevels();
 renderCtxSelect();
 renderFilterCtx();
+renderImpSelect('imp-select-wrap','imp-',selectedImp,'new');
 document.getElementById('sb-url').value=cfg('sb_url');
 document.getElementById('sb-key').value=cfg('sb_key');
 showKeyHint();

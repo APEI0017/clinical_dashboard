@@ -1024,16 +1024,13 @@ function autoResize(el){
 
 // Clean paste from ChatGPT: preserve bold markdown, clean extra whitespace
 function handlePaste(e){
-  // Let default paste happen first
   setTimeout(()=>{
     const ta=document.getElementById('paste-input');
     let text=ta.value;
-    // Normalize: remove excessive blank lines (3+ -> 2)
     text=text.replace(/
 {3,}/g,'
 
 ');
-    // Normalize: ensure 【 starts on new line
     text=text.replace(/([^
 ])【/g,'$1
 【');

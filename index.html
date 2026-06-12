@@ -8,40 +8,47 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css">
 <style>
 :root{
-  --bg:#ffffff;--bg2:#f8f8f7;--bg3:#f1f0eb;
+  --bg:#fff;--bg2:#f8f8f7;--bg3:#f1f0eb;
   --text:#1a1a1a;--text2:#6b6b6b;--text3:#9b9b9b;
   --border:rgba(0,0,0,0.08);--border2:rgba(0,0,0,0.15);
   --blue:#185FA5;--blue-dark:#0C447C;--blue-bg:#E6F1FB;--blue-text:#0C447C;
   --green-bg:#E1F5EE;--green-text:#085041;
   --amber-bg:#FAEEDA;--amber-text:#633806;--amber:#BA7517;
-  --red:#A32D2D;--red-bg:#FCEBEB;--red-text:#A32D2D;
+  --red:#A32D2D;--red-bg:#FCEBEB;
   --purple-bg:#EEEDFE;--purple-text:#3C3489;
   --radius:8px;--radius-lg:14px;
-  --shadow:0 1px 3px rgba(0,0,0,0.06),0 1px 2px rgba(0,0,0,0.04);
+  --shadow:0 1px 3px rgba(0,0,0,0.06);
 }
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Inter',sans-serif;background:var(--bg3);color:var(--text);min-height:100vh}
 input,select,textarea,button{font-family:'Inter',sans-serif}
 .app{max-width:1100px;margin:0 auto;padding:1.5rem}
 
+/* Quick record */
+.quick-bar{background:var(--bg);border:0.5px solid var(--border);border-radius:var(--radius-lg);padding:.75rem 1rem;margin-bottom:1rem;display:flex;gap:8px;align-items:center;box-shadow:var(--shadow)}
+.quick-input{flex:1;border:none;outline:none;font-size:14px;background:transparent;color:var(--text)}
+.quick-input::placeholder{color:var(--text3)}
+.quick-btn{background:var(--blue);color:#fff;border:none;padding:6px 14px;border-radius:var(--radius);font-size:13px;font-weight:500;cursor:pointer;white-space:nowrap;flex-shrink:0}
+.quick-btn:hover{background:var(--blue-dark)}
+
 /* Header */
-.header{display:flex;align-items:center;justify-content:space-between;margin-bottom:2rem;flex-wrap:wrap;gap:8px}
+.header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem;flex-wrap:wrap;gap:8px}
 .header h1{font-size:17px;font-weight:600;letter-spacing:-0.3px}
 .header p{font-size:12px;color:var(--text3);margin-top:2px}
 
 /* Buttons */
-.btn-primary{background:var(--blue);color:#fff;border:none;padding:8px 16px;border-radius:var(--radius);font-size:13px;font-weight:500;cursor:pointer;display:inline-flex;align-items:center;gap:6px;white-space:nowrap;transition:background 0.15s}
+.btn-primary{background:var(--blue);color:#fff;border:none;padding:8px 16px;border-radius:var(--radius);font-size:13px;font-weight:500;cursor:pointer;display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
 .btn-primary:hover{background:var(--blue-dark)}
-.btn-outline{background:none;border:0.5px solid var(--border2);padding:6px 12px;border-radius:var(--radius);cursor:pointer;font-size:13px;color:var(--text2);display:inline-flex;align-items:center;gap:4px;transition:background 0.15s}
+.btn-outline{background:none;border:0.5px solid var(--border2);padding:6px 12px;border-radius:var(--radius);cursor:pointer;font-size:13px;color:var(--text2);display:inline-flex;align-items:center;gap:4px}
 .btn-outline:hover{background:var(--bg2)}
 .btn-ghost{background:none;border:none;cursor:pointer;font-size:13px;color:var(--text2);display:inline-flex;align-items:center;gap:4px;padding:4px 8px;border-radius:var(--radius)}
 .btn-ghost:hover{background:var(--bg2)}
 .btn-danger{background:none;border:0.5px solid var(--red);padding:6px 12px;border-radius:var(--radius);cursor:pointer;font-size:13px;color:var(--red);display:inline-flex;align-items:center;gap:4px}
 .btn-danger:hover{background:var(--red-bg)}
 
-/* Accordion Section */
-.section{background:var(--bg);border:0.5px solid var(--border);border-radius:var(--radius-lg);margin-bottom:1rem;overflow:hidden;box-shadow:var(--shadow)}
-.section-header{display:flex;align-items:center;justify-content:space-between;padding:1rem 1.25rem;cursor:pointer;user-select:none;transition:background 0.15s}
+/* Accordion */
+.section{background:var(--bg);border:0.5px solid var(--border);border-radius:var(--radius-lg);margin-bottom:.75rem;overflow:hidden;box-shadow:var(--shadow)}
+.section-header{display:flex;align-items:center;justify-content:space-between;padding:.875rem 1.25rem;cursor:pointer;user-select:none}
 .section-header:hover{background:var(--bg2)}
 .section-header-left{display:flex;align-items:center;gap:10px}
 .section-title{font-size:14px;font-weight:500}
@@ -49,47 +56,44 @@ input,select,textarea,button{font-family:'Inter',sans-serif}
 .section-chevron{font-size:16px;color:var(--text3);transition:transform 0.2s}
 .section-chevron.open{transform:rotate(180deg)}
 .section-body{padding:0 1.25rem;max-height:0;overflow:hidden;transition:max-height 0.3s ease,padding 0.2s}
-.section-body.open{max-height:2000px;padding:0 1.25rem 1.25rem}
+.section-body.open{max-height:3000px;padding:0 1.25rem 1.25rem}
 
-/* Prompt box */
-.prompt-box{background:var(--amber-bg);border-radius:var(--radius);padding:1rem;margin-bottom:1rem}
-.prompt-box p{font-size:12px;color:var(--amber-text);line-height:1.7;margin-bottom:8px}
-.prompt-text{background:var(--bg);border-radius:var(--radius);padding:10px;font-size:12px;font-family:monospace;line-height:1.8;color:var(--text);white-space:pre-wrap;border:0.5px solid var(--border2)}
-
-/* Input form */
+/* Forms */
 .form-row{display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap}
 .form-field{display:flex;flex-direction:column;gap:4px;flex:1;min-width:140px}
-.form-field label{font-size:11px;color:var(--text3);font-weight:500;text-transform:uppercase;letter-spacing:0.3px}
-.plain-input{width:100%;font-size:13px;padding:7px 10px;border:0.5px solid var(--border2);border-radius:var(--radius);background:var(--bg);color:var(--text);outline:none;transition:border-color 0.15s}
+.field-label{font-size:11px;color:var(--text3);font-weight:500;text-transform:uppercase;letter-spacing:0.3px}
+.plain-input{width:100%;font-size:13px;padding:7px 10px;border:0.5px solid var(--border2);border-radius:var(--radius);background:var(--bg);color:var(--text);outline:none}
 .plain-input:focus{border-color:var(--blue)}
-.paste-area{width:100%;font-size:13px;padding:10px;border:0.5px solid var(--border2);border-radius:var(--radius);background:var(--bg);color:var(--text);resize:vertical;min-height:140px;line-height:1.7;outline:none;transition:border-color 0.15s}
+.paste-area{width:100%;font-size:13px;padding:10px;border:0.5px solid var(--border2);border-radius:var(--radius);background:var(--bg);color:var(--text);resize:vertical;min-height:140px;line-height:1.7;outline:none}
 .paste-area:focus{border-color:var(--blue)}
 
 /* Context tags */
-.context-wrap{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
-.ctx-tag{display:inline-flex;align-items:center;gap:4px;font-size:12px;padding:4px 10px;border-radius:20px;border:0.5px solid var(--border2);background:var(--bg2);color:var(--text2);cursor:pointer;transition:all 0.15s;user-select:none}
+.ctx-wrap{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.ctx-tag{display:inline-flex;align-items:center;gap:4px;font-size:12px;padding:4px 10px;border-radius:20px;border:0.5px solid var(--border2);background:var(--bg2);color:var(--text2);cursor:pointer;user-select:none;transition:all 0.15s}
 .ctx-tag:hover{border-color:var(--blue);color:var(--blue)}
 .ctx-tag.active{background:var(--blue);color:#fff;border-color:var(--blue)}
-.ctx-tag-add{display:inline-flex;align-items:center;gap:4px;font-size:12px;padding:4px 10px;border-radius:20px;border:0.5px dashed var(--border2);background:transparent;color:var(--text3);cursor:pointer;transition:all 0.15s}
+.ctx-tag-add{display:inline-flex;align-items:center;gap:4px;font-size:12px;padding:4px 10px;border-radius:20px;border:0.5px dashed var(--border2);color:var(--text3);cursor:pointer}
 .ctx-tag-add:hover{border-color:var(--blue);color:var(--blue)}
 .ctx-add-input{font-size:12px;padding:4px 8px;border:0.5px solid var(--blue);border-radius:20px;outline:none;width:100px;background:var(--bg)}
 
-/* Importance selector */
-.imp-wrap{display:flex;gap:6px}
-.imp-btn{display:inline-flex;align-items:center;gap:5px;font-size:12px;padding:5px 12px;border-radius:20px;border:0.5px solid var(--border2);background:var(--bg2);color:var(--text2);cursor:pointer;transition:all 0.15s;user-select:none}
-.imp-btn:hover{border-color:var(--border2);background:var(--bg3)}
+/* Importance */
+.imp-wrap{display:flex;gap:6px;flex-wrap:wrap}
+.imp-btn{display:inline-flex;align-items:center;gap:5px;font-size:12px;padding:5px 12px;border-radius:20px;border:0.5px solid var(--border2);background:var(--bg2);color:var(--text2);cursor:pointer;user-select:none;transition:all 0.15s}
 .imp-btn.active-red{background:var(--red-bg);color:var(--red);border-color:var(--red)}
 .imp-btn.active-amber{background:var(--amber-bg);color:var(--amber-text);border-color:var(--amber)}
 .imp-btn.active-gray{background:var(--bg2);color:var(--text2);border-color:var(--border2)}
-.imp-dot{width:8px;height:8px;border-radius:50%}
-.imp-dot.red{background:var(--red)}
-.imp-dot.amber{background:var(--amber)}
-.imp-dot.gray{background:var(--text3)}
+.imp-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.imp-dot.red{background:var(--red)}.imp-dot.amber{background:var(--amber)}.imp-dot.gray{background:var(--text3)}
 
 /* Parse preview */
 .parse-preview{background:var(--bg2);border-radius:var(--radius);padding:10px 12px;margin-top:8px;font-size:12px;display:none}
 .parse-preview.show{display:block}
 .parse-row{display:flex;gap:6px;align-items:center;margin-bottom:2px}
+
+/* Prompt box */
+.prompt-box{background:var(--amber-bg);border-radius:var(--radius);padding:1rem;margin-bottom:.5rem}
+.prompt-box p{font-size:12px;color:var(--amber-text);line-height:1.7;margin-bottom:8px}
+.prompt-text{background:var(--bg);border-radius:var(--radius);padding:10px;font-size:12px;font-family:monospace;line-height:1.8;color:var(--text);white-space:pre-wrap;border:0.5px solid var(--border2)}
 
 /* Top bar */
 .top-bar{display:flex;gap:8px;margin-bottom:1.25rem;flex-wrap:wrap;align-items:center}
@@ -97,14 +101,14 @@ input,select,textarea,button{font-family:'Inter',sans-serif}
 .search-wrap i{position:absolute;left:10px;top:50%;transform:translateY(-50%);font-size:15px;color:var(--text3);pointer-events:none}
 #search-input{width:100%;padding:8px 10px 8px 32px;font-size:13px;border:0.5px solid var(--border2);border-radius:var(--radius);background:var(--bg);color:var(--text);outline:none}
 #search-input:focus{border-color:var(--blue)}
-.filter-tags{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
-.filter-tag{font-size:12px;padding:4px 10px;border-radius:20px;border:0.5px solid var(--border2);background:var(--bg);color:var(--text2);cursor:pointer;transition:all 0.15s;white-space:nowrap}
+.filter-tags{display:flex;gap:5px;flex-wrap:wrap;align-items:center}
+.filter-tag{font-size:12px;padding:4px 10px;border-radius:20px;border:0.5px solid var(--border2);background:var(--bg);color:var(--text2);cursor:pointer;white-space:nowrap;transition:all 0.15s}
 .filter-tag.active{background:var(--blue);color:#fff;border-color:var(--blue)}
 .filter-imp{display:flex;gap:4px}
-.filter-imp-btn{width:28px;height:28px;border-radius:50%;border:0.5px solid var(--border2);background:var(--bg);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.15s}
-.filter-imp-btn.active-red{background:var(--red-bg);border-color:var(--red)}
-.filter-imp-btn.active-amber{background:var(--amber-bg);border-color:var(--amber)}
-.filter-imp-btn.active-gray{background:var(--bg2);border-color:var(--border2)}
+.fimp-btn{width:26px;height:26px;border-radius:50%;border:0.5px solid var(--border2);background:var(--bg);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.15s}
+.fimp-btn.active-red{background:var(--red-bg);border-color:var(--red)}
+.fimp-btn.active-amber{background:var(--amber-bg);border-color:var(--amber)}
+.fimp-btn.active-gray{background:var(--bg2);border-color:var(--border2)}
 
 /* Cards */
 .cards-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1rem}
@@ -112,66 +116,81 @@ input,select,textarea,button{font-family:'Inter',sans-serif}
 .card:hover{border-color:var(--border2);box-shadow:0 4px 12px rgba(0,0,0,0.08);transform:translateY(-1px)}
 .card.imp-red{border-left:3px solid var(--red)}
 .card.imp-amber{border-left:3px solid var(--amber)}
+.card.is-draft{border-style:dashed;border-color:var(--amber)}
+.draft-badge{display:inline-flex;align-items:center;gap:3px;font-size:10px;background:var(--amber-bg);color:var(--amber-text);padding:2px 7px;border-radius:20px;font-weight:500;margin-bottom:6px}
 .review-badge{position:absolute;top:10px;right:10px;font-size:10px;background:var(--amber-bg);color:var(--amber-text);padding:2px 7px;border-radius:20px;font-weight:500}
-.card-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:8px;gap:8px}
+.card-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:6px;gap:8px}
 .card-title{font-size:14px;font-weight:500;line-height:1.4;flex:1}
 .card-actions{display:flex;gap:2px;flex-shrink:0}
 .icon-btn{font-size:15px;cursor:pointer;color:var(--text3);background:none;border:none;padding:3px;line-height:1;border-radius:var(--radius)}
 .icon-btn:hover{color:var(--text);background:var(--bg2)}
 .icon-btn.starred{color:#EF9F27}
-.ctx-chips{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:6px}
+.ctx-chips{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:5px}
 .ctx-chip{font-size:11px;padding:2px 7px;border-radius:20px;background:var(--bg2);color:var(--text2);border:0.5px solid var(--border)}
 .case-chip{font-size:11px;padding:2px 7px;border-radius:20px;background:var(--purple-bg);color:var(--purple-text);font-family:monospace}
-.card-preview{font-size:12px;color:var(--text2);margin-top:4px;line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-.kw-chips{display:flex;flex-wrap:wrap;gap:3px;margin-top:6px}
+.card-preview{font-size:12px;color:var(--text2);line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.kw-chips{display:flex;flex-wrap:wrap;gap:3px;margin-top:5px}
 .kw-chip{font-size:10px;padding:1px 6px;border-radius:var(--radius);background:var(--bg2);color:var(--text3);border:0.5px solid var(--border)}
-.card-footer{font-size:11px;color:var(--text3);margin-top:8px;display:flex;align-items:center;justify-content:space-between}
+.card-footer{font-size:11px;color:var(--text3);margin-top:7px;display:flex;align-items:center;justify-content:space-between}
+.view-count{display:inline-flex;align-items:center;gap:3px;font-size:10px;color:var(--text3)}
 
 /* Modal */
 .modal-bg{position:fixed;inset:0;background:rgba(0,0,0,0.35);z-index:100;display:flex;align-items:flex-start;justify-content:center;padding:2rem 1rem;overflow-y:auto;backdrop-filter:blur(2px)}
 .modal{background:var(--bg);border-radius:var(--radius-lg);width:100%;max-width:740px;padding:1.5rem;position:relative;box-shadow:0 20px 60px rgba(0,0,0,0.15)}
 .modal-close{position:absolute;top:1rem;right:1rem;background:none;border:none;font-size:20px;cursor:pointer;color:var(--text3);width:28px;height:28px;display:flex;align-items:center;justify-content:center;border-radius:var(--radius)}
-.modal-close:hover{background:var(--bg2);color:var(--text)}
+.modal-close:hover{background:var(--bg2)}
 .modal h2{font-size:17px;font-weight:600;margin-bottom:8px;padding-right:2rem;line-height:1.3}
 .dim-tabs{display:flex;gap:4px;flex-wrap:wrap;margin:1rem 0 .75rem}
 .dim-tab{font-size:12px;padding:4px 10px;border-radius:20px;border:0.5px solid var(--border2);background:var(--bg2);color:var(--text2);cursor:pointer;transition:all 0.15s}
 .dim-tab.active{background:var(--blue);color:#fff;border-color:var(--blue)}
 .dim-content{background:var(--bg2);border-radius:var(--radius);padding:1rem;min-height:110px;font-size:13px;line-height:1.9}
+.dim-content strong{font-weight:600}
+.dim-content mark{background:#FFF176;padding:0 2px;border-radius:2px}
 .source-badge{display:inline-block;font-size:10px;padding:1px 6px;border-radius:var(--radius);margin-left:3px;font-weight:500}
 .badge-orig{background:var(--green-bg);color:var(--green-text)}
 .badge-ai{background:var(--blue-bg);color:var(--blue-text)}
-.notes-area{width:100%;font-size:13px;padding:10px;border:0.5px solid var(--border2);border-radius:var(--radius);background:var(--bg);color:var(--text);resize:vertical;min-height:80px;outline:none;margin-top:6px}
+
+/* Notes with formatting */
+.notes-toolbar{display:flex;gap:4px;margin-bottom:4px;margin-top:6px}
+.notes-tool-btn{background:none;border:0.5px solid var(--border2);padding:3px 8px;border-radius:var(--radius);cursor:pointer;font-size:12px;color:var(--text2)}
+.notes-tool-btn:hover{background:var(--bg2)}
+.notes-area{width:100%;font-size:13px;padding:10px;border:0.5px solid var(--border2);border-radius:var(--radius);background:var(--bg);color:var(--text);resize:vertical;min-height:80px;outline:none;line-height:1.7}
 .notes-area:focus{border-color:var(--blue)}
-.edit-field{width:100%;font-size:13px;padding:8px 10px;border:0.5px solid var(--border2);border-radius:var(--radius);background:var(--bg);color:var(--text);resize:vertical;min-height:70px;margin-bottom:6px;outline:none}
-.edit-field:focus{border-color:var(--blue)}
-.link-picker{background:var(--bg2);border-radius:var(--radius);padding:.75rem;max-height:160px;overflow-y:auto;margin-top:4px}
-.link-item{display:flex;align-items:center;gap:8px;padding:4px 0;font-size:13px;cursor:pointer}
+.notes-preview{background:var(--bg2);border-radius:var(--radius);padding:10px;font-size:13px;line-height:1.9;min-height:40px;display:none}
+.notes-preview strong{font-weight:600}
+.notes-preview mark{background:#FFF176;padding:0 2px;border-radius:2px}
+
+/* Draft expand */
+.draft-content{font-size:13px;color:var(--text2);padding:8px 0;line-height:1.7;white-space:pre-wrap}
 
 /* Settings */
-.settings-inner{padding-bottom:1.25rem}
 .pw-wrap{position:relative;display:flex;align-items:center}
 .pw-wrap input{width:100%;font-size:13px;padding:7px 36px 7px 10px;border:0.5px solid var(--border2);border-radius:var(--radius);background:var(--bg);color:var(--text);outline:none}
 .pw-toggle{position:absolute;right:8px;background:none;border:none;cursor:pointer;font-size:16px;color:var(--text3);padding:0}
 
 /* Review banner */
-.review-banner{background:var(--amber-bg);border:0.5px solid var(--amber);border-radius:var(--radius);padding:.75rem 1rem;margin-bottom:1rem;display:flex;align-items:center;gap:10px}
+.review-banner{background:var(--amber-bg);border:0.5px solid var(--amber);border-radius:var(--radius);padding:.75rem 1rem;margin-bottom:.75rem;display:flex;align-items:center;gap:10px}
 .review-banner p{font-size:13px;color:var(--amber-text);flex:1}
 
 /* Conn */
-.conn-dot{width:7px;height:7px;border-radius:50%;display:inline-block;margin-right:5px}
-.conn-dot.ok{background:#22c55e}
-.conn-dot.err{background:var(--red)}
+.conn-dot{width:7px;height:7px;border-radius:50%;display:inline-block;margin-right:4px}
+.conn-dot.ok{background:#22c55e}.conn-dot.err{background:var(--red)}
 
 /* Export */
 .export-wrap{position:relative}
-.export-menu{position:absolute;right:0;top:calc(100% + 4px);background:var(--bg);border:0.5px solid var(--border2);border-radius:var(--radius);z-index:10;min-width:210px;overflow:hidden;box-shadow:0 4px 16px rgba(0,0,0,0.1)}
+.export-menu{position:absolute;right:0;top:calc(100%+4px);background:var(--bg);border:0.5px solid var(--border2);border-radius:var(--radius);z-index:10;min-width:200px;overflow:hidden;box-shadow:0 4px 16px rgba(0,0,0,0.1)}
 .export-menu button{display:block;width:100%;text-align:left;padding:9px 14px;font-size:13px;background:none;border:none;cursor:pointer;color:var(--text)}
 .export-menu button:hover{background:var(--bg2)}
 
 /* Empty */
 .empty-state{text-align:center;padding:4rem 1rem;color:var(--text3)}
 .empty-state i{font-size:36px;display:block;margin-bottom:10px}
-.empty-state p{font-size:14px}
+
+/* Edit field */
+.edit-field{width:100%;font-size:13px;padding:8px 10px;border:0.5px solid var(--border2);border-radius:var(--radius);background:var(--bg);color:var(--text);resize:vertical;min-height:70px;margin-bottom:6px;outline:none}
+.edit-field:focus{border-color:var(--blue)}
+.link-picker{background:var(--bg2);border-radius:var(--radius);padding:.75rem;max-height:160px;overflow-y:auto;margin-top:4px}
+.link-item{display:flex;align-items:center;gap:8px;padding:4px 0;font-size:13px;cursor:pointer}
 </style>
 </head>
 <body>
@@ -181,10 +200,10 @@ input,select,textarea,button{font-family:'Inter',sans-serif}
   <div class="header">
     <div>
       <h1><i class="ti ti-stethoscope" style="margin-right:6px;color:var(--blue)"></i>臨床知識看板</h1>
-      <p>貼上 · 解析 · 隨時查閱</p>
+      <p>快速記錄 · 智慧複習 · 雲端同步</p>
     </div>
     <div style="display:flex;gap:8px;align-items:center">
-      <span style="font-size:12px;color:var(--text2);cursor:pointer" onclick="toggleSection('settings-sec')" id="conn-label">
+      <span style="font-size:12px;color:var(--text2);cursor:pointer" onclick="toggleSection('settings-sec')">
         <span class="conn-dot err" id="conn-dot"></span><span id="conn-text">離線模式</span>
       </span>
       <div class="export-wrap">
@@ -199,13 +218,20 @@ input,select,textarea,button{font-family:'Inter',sans-serif}
     </div>
   </div>
 
+  <!-- Quick record -->
+  <div class="quick-bar">
+    <i class="ti ti-pencil" style="font-size:16px;color:var(--text3);flex-shrink:0"></i>
+    <input class="quick-input" id="quick-input" placeholder="快速記錄臨床觀察…（Enter 儲存）" onkeydown="if(event.key==='Enter')quickSave()" />
+    <button class="quick-btn" onclick="quickSave()">記錄</button>
+  </div>
+
   <!-- Review banner -->
   <div id="review-banner" class="review-banner" style="display:none">
     <i class="ti ti-bell" style="font-size:18px;color:var(--amber)"></i>
     <p id="review-text"></p>
   </div>
 
-  <!-- Settings section -->
+  <!-- Settings -->
   <div class="section" id="settings-sec">
     <div class="section-header" onclick="toggleSection('settings-sec')">
       <div class="section-header-left">
@@ -215,16 +241,16 @@ input,select,textarea,button{font-family:'Inter',sans-serif}
       <i class="ti ti-chevron-down section-chevron" id="settings-sec-chevron"></i>
     </div>
     <div class="section-body" id="settings-sec-body">
-      <div class="settings-inner">
+      <div style="padding-bottom:1rem">
         <div class="form-row" style="margin-bottom:8px">
           <div class="form-field">
-            <label>Supabase URL</label>
+            <label class="field-label">Supabase URL</label>
             <input class="plain-input" type="text" id="sb-url" placeholder="https://xxxxxx.supabase.co" />
           </div>
         </div>
         <div class="form-row" style="margin-bottom:12px">
           <div class="form-field">
-            <label>Anon Public Key</label>
+            <label class="field-label">Anon Public Key</label>
             <div class="pw-wrap">
               <input type="text" id="sb-key" placeholder="eyJhbGci..." oninput="showKeyHint()" />
               <button class="pw-toggle" onclick="toggleVis('sb-key')"><i class="ti ti-eye"></i></button>
@@ -237,7 +263,7 @@ input,select,textarea,button{font-family:'Inter',sans-serif}
     </div>
   </div>
 
-  <!-- Prompt section -->
+  <!-- Prompt -->
   <div class="section" id="prompt-sec">
     <div class="section-header" onclick="toggleSection('prompt-sec')">
       <div class="section-header-left">
@@ -252,7 +278,7 @@ input,select,textarea,button{font-family:'Inter',sans-serif}
     <div class="section-body" id="prompt-sec-body">
       <div class="prompt-box">
         <p>選擇情境，複製 Prompt 貼到 Claude / ChatGPT，再把回覆貼到下方新增區。</p>
-        <div style="display:flex;gap:6px;margin-bottom:10px">
+        <div style="display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap">
           <button class="imp-btn active-amber" id="ptab-basic" onclick="switchPromptTab('basic')" style="font-size:12px">📝 備忘錄整理</button>
           <button class="imp-btn" id="ptab-merge" onclick="switchPromptTab('merge')" style="font-size:12px">🔗 融合版（備忘錄＋OpenEvidence）</button>
         </div>
@@ -291,104 +317,106 @@ input,select,textarea,button{font-family:'Inter',sans-serif}
     </div>
   </div>
 
-  <!-- New card section -->
+  <!-- New card -->
   <div class="section" id="new-sec">
     <div class="section-header" onclick="toggleSection('new-sec')">
       <div class="section-header-left">
         <i class="ti ti-plus" style="color:var(--blue)"></i>
         <div>
-          <div class="section-title">新增卡片</div>
-          <div class="section-subtitle">貼上 AI 整理好的內容</div>
+          <div class="section-title">新增完整卡片</div>
+          <div class="section-subtitle">貼上 AI 整理好的七維度內容</div>
         </div>
       </div>
       <i class="ti ti-chevron-down section-chevron" id="new-sec-chevron"></i>
     </div>
     <div class="section-body" id="new-sec-body">
-      <!-- Title + case -->
       <div class="form-row">
         <div class="form-field" style="flex:2">
-          <label>標題</label>
+          <label class="field-label">標題</label>
           <input class="plain-input" type="text" id="card-title" placeholder="如：Septic Shock 處置流程" />
         </div>
         <div class="form-field" style="flex:1">
-          <label>病例號（選填）</label>
+          <label class="field-label">病例號（選填）</label>
           <input class="plain-input" type="text" id="case-number" placeholder="如：E20240612" />
         </div>
       </div>
-
-      <!-- Context tags -->
       <div style="margin-bottom:12px">
-        <div style="font-size:11px;color:var(--text3);font-weight:500;text-transform:uppercase;letter-spacing:0.3px;margin-bottom:6px">情境標籤（可多選）</div>
-        <div class="context-wrap" id="ctx-select-wrap">
-          <!-- rendered by JS -->
-        </div>
+        <div class="field-label" style="margin-bottom:6px">情境標籤（可多選）</div>
+        <div class="ctx-wrap" id="ctx-select-wrap"></div>
       </div>
-
-      <!-- Importance -->
       <div style="margin-bottom:14px">
-        <div style="font-size:11px;color:var(--text3);font-weight:500;text-transform:uppercase;letter-spacing:0.3px;margin-bottom:6px">重要程度</div>
+        <div class="field-label" style="margin-bottom:6px">重要程度</div>
         <div class="imp-wrap" id="imp-select">
-          <button class="imp-btn active-red" onclick="setImp('red')" id="imp-red">
-            <span class="imp-dot red"></span>不能忘
-          </button>
-          <button class="imp-btn" onclick="setImp('amber')" id="imp-amber">
-            <span class="imp-dot amber"></span>要記得
-          </button>
-          <button class="imp-btn" onclick="setImp('gray')" id="imp-gray">
-            <span class="imp-dot gray"></span>參考用
-          </button>
+          <button class="imp-btn active-red" onclick="setImp('red')" id="imp-red"><span class="imp-dot red"></span>🔴 不能忘</button>
+          <button class="imp-btn" onclick="setImp('amber')" id="imp-amber"><span class="imp-dot amber"></span>🟡 要記得</button>
+          <button class="imp-btn" onclick="setImp('gray')" id="imp-gray"><span class="imp-dot gray"></span>⚪ 參考用</button>
         </div>
       </div>
-
-      <!-- Paste area -->
-      <div style="font-size:11px;color:var(--text3);font-weight:500;text-transform:uppercase;letter-spacing:0.3px;margin-bottom:6px">內容</div>
+      <div class="field-label" style="margin-bottom:6px">內容</div>
       <textarea class="paste-area" id="paste-input" placeholder="【診斷】&#10;- ...&#10;&#10;【處置】&#10;- ...&#10;&#10;（貼上 AI 整理好的七維度內容）" oninput="parsePreview()"></textarea>
       <div class="parse-preview" id="parse-preview"></div>
-
       <div style="display:flex;justify-content:flex-end;margin-top:12px">
         <button class="btn-primary" onclick="saveCard()"><i class="ti ti-device-floppy"></i> 儲存卡片</button>
       </div>
     </div>
   </div>
 
-  <!-- Filter bar -->
+  <!-- Filter -->
   <div class="top-bar">
     <div class="search-wrap">
       <i class="ti ti-search"></i>
       <input id="search-input" placeholder="搜尋關鍵字、病例號、概念…" oninput="renderCards()" />
     </div>
-    <div class="filter-tags" id="filter-ctx-wrap">
-      <!-- rendered by JS -->
-    </div>
+    <div class="filter-tags" id="filter-ctx-wrap"></div>
     <div class="filter-imp">
-      <button class="filter-imp-btn" id="fimp-red" onclick="toggleFilterImp('red')" title="不能忘"><span class="imp-dot red"></span></button>
-      <button class="filter-imp-btn" id="fimp-amber" onclick="toggleFilterImp('amber')" title="要記得"><span class="imp-dot amber"></span></button>
-      <button class="filter-imp-btn" id="fimp-gray" onclick="toggleFilterImp('gray')" title="參考用"><span class="imp-dot gray"></span></button>
+      <button class="fimp-btn" id="fimp-red" onclick="toggleFilterImp('red')" title="不能忘"><span class="imp-dot red"></span></button>
+      <button class="fimp-btn" id="fimp-amber" onclick="toggleFilterImp('amber')" title="要記得"><span class="imp-dot amber"></span></button>
+      <button class="fimp-btn" id="fimp-gray" onclick="toggleFilterImp('gray')" title="參考用"><span class="imp-dot gray"></span></button>
     </div>
     <span id="card-count" style="font-size:12px;color:var(--text3);white-space:nowrap"></span>
   </div>
 
   <div id="cards-grid" class="cards-grid"></div>
   <div id="empty-state" class="empty-state" style="display:none">
-    <i class="ti ti-notes"></i>
-    <p>尚無臨床卡片</p>
+    <i class="ti ti-notes"></i><p>尚無臨床卡片</p>
   </div>
 </div>
 
-<!-- 檢視 Modal -->
+<!-- View Modal -->
 <div id="view-bg" class="modal-bg" style="display:none" onclick="if(event.target===this)closeView()">
   <div class="modal">
     <button class="modal-close" onclick="closeView()"><i class="ti ti-x"></i></button>
     <h2 id="vm-title"></h2>
     <div id="vm-meta" style="margin-bottom:8px;display:flex;flex-wrap:wrap;gap:4px;align-items:center"></div>
     <div id="vm-links" style="margin-bottom:4px"></div>
-    <div id="vm-keywords" style="margin-bottom:4px"></div>
-    <div class="dim-tabs" id="vm-dims"></div>
-    <div class="dim-content" id="vm-content"></div>
-    <div style="margin-top:1rem">
-      <p style="font-size:12px;font-weight:500;color:var(--text2)"><i class="ti ti-notes"></i> 我的臨床心得</p>
-      <textarea class="notes-area" id="vm-notes" placeholder="記下臨床觀察、記憶法、值班心得…" oninput="autoSaveNotes()"></textarea>
+    <div id="vm-kw" style="margin-bottom:4px"></div>
+
+    <!-- Draft expand area -->
+    <div id="vm-draft-area" style="display:none">
+      <div class="draft-content" id="vm-draft-content"></div>
+      <div style="margin-top:10px;display:flex;gap:8px">
+        <button class="btn-primary" onclick="expandDraft()"><i class="ti ti-sparkles"></i> 整理成完整卡片</button>
+      </div>
     </div>
+
+    <!-- Full card area -->
+    <div id="vm-full-area">
+      <div class="dim-tabs" id="vm-dims"></div>
+      <div class="dim-content" id="vm-content"></div>
+    </div>
+
+    <div style="margin-top:1rem" id="vm-notes-area">
+      <p style="font-size:12px;font-weight:500;color:var(--text2)"><i class="ti ti-notes"></i> 我的臨床心得</p>
+      <div class="notes-toolbar">
+        <button class="notes-tool-btn" onclick="insertFormat('**','**')" title="粗體"><b>B</b></button>
+        <button class="notes-tool-btn" onclick="insertFormat('==','==')" title="螢光">🟡</button>
+        <button class="notes-tool-btn" onclick="insertFormat('*','*')" title="斜體"><i>I</i></button>
+        <button class="notes-tool-btn" onclick="toggleNotesPreview()" id="preview-btn" style="margin-left:auto">預覽</button>
+      </div>
+      <textarea class="notes-area" id="vm-notes" placeholder="支援 **粗體**、==螢光==、*斜體*…" oninput="autoSaveNotes()"></textarea>
+      <div class="notes-preview" id="notes-preview"></div>
+    </div>
+
     <div style="margin-top:1rem;display:flex;gap:8px;flex-wrap:wrap">
       <button class="btn-outline" onclick="openEdit()"><i class="ti ti-edit"></i> 編輯</button>
       <button class="btn-outline" onclick="copyCard()"><i class="ti ti-copy"></i> 複製</button>
@@ -398,34 +426,34 @@ input,select,textarea,button{font-family:'Inter',sans-serif}
   </div>
 </div>
 
-<!-- 編輯 Modal -->
+<!-- Edit Modal -->
 <div id="edit-bg" class="modal-bg" style="display:none" onclick="if(event.target===this)closeEdit()">
   <div class="modal">
     <button class="modal-close" onclick="closeEdit()"><i class="ti ti-x"></i></button>
     <h2 style="margin-bottom:1rem">編輯卡片</h2>
     <div class="form-row">
       <div class="form-field" style="flex:2">
-        <label>標題</label>
+        <label class="field-label">標題</label>
         <input type="text" id="edit-title" class="plain-input" />
       </div>
       <div class="form-field" style="flex:1">
-        <label>病例號</label>
+        <label class="field-label">病例號</label>
         <input type="text" id="edit-case" class="plain-input" placeholder="選填" />
       </div>
     </div>
     <div style="margin-bottom:12px">
-      <div style="font-size:11px;color:var(--text3);font-weight:500;text-transform:uppercase;letter-spacing:0.3px;margin-bottom:6px">情境標籤</div>
-      <div class="context-wrap" id="ctx-edit-wrap"></div>
+      <div class="field-label" style="margin-bottom:6px">情境標籤</div>
+      <div class="ctx-wrap" id="ctx-edit-wrap"></div>
     </div>
     <div style="margin-bottom:14px">
-      <div style="font-size:11px;color:var(--text3);font-weight:500;text-transform:uppercase;letter-spacing:0.3px;margin-bottom:6px">重要程度</div>
-      <div class="imp-wrap" id="imp-edit">
-        <button class="imp-btn" onclick="setEditImp('red')" id="eimp-red"><span class="imp-dot red"></span>不能忘</button>
-        <button class="imp-btn" onclick="setEditImp('amber')" id="eimp-amber"><span class="imp-dot amber"></span>要記得</button>
-        <button class="imp-btn" onclick="setEditImp('gray')" id="eimp-gray"><span class="imp-dot gray"></span>參考用</button>
+      <div class="field-label" style="margin-bottom:6px">重要程度</div>
+      <div class="imp-wrap">
+        <button class="imp-btn" onclick="setEditImp('red')" id="eimp-red"><span class="imp-dot red"></span>🔴 不能忘</button>
+        <button class="imp-btn" onclick="setEditImp('amber')" id="eimp-amber"><span class="imp-dot amber"></span>🟡 要記得</button>
+        <button class="imp-btn" onclick="setEditImp('gray')" id="eimp-gray"><span class="imp-dot gray"></span>⚪ 參考用</button>
       </div>
     </div>
-    <label style="font-size:11px;color:var(--text3);font-weight:500;text-transform:uppercase;letter-spacing:0.3px">連結其他卡片</label>
+    <div class="field-label" style="margin-bottom:4px">連結其他卡片</div>
     <div class="link-picker" id="link-picker"></div>
     <div id="edit-fields" style="margin-top:12px"></div>
     <div style="display:flex;gap:8px;margin-top:12px">
@@ -438,18 +466,16 @@ input,select,textarea,button{font-family:'Inter',sans-serif}
 <script>
 const DIMS=['診斷','處置','Work-up','臨床價值','核心知識點','臨床應用要點與記憶法','必考知識延伸'];
 const KEYS=['diagnosis','management','workup','pearl','keypoints','clinical_app','must_know'];
-const IMP_MAP={red:0,amber:1,gray:2};
 const IMP_LABEL={red:'🔴 不能忘',amber:'🟡 要記得',gray:'⚪ 參考用'};
+const REVIEW_DAYS=14; // 超過14天未查閱自動提醒
 
 let cards=[],currentCard=null,currentDim=0,notesTimer=null;
 let SB_URL='',SB_KEY='';
-let selectedImp='red';
-let editImp='red';
-let filterImps=new Set();
-let filterCtxs=new Set();
-let selectedCtxs=new Set();
-let editCtxs=new Set();
+let selectedImp='red',editImp='red';
+let filterImps=new Set(),filterCtxs=new Set();
+let selectedCtxs=new Set(),editCtxs=new Set();
 let contexts=['🏥 急診','🌙 值班','🔪 外科','💊 內科','👶 小兒','📚 自學'];
+let showNotesPreview=false;
 
 const cfg=k=>localStorage.getItem(k)||'';
 const setCfg=(k,v)=>localStorage.setItem(k,v);
@@ -457,19 +483,83 @@ const setCfg=(k,v)=>localStorage.setItem(k,v);
 // Accordion
 function toggleSection(id){
   const body=document.getElementById(id+'-body');
-  const chevron=document.getElementById(id+'-chevron');
-  const isOpen=body.classList.contains('open');
-  body.classList.toggle('open',!isOpen);
-  chevron.classList.toggle('open',!isOpen);
+  const chev=document.getElementById(id+'-chevron');
+  const open=body.classList.contains('open');
+  body.classList.toggle('open',!open);
+  chev.classList.toggle('open',!open);
+}
+
+// Quick save
+function quickSave(){
+  const inp=document.getElementById('quick-input');
+  const text=inp.value.trim();
+  if(!text)return;
+  const card={
+    id:'local_'+Date.now(),
+    title:text.slice(0,60)+(text.length>60?'…':''),
+    is_draft:true,
+    draft_content:text,
+    importance:'gray',contexts:[],
+    case_number:'',
+    diagnosis:'',management:'',workup:'',pearl:'',
+    keypoints:'',clinical_app:'',must_know:'',
+    auto_keywords:'',notes:'',linked_cards:[],
+    review_due:null,starred:false,
+    view_count:0,last_viewed:null,
+    created_at:new Date().toISOString()
+  };
+  cards.unshift(card);
+  dbSaveCard(card);
+  renderCards();
+  inp.value='';
+}
+
+// Smart review check
+function checkSmartReview(){
+  const now=new Date();
+  const cutoff=new Date(now-REVIEW_DAYS*24*60*60*1000);
+  const needReview=cards.filter(c=>{
+    if(c.is_draft)return false;
+    if(c.review_due&&new Date(c.review_due)<=now)return true;
+    if(!c.last_viewed)return (new Date(c.created_at)<cutoff);
+    return new Date(c.last_viewed)<cutoff;
+  });
+  const b=document.getElementById('review-banner');
+  if(needReview.length){
+    b.style.display='flex';
+    document.getElementById('review-text').textContent=`${needReview.length} 張卡片超過 ${REVIEW_DAYS} 天未複習`;
+  } else b.style.display='none';
+}
+
+// Record view
+async function recordView(card){
+  card.view_count=(card.view_count||0)+1;
+  card.last_viewed=new Date().toISOString();
+  await dbSaveCard(card);
+}
+
+// Expand draft
+function expandDraft(){
+  if(!currentCard)return;
+  closeView();
+  // Pre-fill new card form
+  document.getElementById('card-title').value=currentCard.title;
+  document.getElementById('paste-input').value=currentCard.draft_content||'';
+  const body=document.getElementById('new-sec-body');
+  const chev=document.getElementById('new-sec-chevron');
+  body.classList.add('open');chev.classList.add('open');
+  body.scrollIntoView({behavior:'smooth',block:'start'});
+  // Mark draft to be replaced
+  window._replaceDraftId=currentCard.id;
 }
 
 // Keywords
 function extractKeywords(text){
   if(!text)return[];
-  const en=(text.match(/[A-Za-z]{3,}/g)||[]).filter(w=>w.length>=3);
+  const en=(text.match(/[A-Za-z]{3,}/g)||[]);
   const zh=(text.match(/[\u4e00-\u9fa5]{2,4}/g)||[]);
   const abbr=(text.match(/\b[A-Z]{2,6}\b/g)||[]);
-  const stop=new Set(['the','and','for','with','from','that','this','have','been','will','are','was','were','has','had','not','but','can','may','should','would','could','also','than','then','when','where','which','who','how','what','all','any','each','per','via']);
+  const stop=new Set(['the','and','for','with','from','that','this','have','been','will','are','was','were','has','had','not','but','can','may','should','would','could','also','per','via','its','are']);
   return [...new Set([...en.filter(w=>!stop.has(w.toLowerCase())),...abbr,...zh])].slice(0,20);
 }
 
@@ -507,80 +597,54 @@ function parsePreview(){
 function setImp(val){
   selectedImp=val;
   ['red','amber','gray'].forEach(v=>{
-    const btn=document.getElementById('imp-'+v);
-    btn.className='imp-btn'+(v===val?' active-'+v:'');
+    document.getElementById('imp-'+v).className='imp-btn'+(v===val?' active-'+v:'');
   });
 }
 function setEditImp(val){
   editImp=val;
   ['red','amber','gray'].forEach(v=>{
-    const btn=document.getElementById('eimp-'+v);
-    btn.className='imp-btn'+(v===val?' active-'+v:'');
+    document.getElementById('eimp-'+v).className='imp-btn'+(v===val?' active-'+v:'');
   });
 }
 
-// Context tags
+// Contexts
 function loadContexts(){const s=cfg('clinical_contexts');if(s)contexts=JSON.parse(s);}
 function saveContexts(){setCfg('clinical_contexts',JSON.stringify(contexts));}
 
 function renderCtxSelect(){
-  const wrap=document.getElementById('ctx-select-wrap');
-  wrap.innerHTML=contexts.map(c=>`
-    <span class="ctx-tag${selectedCtxs.has(c)?' active':''}" onclick="toggleCtxSelect('${c}')">${c}</span>
-  `).join('')+`<span class="ctx-tag-add" id="ctx-add-btn" onclick="showCtxAddInput()"><i class="ti ti-plus" style="font-size:11px"></i> 新增</span>`;
+  document.getElementById('ctx-select-wrap').innerHTML=
+    contexts.map(c=>`<span class="ctx-tag${selectedCtxs.has(c)?' active':''}" onclick="toggleCtxSelect('${c}')">${c}</span>`).join('')+
+    `<span class="ctx-tag-add" id="ctx-add-btn" onclick="showCtxAddInput()"><i class="ti ti-plus" style="font-size:11px"></i> 新增</span>`;
 }
-
 function renderCtxEdit(){
-  const wrap=document.getElementById('ctx-edit-wrap');
-  wrap.innerHTML=contexts.map(c=>`
-    <span class="ctx-tag${editCtxs.has(c)?' active':''}" onclick="toggleCtxEdit('${c}')">${c}</span>
-  `).join('');
+  document.getElementById('ctx-edit-wrap').innerHTML=
+    contexts.map(c=>`<span class="ctx-tag${editCtxs.has(c)?' active':''}" onclick="toggleCtxEdit('${c}')">${c}</span>`).join('');
 }
-
 function renderFilterCtx(){
-  const wrap=document.getElementById('filter-ctx-wrap');
-  wrap.innerHTML=contexts.map(c=>`
-    <span class="filter-tag${filterCtxs.has(c)?' active':''}" onclick="toggleFilterCtx('${c}')">${c}</span>
-  `).join('');
+  document.getElementById('filter-ctx-wrap').innerHTML=
+    contexts.map(c=>`<span class="filter-tag${filterCtxs.has(c)?' active':''}" onclick="toggleFilterCtx('${c}')">${c}</span>`).join('');
 }
-
-function toggleCtxSelect(c){
-  selectedCtxs.has(c)?selectedCtxs.delete(c):selectedCtxs.add(c);
-  renderCtxSelect();
-}
-function toggleCtxEdit(c){
-  editCtxs.has(c)?editCtxs.delete(c):editCtxs.add(c);
-  renderCtxEdit();
-}
-function toggleFilterCtx(c){
-  filterCtxs.has(c)?filterCtxs.delete(c):filterCtxs.add(c);
-  renderFilterCtx();renderCards();
-}
+function toggleCtxSelect(c){selectedCtxs.has(c)?selectedCtxs.delete(c):selectedCtxs.add(c);renderCtxSelect();}
+function toggleCtxEdit(c){editCtxs.has(c)?editCtxs.delete(c):editCtxs.add(c);renderCtxEdit();}
+function toggleFilterCtx(c){filterCtxs.has(c)?filterCtxs.delete(c):filterCtxs.add(c);renderFilterCtx();renderCards();}
 function toggleFilterImp(v){
   const btn=document.getElementById('fimp-'+v);
-  if(filterImps.has(v)){filterImps.delete(v);btn.className='filter-imp-btn';}
-  else{filterImps.add(v);btn.className='filter-imp-btn active-'+v;}
+  if(filterImps.has(v)){filterImps.delete(v);btn.className='fimp-btn';}
+  else{filterImps.add(v);btn.className='fimp-btn active-'+v;}
   renderCards();
 }
-
 function showCtxAddInput(){
   const btn=document.getElementById('ctx-add-btn');
   if(!btn)return;
-  btn.outerHTML=`<input class="ctx-add-input" id="ctx-new-input" placeholder="新標籤…" autofocus onblur="commitCtxAdd()" onkeydown="if(event.key==='Enter')commitCtxAdd();if(event.key==='Escape')renderCtxSelect()" />`;
+  btn.outerHTML=`<input class="ctx-add-input" id="ctx-new-input" placeholder="新標籤…" onblur="commitCtxAdd()" onkeydown="if(event.key==='Enter')commitCtxAdd();if(event.key==='Escape')renderCtxSelect()" />`;
   setTimeout(()=>document.getElementById('ctx-new-input')?.focus(),50);
 }
-
 function commitCtxAdd(){
   const inp=document.getElementById('ctx-new-input');
   if(!inp)return;
   const v=inp.value.trim();
-  if(v&&!contexts.includes(v)){
-    contexts.push(v);
-    saveContexts();
-    selectedCtxs.add(v);
-  }
-  renderCtxSelect();
-  renderFilterCtx();
+  if(v&&!contexts.includes(v)){contexts.push(v);saveContexts();selectedCtxs.add(v);}
+  renderCtxSelect();renderFilterCtx();
 }
 
 // Save card
@@ -588,7 +652,7 @@ function saveCard(){
   const title=document.getElementById('card-title').value.trim();
   const text=document.getElementById('paste-input').value.trim();
   const caseNum=document.getElementById('case-number').value.trim();
-  if(!title){alert('請填入標題！');document.getElementById('card-title').focus();return;}
+  if(!title){alert('請填入標題！');return;}
   if(!text){alert('請貼上內容！');return;}
   const parsed=parsePaste(text);
   const hasContent=KEYS.some(k=>parsed[k]&&parsed[k].length>0);
@@ -596,18 +660,24 @@ function saveCard(){
   const allText=title+' '+Object.values(parsed).join(' ');
   const card={
     id:'local_'+Date.now(),title,
-    importance:selectedImp,
-    contexts:[...selectedCtxs],
+    is_draft:false,draft_content:'',
+    importance:selectedImp,contexts:[...selectedCtxs],
     case_number:caseNum,
     diagnosis:parsed.diagnosis||'',management:parsed.management||'',
     workup:parsed.workup||'',pearl:parsed.pearl||'',
     keypoints:parsed.keypoints||'',clinical_app:parsed.clinical_app||'',
     must_know:parsed.must_know||'',
     auto_keywords:extractKeywords(allText).join(' '),
-    notes:'',linked_cards:[],review_due:null,
-    starred:false,
+    notes:'',linked_cards:[],review_due:null,starred:false,
+    view_count:0,last_viewed:null,
     created_at:new Date().toISOString()
   };
+  // Replace draft if expanding
+  if(window._replaceDraftId){
+    const idx=cards.findIndex(c=>String(c.id)===String(window._replaceDraftId));
+    if(idx!==-1){dbDeleteCard(cards[idx].id);cards.splice(idx,1);}
+    window._replaceDraftId=null;
+  }
   cards.unshift(card);
   dbSaveCard(card);
   renderCards();
@@ -615,13 +685,39 @@ function saveCard(){
   document.getElementById('card-title').value='';
   document.getElementById('case-number').value='';
   document.getElementById('parse-preview').className='parse-preview';
-  selectedCtxs.clear();
-  setImp('red');
-  renderCtxSelect();
-  // 關閉新增區
-  const body=document.getElementById('new-sec-body');
-  const chevron=document.getElementById('new-sec-chevron');
-  body.classList.remove('open');chevron.classList.remove('open');
+  selectedCtxs.clear();setImp('red');renderCtxSelect();
+  toggleSection('new-sec');
+}
+
+// Notes formatting
+function renderMarkdown(text){
+  return text
+    .replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>')
+    .replace(/==(.+?)==/g,'<mark>$1</mark>')
+    .replace(/\*(.+?)\*/g,'<em>$1</em>')
+    .replace(/\n/g,'<br>');
+}
+function insertFormat(before,after){
+  const ta=document.getElementById('vm-notes');
+  const s=ta.selectionStart,e=ta.selectionEnd;
+  const sel=ta.value.slice(s,e)||'文字';
+  ta.value=ta.value.slice(0,s)+before+sel+after+ta.value.slice(e);
+  ta.focus();ta.setSelectionRange(s+before.length,s+before.length+sel.length);
+  autoSaveNotes();
+}
+function toggleNotesPreview(){
+  showNotesPreview=!showNotesPreview;
+  const ta=document.getElementById('vm-notes');
+  const pv=document.getElementById('notes-preview');
+  const btn=document.getElementById('preview-btn');
+  if(showNotesPreview){
+    pv.innerHTML=renderMarkdown(ta.value);
+    pv.style.display='block';ta.style.display='none';
+    btn.textContent='編輯';
+  } else {
+    pv.style.display='none';ta.style.display='block';
+    btn.textContent='預覽';ta.focus();
+  }
 }
 
 // Supabase
@@ -639,23 +735,19 @@ async function loadCards(){
   const url=cfg('sb_url'),key=cfg('sb_key');
   if(!url||!key){setConn(false);loadLocal();renderCards();return;}
   SB_URL=url.replace(/\/$/,'');SB_KEY=key;
-  try{cards=await sbFetch('cards?order=created_at.desc');setConn(true);checkReview();renderCards();}
+  try{cards=await sbFetch('cards?order=created_at.desc');setConn(true);checkSmartReview();renderCards();}
   catch(e){setConn(false);loadLocal();renderCards();}
 }
-
 function setConn(ok){
   document.getElementById('conn-dot').className='conn-dot '+(ok?'ok':'err');
   document.getElementById('conn-text').textContent=ok?'雲端已連線':'離線模式';
 }
-
 function loadLocal(){try{const s=cfg('clinical_cards_v3');if(s)cards=JSON.parse(s);}catch(e){}}
 function saveLocal(){try{setCfg('clinical_cards_v3',JSON.stringify(cards));}catch(e){}}
 
 async function dbSaveCard(card){
   try{
     const{id,...rest}=card;
-    // store contexts as jsonb
-    if(Array.isArray(rest.contexts))rest.contexts=rest.contexts;
     if(id&&!String(id).startsWith('local_')){
       await sbFetch('cards?id=eq.'+id,{method:'PATCH',body:JSON.stringify(rest)});
     } else {
@@ -665,15 +757,7 @@ async function dbSaveCard(card){
     }
   }catch(e){saveLocal();}
 }
-
 async function dbDeleteCard(id){try{await sbFetch('cards?id=eq.'+id,{method:'DELETE'});}catch(e){}}
-
-function checkReview(){
-  const due=cards.filter(c=>c.review_due&&new Date(c.review_due)<=new Date());
-  const b=document.getElementById('review-banner');
-  if(due.length){b.style.display='flex';document.getElementById('review-text').textContent=`${due.length} 張卡片等待複習！`;}
-  else b.style.display='none';
-}
 
 // Settings
 function toggleVis(id){const i=document.getElementById(id);i.type=i.type==='password'?'text':'password';}
@@ -684,8 +768,7 @@ function showKeyHint(){
 async function saveSettings(){
   const url=document.getElementById('sb-url').value.trim().replace(/\/$/,'');
   const key=document.getElementById('sb-key').value.trim();
-  if(url)setCfg('sb_url',url);
-  if(key)setCfg('sb_key',key);
+  if(url)setCfg('sb_url',url);if(key)setCfg('sb_key',key);
   SB_URL=url;SB_KEY=key;
   toggleSection('settings-sec');
   await loadCards();
@@ -697,12 +780,12 @@ function getFiltered(){
   return cards.filter(c=>{
     if(filterImps.size&&!filterImps.has(c.importance||'gray'))return false;
     if(filterCtxs.size){
-      const cCtxs=Array.isArray(c.contexts)?c.contexts:(c.dept?[c.dept]:[]);
-      if(![...filterCtxs].some(fc=>cCtxs.includes(fc)))return false;
+      const cc=Array.isArray(c.contexts)?c.contexts:[];
+      if(![...filterCtxs].some(fc=>cc.includes(fc)))return false;
     }
     if(s){
-      const ctxStr=Array.isArray(c.contexts)?c.contexts.join(' '):(c.dept||'');
-      const searchable=[c.title,c.case_number,ctxStr,c.diagnosis,c.management,c.workup,c.pearl,c.keypoints,c.clinical_app,c.must_know,c.auto_keywords,c.notes].filter(Boolean).join(' ').toLowerCase();
+      const ctxStr=Array.isArray(c.contexts)?c.contexts.join(' '):'';
+      const searchable=[c.title,c.case_number,ctxStr,c.draft_content,c.diagnosis,c.management,c.workup,c.pearl,c.keypoints,c.clinical_app,c.must_know,c.auto_keywords,c.notes].filter(Boolean).join(' ').toLowerCase();
       if(!s.split(/\s+/).every(t=>searchable.includes(t)))return false;
     }
     return true;
@@ -717,20 +800,24 @@ function renderCards(){
   if(!f.length){grid.innerHTML='';empty.style.display='block';return;}
   empty.style.display='none';
   const now=new Date();
+  const cutoff=new Date(now-REVIEW_DAYS*24*60*60*1000);
   const s=document.getElementById('search-input').value.toLowerCase().trim();
   grid.innerHTML=f.map(c=>{
     const imp=c.importance||'gray';
-    const due=c.review_due&&new Date(c.review_due)<=now;
-    const linked=(c.linked_cards||[]).length;
-    const id=JSON.stringify(c.id).replace(/"/g,'&quot;');
-    const ctxs=Array.isArray(c.contexts)?c.contexts:(c.dept?[c.dept]:[]);
+    const isDraft=c.is_draft;
+    const isReview=(c.review_due&&new Date(c.review_due)<=now)||(!isDraft&&(c.last_viewed?new Date(c.last_viewed)<cutoff:new Date(c.created_at)<cutoff));
+    const ctxs=Array.isArray(c.contexts)?c.contexts:[];
     const kws=(c.auto_keywords||'').split(' ').filter(k=>k&&(!s||k.toLowerCase().includes(s))).slice(0,4);
-    return `<div class="card imp-${imp==='gray'?'':imp}" onclick="openCard(${id})">
-      ${due?'<span class="review-badge"><i class="ti ti-bell"></i> 待複習</span>':''}
+    const id=JSON.stringify(c.id).replace(/"/g,'&quot;');
+    const preview=isDraft?(c.draft_content||''):(c.diagnosis||c.keypoints||'');
+    return `<div class="card${isDraft?' is-draft':' imp-'+(imp==='gray'?'':imp)}" onclick="openCard(${id})">
+      ${isReview&&!isDraft?'<span class="review-badge"><i class="ti ti-bell"></i> 待複習</span>':''}
       <div class="card-header">
-        <div class="card-title">${c.title}</div>
+        <div class="card-title">
+          ${isDraft?'<span class="draft-badge"><i class="ti ti-pencil"></i> 草稿</span><br>':''}
+          ${c.title}
+        </div>
         <div class="card-actions">
-          ${linked?`<span style="font-size:11px;color:var(--text3)"><i class="ti ti-link"></i></span>`:''}
           <button class="icon-btn" onclick="editById(event,${id})"><i class="ti ti-edit"></i></button>
           <button class="icon-btn${c.starred?' starred':''}" onclick="toggleStar(event,${id})"><i class="ti ti-star${c.starred?'-filled':''}"></i></button>
         </div>
@@ -738,12 +825,14 @@ function renderCards(){
       <div class="ctx-chips">
         ${ctxs.map(ct=>`<span class="ctx-chip">${ct}</span>`).join('')}
         ${c.case_number?`<span class="case-chip">${c.case_number}</span>`:''}
+        ${!isDraft?`<span style="font-size:10px;color:var(--text3);margin-left:2px">${IMP_LABEL[imp]||''}</span>`:''}
       </div>
-      <div class="card-preview">${(c.diagnosis||c.keypoints||'').replace(/\[原文\]|\[AI補充[^\]]*\]/g,'').slice(0,90)}…</div>
-      ${kws.length?`<div class="kw-chips">${kws.map(k=>`<span class="kw-chip">${k}</span>`).join('')}</div>`:''}
+      <div class="card-preview">${preview.replace(/\[原文\]|\[AI補充[^\]]*\]/g,'').slice(0,90)}${preview.length>90?'…':''}</div>
+      ${kws.length&&!isDraft?`<div class="kw-chips">${kws.map(k=>`<span class="kw-chip">${k}</span>`).join('')}</div>`:''}
       <div class="card-footer">
         <span><i class="ti ti-clock"></i> ${(c.created_at||'').slice(0,10)}</span>
-        ${c.notes?'<span><i class="ti ti-notes"></i> 筆記</span>':''}
+        <span class="view-count"><i class="ti ti-eye"></i> ${c.view_count||0}</span>
+        ${c.notes?'<span><i class="ti ti-notes"></i></span>':''}
       </div>
     </div>`;
   }).join('');
@@ -759,11 +848,11 @@ function openCard(id){
   currentCard=cards.find(c=>String(c.id)===String(id));
   if(!currentCard)return;
   currentDim=0;
+  recordView(currentCard);
   document.getElementById('vm-title').textContent=currentCard.title;
-  const imp=currentCard.importance||'gray';
-  const ctxs=Array.isArray(currentCard.contexts)?currentCard.contexts:(currentCard.dept?[currentCard.dept]:[]);
+  const ctxs=Array.isArray(currentCard.contexts)?currentCard.contexts:[];
   document.getElementById('vm-meta').innerHTML=
-    `<span style="font-size:12px">${IMP_LABEL[imp]||''}</span>`+
+    (!currentCard.is_draft?`<span style="font-size:12px">${IMP_LABEL[currentCard.importance||'gray']}</span>`:'<span class="draft-badge"><i class="ti ti-pencil"></i> 草稿</span>')+
     ctxs.map(c=>`<span class="ctx-chip">${c}</span>`).join('')+
     (currentCard.case_number?`<span class="case-chip">${currentCard.case_number}</span>`:'');
   document.getElementById('vm-links').innerHTML=(currentCard.linked_cards||[]).map(lid=>{
@@ -771,10 +860,25 @@ function openCard(id){
     return lc?`<span class="ctx-tag" style="font-size:11px" onclick="openCard('${lc.id}')"><i class="ti ti-link"></i> ${lc.title}</span>`:'';
   }).join('');
   const kws=(currentCard.auto_keywords||'').split(' ').filter(Boolean);
-  document.getElementById('vm-keywords').innerHTML=kws.length?
+  document.getElementById('vm-kw').innerHTML=kws.length?
     `<div class="kw-chips">${kws.map(k=>`<span class="kw-chip" style="cursor:pointer" onclick="searchByKw('${k}')">${k}</span>`).join('')}</div>`:'';
-  renderDimTabs();renderDimContent();
-  document.getElementById('vm-notes').value=currentCard.notes||'';
+
+  if(currentCard.is_draft){
+    document.getElementById('vm-draft-area').style.display='block';
+    document.getElementById('vm-full-area').style.display='none';
+    document.getElementById('vm-notes-area').style.display='none';
+    document.getElementById('vm-draft-content').textContent=currentCard.draft_content||'';
+  } else {
+    document.getElementById('vm-draft-area').style.display='none';
+    document.getElementById('vm-full-area').style.display='block';
+    document.getElementById('vm-notes-area').style.display='block';
+    renderDimTabs();renderDimContent();
+    document.getElementById('vm-notes').value=currentCard.notes||'';
+    document.getElementById('notes-preview').style.display='none';
+    document.getElementById('vm-notes').style.display='block';
+    document.getElementById('preview-btn').textContent='預覽';
+    showNotesPreview=false;
+  }
   document.getElementById('view-bg').style.display='flex';
 }
 
@@ -789,11 +893,13 @@ function renderDimContent(){
   if(!currentCard)return;
   const raw=currentCard[KEYS[currentDim]]||'（無資料）';
   document.getElementById('vm-content').innerHTML=raw
+    .replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>')
+    .replace(/==(.+?)==/g,'<mark>$1</mark>')
     .replace(/\[原文\]/g,'<span class="source-badge badge-orig">原文</span>')
     .replace(/\[AI補充([^\]]*)\]/g,'<span class="source-badge badge-ai">AI補充$1</span>')
     .replace(/\n- /g,'<br>• ').replace(/^- /,'• ').replace(/\n/g,'<br>');
 }
-function closeView(){document.getElementById('view-bg').style.display='none';}
+function closeView(){document.getElementById('view-bg').style.display='none';checkSmartReview();}
 
 function autoSaveNotes(){
   clearTimeout(notesTimer);
@@ -808,14 +914,16 @@ async function markReview(){
   if(!currentCard)return;
   const d=new Date();d.setDate(d.getDate()+3);
   currentCard.review_due=d.toISOString();
-  await dbSaveCard(currentCard);checkReview();renderCards();
+  await dbSaveCard(currentCard);checkSmartReview();renderCards();
   alert('已標記！3天後提醒複習。');
 }
 
 function copyCard(){
   if(!currentCard)return;
-  const caseStr=currentCard.case_number?`病例號：${currentCard.case_number}\n`:'';
-  navigator.clipboard.writeText(caseStr+DIMS.map((d,i)=>`【${d}】\n${currentCard[KEYS[i]]||'—'}`).join('\n\n')).then(()=>alert('已複製！'));
+  const text=currentCard.is_draft?currentCard.draft_content:
+    (currentCard.case_number?`病例號：${currentCard.case_number}\n`:'')+
+    DIMS.map((d,i)=>`【${d}】\n${currentCard[KEYS[i]]||'—'}`).join('\n\n');
+  navigator.clipboard.writeText(text).then(()=>alert('已複製！'));
 }
 
 async function deleteCard(){
@@ -834,18 +942,16 @@ function openEdit(){
   if(!currentCard)return;
   document.getElementById('edit-title').value=currentCard.title;
   document.getElementById('edit-case').value=currentCard.case_number||'';
-  editImp=currentCard.importance||'gray';
-  setEditImp(editImp);
-  editCtxs=new Set(Array.isArray(currentCard.contexts)?currentCard.contexts:(currentCard.dept?[currentCard.dept]:[]));
+  editImp=currentCard.importance||'gray';setEditImp(editImp);
+  editCtxs=new Set(Array.isArray(currentCard.contexts)?currentCard.contexts:[]);
   renderCtxEdit();
   const linked=currentCard.linked_cards||[];
   document.getElementById('link-picker').innerHTML=cards.filter(c=>String(c.id)!==String(currentCard.id)).map(c=>
     `<label class="link-item"><input type="checkbox" value="${c.id}" ${linked.some(l=>String(l)===String(c.id))?'checked':''} /> ${c.title}</label>`
   ).join('')||'<p style="font-size:12px;color:var(--text2)">尚無其他卡片</p>';
-  document.getElementById('edit-fields').innerHTML=KEYS.map((k,i)=>
-    `<label style="font-size:11px;color:var(--text3);font-weight:500;text-transform:uppercase;letter-spacing:0.3px">${DIMS[i]}</label>
-     <textarea class="edit-field" id="ef-${k}">${currentCard[k]||''}</textarea>`
-  ).join('');
+  document.getElementById('edit-fields').innerHTML=currentCard.is_draft?
+    `<label class="field-label">草稿內容</label><textarea class="edit-field" id="ef-draft">${currentCard.draft_content||''}</textarea>`:
+    KEYS.map((k,i)=>`<label class="field-label">${DIMS[i]}</label><textarea class="edit-field" id="ef-${k}">${currentCard[k]||''}</textarea>`).join('');
   document.getElementById('view-bg').style.display='none';
   document.getElementById('edit-bg').style.display='flex';
 }
@@ -856,13 +962,19 @@ async function saveEdit(){
   currentCard.importance=editImp;
   currentCard.contexts=[...editCtxs];
   currentCard.linked_cards=Array.from(document.getElementById('link-picker').querySelectorAll('input:checked')).map(i=>i.value);
-  KEYS.forEach(k=>{const el=document.getElementById('ef-'+k);if(el)currentCard[k]=el.value;});
-  const allText=currentCard.title+' '+KEYS.map(k=>currentCard[k]||'').join(' ');
-  currentCard.auto_keywords=extractKeywords(allText).join(' ');
+  if(currentCard.is_draft){
+    const dc=document.getElementById('ef-draft');
+    if(dc)currentCard.draft_content=dc.value;
+  } else {
+    KEYS.forEach(k=>{const el=document.getElementById('ef-'+k);if(el)currentCard[k]=el.value;});
+    const allText=currentCard.title+' '+KEYS.map(k=>currentCard[k]||'').join(' ');
+    currentCard.auto_keywords=extractKeywords(allText).join(' ');
+  }
   await dbSaveCard(currentCard);renderCards();closeEdit();
 }
 function closeEdit(){document.getElementById('edit-bg').style.display='none';}
 
+// Prompt tabs
 function switchPromptTab(tab){
   document.getElementById('prompt-basic').style.display=tab==='basic'?'block':'none';
   document.getElementById('prompt-merge').style.display=tab==='merge'?'block':'none';
@@ -873,11 +985,8 @@ function copyPromptById(id){
   const text=document.getElementById(id).querySelector('.prompt-text').textContent;
   navigator.clipboard.writeText(text).then(()=>alert('Prompt 已複製！'));
 }
-function copyPrompt(){
-  const text=document.querySelector('#prompt-basic .prompt-text')?.textContent||'';
-  navigator.clipboard.writeText(text).then(()=>alert('Prompt 已複製！'));
-}
 
+// Export
 function toggleExportMenu(){
   const m=document.getElementById('export-menu');
   m.style.display=m.style.display==='none'?'block':'none';
@@ -889,10 +998,12 @@ function exportData(filtered,fmt){
   let content,ext;
   if(fmt==='json'){content=JSON.stringify(data,null,2);ext='json';}
   else{
-    content=data.map(c=>`# ${c.title}${c.case_number?' ['+c.case_number+']':''}\n\n**情境：** ${(Array.isArray(c.contexts)?c.contexts:[]).join(', ')||'—'} | **重要程度：** ${IMP_LABEL[c.importance||'gray']}\n\n`+
-      DIMS.map((d,i)=>`## ${d}\n${c[KEYS[i]]||'—'}`).join('\n\n')+
-      (c.notes?`\n\n## 我的筆記\n${c.notes}`:'')+'\n\n---\n'
-    ).join('\n');ext='md';
+    content=data.map(c=>{
+      if(c.is_draft)return`# [草稿] ${c.title}\n\n${c.draft_content||''}\n\n---\n`;
+      return `# ${c.title}${c.case_number?' ['+c.case_number+']':''}\n\n**情境：** ${(Array.isArray(c.contexts)?c.contexts:[]).join(', ')||'—'} | **重要程度：** ${IMP_LABEL[c.importance||'gray']}\n\n`+
+        DIMS.map((d,i)=>`## ${d}\n${c[KEYS[i]]||'—'}`).join('\n\n')+
+        (c.notes?`\n\n## 我的筆記\n${c.notes}`:'')+'\n\n---\n';
+    }).join('\n');ext='md';
   }
   const blob=new Blob([content],{type:'text/plain'});
   const url=URL.createObjectURL(blob);
@@ -904,7 +1015,6 @@ function exportData(filtered,fmt){
 loadContexts();
 renderCtxSelect();
 renderFilterCtx();
-// Pre-fill settings if saved
 document.getElementById('sb-url').value=cfg('sb_url');
 document.getElementById('sb-key').value=cfg('sb_key');
 showKeyHint();

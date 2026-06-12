@@ -1207,7 +1207,7 @@ function renderCards() {
     var preview = isDraft ? (c.draft_content || '') : (c.diagnosis || c.keypoints || '');
     preview = preview.replace(/\[原文\]|\[AI補充[^\]]*\]/g, '').slice(0, 90);
     var borderClass = isDraft ? 'draft' : (imp === 'gray' ? '' : 'imp-' + imp);
-    var id = JSON.stringify(String(c.id));
+    var id = "'" + String(c.id) + "'";
 
     return '<div class="card ' + borderClass + '" onclick="openCard(' + id + ')">'
       + (isReview ? '<span class="review-badge"><i class="ti ti-bell"></i> 待複習</span>' : '')

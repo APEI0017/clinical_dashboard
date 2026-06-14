@@ -208,6 +208,15 @@ input, select, textarea, button { font-family: 'Inter', sans-serif; }
 .draft-prompt-box p { font-size: 11px; color: var(--amber-text); font-weight: 500; margin-bottom: 6px; }
 .draft-prompt-content { background: var(--bg); border-radius: var(--radius); padding: 10px; font-size: 12px; font-family: monospace; line-height: 1.8; color: var(--text); white-space: pre-wrap; border: 0.5px solid var(--border2); max-height: 200px; overflow-y: auto; }
 
+/* ── Reference links ── */
+.ref-block { margin-top: 1rem; }
+.ref-block-title { font-size: 12px; font-weight: 500; color: var(--text2); margin-bottom: 6px; display: flex; align-items: center; gap: 6px; }
+.ref-area { width: 100%; font-size: 13px; padding: 10px; border: 0.5px solid var(--border2); border-radius: var(--radius); background: var(--bg); color: var(--text); resize: vertical; min-height: 60px; outline: none; line-height: 1.7; }
+.ref-area:focus { border-color: var(--blue); }
+.ref-rendered { font-size: 13px; line-height: 1.9; }
+.ref-rendered a { color: var(--blue); text-decoration: none; }
+.ref-rendered a:hover { text-decoration: underline; }
+
 /* ── Floating panel ── */
 .float-panel { position: fixed; z-index: 200; background: var(--bg); border: 0.5px solid var(--border2); border-radius: var(--radius); padding: 12px; box-shadow: 0 4px 12px rgba(0,0,0,.15); min-width: 200px; }
 </style>
@@ -307,7 +316,15 @@ input, select, textarea, button { font-family: 'Inter', sans-serif; }
 （貼上備忘錄內容）
 
 【OpenEvidence 內容】
-（貼上 OpenEvidence 查詢結果）</div>
+（貼上 OpenEvidence 查詢結果）
+
+輸出格式要求：
+- 條列用「- 」開頭
+- 標題用「## 」開頭
+- 粗體用 **文字**
+- 每個段落之間一個空行即可，不要多餘空行
+- 不要 emoji
+- 不要表格（除非資料本身是表格形式）</div>
         <button class="btn-ghost" style="margin-top:8px;font-size:12px" onclick="copyMainPrompt()"><i class="ti ti-copy"></i> 複製 Prompt</button>
       </div>
     </div>
@@ -423,6 +440,16 @@ input, select, textarea, button { font-family: 'Inter', sans-serif; }
       <div class="notes-preview" id="notes-preview"></div>
     </div>
 
+    <!-- Reference links -->
+    <div class="ref-block" id="vm-ref-block">
+      <div class="ref-block-title"><i class="ti ti-link"></i> 參考來源</div>
+      <div class="ref-rendered" id="vm-ref-rendered"></div>
+      <textarea class="ref-area" id="vm-ref-area"
+        placeholder="[1] 來源描述 https://&#10;[2] 來源描述 https://"
+        oninput="autoSaveRef()" style="display:none"></textarea>
+      <button class="btn-ghost" style="font-size:12px;margin-top:4px" id="vm-ref-toggle" onclick="toggleRefEdit()"><i class="ti ti-edit"></i> 編輯來源</button>
+    </div>
+
     <div style="margin-top:1rem;display:flex;gap:8px;flex-wrap:wrap">
       <button class="btn-outline" onclick="openEdit()"><i class="ti ti-edit"></i> 編輯</button>
       <button class="btn-outline" onclick="copyCardText()"><i class="ti ti-copy"></i> 複製</button>
@@ -458,6 +485,11 @@ input, select, textarea, button { font-family: 'Inter', sans-serif; }
     <label class="field-label">連結其他卡片</label>
     <div class="link-picker" id="link-picker"></div>
     <div id="edit-fields" style="margin-top:12px"></div>
+    <div style="margin-top:12px">
+      <label class="field-label">參考來源</label>
+      <textarea class="ref-area" id="edit-ref-links"
+        placeholder="[1] 來源描述 https://&#10;[2] 來源描述 https://"></textarea>
+    </div>
     <div style="display:flex;gap:8px;margin-top:12px">
       <button class="btn-primary" onclick="saveEdit()"><i class="ti ti-check"></i> 儲存</button>
       <button class="btn-outline" onclick="closeEdit()">取消</button>
@@ -957,16 +989,21 @@ function onPaste() {
   setTimeout(function() {
     var ta = document.getElementById('paste-input');
     var text = ta.value;
+    // 壓縮連續超過兩個空行為一個空行
     text = text.replace(/\n{3,}/g, '\n\n');
-    // ensure 【 on new line
+    // 確保 【 在新行開頭
     var out = '';
     for (var i = 0; i < text.length; i++) {
-      if (text[i] === '【' && i > 0 && text[i-1] !== '\n') out += '\n';
+      if (text[i] === '\u3010' && i > 0 && text[i-1] !== '\n') out += '\n';
       out += text[i];
     }
     ta.value = out;
     onPasteInput(ta);
   }, 50);
+}
+
+function compressBlankLines(text) {
+  return text.replace(/\n{3,}/g, '\n\n');
 }
 
 function parsePreview() {
@@ -1088,6 +1125,7 @@ function quickSave() {
     keypoints:'', memory:'', evidence:'',
     auto_keywords:'', notes:'', linked_cards:[],
     review_due: null, starred: false,
+    ref_links: '',
     view_count: 0, last_viewed: null,
     created_at: new Date().toISOString()
   };
@@ -1121,7 +1159,7 @@ function saveCard() {
     keypoints: parsed.keypoints || '', memory: parsed.memory || '',
     evidence: parsed.evidence || '',
     auto_keywords: extractKeywords(allText).join(' '),
-    notes: '', linked_cards: [], review_due: null, starred: false,
+    notes: window._draftNote || '', ref_links: '', linked_cards: [], review_due: null, starred: false,
     view_count: 0, last_viewed: null,
     created_at: new Date().toISOString()
   };
@@ -1131,6 +1169,7 @@ function saveCard() {
     var idx = cards.findIndex(function(c) { return String(c.id) === String(window._replaceDraftId); });
     if (idx !== -1) { dbDelete(cards[idx].id); cards.splice(idx, 1); }
     window._replaceDraftId = null;
+    window._draftNote = null;
   }
 
   cards.unshift(card);
@@ -1263,12 +1302,25 @@ function openCard(id) {
     + ctxs.map(function(c) { return '<span class="chip ctx">' + c + '</span>'; }).join('')
     + (currentCard.case_number ? '<span class="chip case">' + currentCard.case_number + '</span>' : '');
 
-  // linked cards
-  document.getElementById('vm-links').innerHTML = (currentCard.linked_cards || []).map(function(lid) {
-    var lc = cards.find(function(c) { return String(c.id) === String(lid); });
-    return lc ? '<span class="chip ctx" style="cursor:pointer;background:var(--purple-bg);color:var(--purple-text)" onclick="openCard(\'' + lc.id + '\')">'
-      + '<i class="ti ti-link"></i> ' + lc.title + '</span>' : '';
-  }).join('');
+  // linked cards - 顯示雙向連結
+  var linkedIds = currentCard.linked_cards || [];
+  // 也找反向連結（其他卡片連到這張的）
+  var backLinks = cards.filter(function(c) {
+    return String(c.id) !== String(currentCard.id) &&
+      (c.linked_cards || []).some(function(l) { return String(l) === String(currentCard.id); }) &&
+      linkedIds.indexOf(String(c.id)) === -1;
+  });
+  var allLinked = linkedIds.map(function(lid) {
+    return cards.find(function(c) { return String(c.id) === String(lid); });
+  }).filter(Boolean).concat(backLinks);
+
+  document.getElementById('vm-links').innerHTML = allLinked.length
+    ? '<div style="font-size:11px;color:var(--text3);margin-bottom:4px"><i class="ti ti-link"></i> 連結卡片</div>'
+      + allLinked.map(function(lc) {
+          return '<span class="chip" style="cursor:pointer;background:var(--purple-bg);color:var(--purple-text);border:0.5px solid var(--purple-text);margin-bottom:3px" onclick="openCard(\'' + lc.id + '\')">'
+            + lc.title + '</span> ';
+        }).join('')
+    : '';
 
   // keywords
   var kws = (currentCard.auto_keywords || '').split(' ').filter(Boolean);
@@ -1301,6 +1353,21 @@ function openCard(id) {
     document.getElementById('notes-preview-btn').textContent = '預覽';
     showNotesPreview = false;
   }
+
+  // ref_links
+  var refArea = document.getElementById('vm-ref-area');
+  var refRendered = document.getElementById('vm-ref-rendered');
+  var refToggle = document.getElementById('vm-ref-toggle');
+  var refVal = currentCard.ref_links || '';
+  refArea.value = refVal;
+  refRendered.innerHTML = renderRefLinks(refVal);
+  refRendered.style.display = 'block';
+  refArea.style.display = 'none';
+  if (refToggle) refToggle.innerHTML = '<i class="ti ti-edit"></i> 編輯來源';
+  refEditMode = false;
+  // 草稿隱藏 ref block
+  var refBlock = document.getElementById('vm-ref-block');
+  if (refBlock) refBlock.style.display = currentCard.is_draft ? 'none' : 'block';
 
   document.getElementById('view-bg').style.display = 'flex';
 }
@@ -1366,6 +1433,52 @@ function autoSaveNotes() {
 // ═══════════════════════════════════════════════════
 // CARD ACTIONS
 // ═══════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════
+// REFERENCE LINKS
+// ═══════════════════════════════════════════════════
+function renderRefLinks(text) {
+  if (!text || !text.trim()) return '<span style="font-size:12px;color:var(--text3)">尚無參考來源</span>';
+  var lines = text.split('\n').filter(function(l) { return l.trim(); });
+  return lines.map(function(line) {
+    // 自動把 URL 變成連結
+    return '<div style="margin:3px 0">' + line.replace(/(https?:\/\/[^\s]+)/g, '<a href="$1" target="_blank" rel="noopener">$1</a>') + '</div>';
+  }).join('');
+}
+
+var refEditMode = false;
+function toggleRefEdit() {
+  refEditMode = !refEditMode;
+  var rendered = document.getElementById('vm-ref-rendered');
+  var area = document.getElementById('vm-ref-area');
+  var btn = document.getElementById('vm-ref-toggle');
+  if (refEditMode) {
+    rendered.style.display = 'none';
+    area.style.display = 'block';
+    area.focus();
+    btn.innerHTML = '<i class="ti ti-check"></i> 完成';
+  } else {
+    if (currentCard) {
+      currentCard.ref_links = area.value;
+      dbSave(currentCard);
+    }
+    rendered.innerHTML = renderRefLinks(area.value);
+    rendered.style.display = 'block';
+    area.style.display = 'none';
+    btn.innerHTML = '<i class="ti ti-edit"></i> 編輯來源';
+  }
+}
+
+var refTimer = null;
+function autoSaveRef() {
+  clearTimeout(refTimer);
+  refTimer = setTimeout(function() {
+    if (!currentCard) return;
+    currentCard.ref_links = document.getElementById('vm-ref-area').value;
+    dbSave(currentCard);
+    document.getElementById('vm-ref-rendered').innerHTML = renderRefLinks(currentCard.ref_links);
+  }, 1000);
+}
+
 function copyMainPrompt() {
   var text = document.getElementById('main-prompt').textContent;
   navigator.clipboard.writeText(text).then(function() { alert('Prompt 已複製！'); });
@@ -1378,6 +1491,8 @@ function copyDraftPrompt() {
 
 function expandDraft() {
   if (!currentCard) return;
+  // 記住草稿筆記，升級後帶入
+  window._draftNote = currentCard.draft_content || '';
   closeView();
   document.getElementById('card-title').value = currentCard.title;
   document.getElementById('paste-input').value = currentCard.draft_content || '';
@@ -1448,6 +1563,10 @@ function openEdit() {
           + '<textarea class="edit-field" id="ef-' + k + '">' + (currentCard[k] || '') + '</textarea>';
       }).join('');
 
+  // ref_links
+  var editRef = document.getElementById('edit-ref-links');
+  if (editRef) editRef.value = currentCard.ref_links || '';
+
   document.getElementById('view-bg').style.display = 'none';
   document.getElementById('edit-bg').style.display = 'flex';
 }
@@ -1492,6 +1611,10 @@ async function saveEdit() {
     var allText = currentCard.title + ' ' + KEYS.map(function(k) { return currentCard[k] || ''; }).join(' ');
     currentCard.auto_keywords = extractKeywords(allText).join(' ');
   }
+
+  // ref_links
+  var editRef = document.getElementById('edit-ref-links');
+  if (editRef) currentCard.ref_links = editRef.value;
 
   await dbSave(currentCard); renderCards(); closeEdit();
 }

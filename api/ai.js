@@ -1,56 +1,118 @@
+// /api/ai.js
+// 統一 AI 呼叫介面，支援 Gemini / Claude / OpenAI
+// API key 存在 Vercel 環境變數，不暴露前端
+
 export default async function handler(req, res) {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-  if (req.method === 'OPTIONS') { res.status(200).end(); return; }
-  if (req.method !== 'POST') { res.status(405).json({ error: 'Method not allowed' }); return; }
-
-  const { messages, system } = req.body;
-  const apiKey = process.env.OPENROUTER_API_KEY;
-  if (!apiKey) { res.status(500).json({ error: 'OpenRouter API key not configured' }); return; }
-
-  const models = [
-    'meta-llama/llama-3.3-70b-instruct:free',
-    'mistralai/mistral-7b-instruct:free',
-    'qwen/qwen-2.5-72b-instruct:free'
-  ];
-
-  for (const model of models) {
-    try {
-      const controller = new AbortController();
-      const timeout = setTimeout(() => controller.abort(), 25000);
-
-      const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${apiKey}`,
-          'HTTP-Referer': 'https://clinical-dashboard.vercel.app',
-          'X-Title': 'Clinical Dashboard'
-        },
-        body: JSON.stringify({
-          model,
-          messages: [
-            { role: 'system', content: system },
-            ...messages
-          ],
-          max_tokens: 1500,
-          temperature: 0.3
-        }),
-        signal: controller.signal
-      });
-      clearTimeout(timeout);
-
-      const data = await response.json();
-      if (data.error) continue;
-      const text = data.choices?.[0]?.message?.content || '';
-      if (!text) continue;
-      res.status(200).json({ content: [{ type: 'text', text }] });
-      return;
-    } catch (e) {
-      continue;
-    }
+  if (req.method !== 'POST') {
+    return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  res.status(500).json({ error: '所有模型目前無法使用，請稍後再試' });
+  const { provider, model, prompt, content } = req.body;
+
+  if (!content || !content.trim()) {
+    return res.status(400).json({ error: '內容不能為空' });
+  }
+
+  try {
+    let result;
+    switch (provider) {
+      case 'gemini':
+        result = await callGemini(model || 'gemini-1.5-flash', prompt, content);
+        break;
+      case 'claude':
+        result = await callClaude(model || 'claude-haiku-4-5-20251001', prompt, content);
+        break;
+      case 'openai':
+        result = await callOpenAI(model || 'gpt-4o-mini', prompt, content);
+        break;
+      default:
+        return res.status(400).json({ error: '不支援的 AI 供應商' });
+    }
+    return res.status(200).json({ result });
+  } catch (e) {
+    console.error('AI API error:', e);
+    return res.status(500).json({ error: e.message });
+  }
+}
+
+// ── Gemini ──
+async function callGemini(model, prompt, content) {
+  const key = process.env.GEMINI_API_KEY;
+  if (!key) throw new Error('GEMINI_API_KEY 未設定');
+
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${key}`;
+  const body = {
+    contents: [{ parts: [{ text: prompt + '\n\n' + content }] }],
+    generationConfig: { temperature: 0.3, maxOutputTokens: 4096 }
+  };
+
+  const r = await fetch(url, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(body)
+  });
+
+  if (!r.ok) {
+    const t = await r.text();
+    throw new Error('Gemini error: ' + t);
+  }
+
+  const data = await r.json();
+  return data.candidates?.[0]?.content?.parts?.[0]?.text || '';
+}
+
+// ── Claude ──
+async function callClaude(model, prompt, content) {
+  const key = process.env.CLAUDE_API_KEY;
+  if (!key) throw new Error('CLAUDE_API_KEY 未設定');
+
+  const r = await fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'x-api-key': key,
+      'anthropic-version': '2023-06-01'
+    },
+    body: JSON.stringify({
+      model,
+      max_tokens: 4096,
+      messages: [{ role: 'user', content: prompt + '\n\n' + content }]
+    })
+  });
+
+  if (!r.ok) {
+    const t = await r.text();
+    throw new Error('Claude error: ' + t);
+  }
+
+  const data = await r.json();
+  return data.content?.[0]?.text || '';
+}
+
+// ── OpenAI ──
+async function callOpenAI(model, prompt, content) {
+  const key = process.env.OPENAI_API_KEY;
+  if (!key) throw new Error('OPENAI_API_KEY 未設定');
+
+  const r = await fetch('https://api.openai.com/v1/chat/completions', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + key
+    },
+    body: JSON.stringify({
+      model,
+      messages: [{ role: 'user', content: prompt + '\n\n' + content }],
+      temperature: 0.3,
+      max_tokens: 4096
+    })
+  });
+
+  if (!r.ok) {
+    const t = await r.text();
+    throw new Error('OpenAI error: ' + t);
+  }
+
+  const data = await r.json();
+  return data.choices?.[0]?.message?.content || '';
 }

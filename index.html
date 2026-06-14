@@ -153,21 +153,16 @@ input, select, textarea, button { font-family: 'Inter', sans-serif; }
 
 /* ── Dim content with full markdown ── */
 .dim-content { background: var(--bg2); border-radius: var(--radius); padding: 1rem; min-height: 110px; font-size: 13px; line-height: 1.9; }
-.dim-content h1 { font-size: 16px; font-weight: 600; margin: 8px 0 4px; }
-.dim-content h2 { font-size: 14px; font-weight: 600; margin: 8px 0 4px; }
-.dim-content h3 { font-size: 13px; font-weight: 600; margin: 6px 0 3px; }
 .dim-content strong { font-weight: 600; }
 .dim-content em { font-style: italic; }
 .dim-content mark { background: #FFF176; padding: 0 2px; border-radius: 2px; }
 .dim-content code { background: var(--bg3); padding: 1px 4px; border-radius: 3px; font-family: monospace; font-size: 12px; }
-.dim-content pre { background: var(--bg3); padding: 8px 10px; border-radius: var(--radius); font-family: monospace; font-size: 12px; overflow-x: auto; margin: 4px 0; }
+.dim-content pre { background: var(--bg3); padding: 8px 10px; border-radius: var(--radius); font-family: monospace; font-size: 12px; overflow-x: auto; margin: 4px 0; white-space: pre-wrap; }
 .dim-content table { border-collapse: collapse; width: 100%; font-size: 12px; margin: 6px 0; }
 .dim-content th { background: var(--bg3); font-weight: 600; padding: 4px 8px; border: 0.5px solid var(--border2); }
 .dim-content td { padding: 4px 8px; border: 0.5px solid var(--border2); }
 .dim-content .cb { display: flex; align-items: center; gap: 6px; margin: 2px 0; }
 .dim-content .cb input { cursor: pointer; }
-.dim-content ul, .dim-content ol { padding-left: 1.2rem; }
-.dim-content li { margin: 2px 0; }
 .source-badge { display: inline-block; font-size: 10px; padding: 1px 6px; border-radius: var(--radius); margin-left: 3px; font-weight: 500; }
 .badge-orig { background: var(--green-bg); color: var(--green-text); }
 .badge-ai { background: var(--blue-bg); color: var(--blue-text); }
@@ -207,15 +202,6 @@ input, select, textarea, button { font-family: 'Inter', sans-serif; }
 .draft-prompt-box { margin-top: 10px; background: var(--amber-bg); border-radius: var(--radius); padding: .875rem; }
 .draft-prompt-box p { font-size: 11px; color: var(--amber-text); font-weight: 500; margin-bottom: 6px; }
 .draft-prompt-content { background: var(--bg); border-radius: var(--radius); padding: 10px; font-size: 12px; font-family: monospace; line-height: 1.8; color: var(--text); white-space: pre-wrap; border: 0.5px solid var(--border2); max-height: 200px; overflow-y: auto; }
-
-/* ── Reference links ── */
-.ref-block { margin-top: 1rem; }
-.ref-block-title { font-size: 12px; font-weight: 500; color: var(--text2); margin-bottom: 6px; display: flex; align-items: center; gap: 6px; }
-.ref-area { width: 100%; font-size: 13px; padding: 10px; border: 0.5px solid var(--border2); border-radius: var(--radius); background: var(--bg); color: var(--text); resize: vertical; min-height: 60px; outline: none; line-height: 1.7; }
-.ref-area:focus { border-color: var(--blue); }
-.ref-rendered { font-size: 13px; line-height: 1.9; }
-.ref-rendered a { color: var(--blue); text-decoration: none; }
-.ref-rendered a:hover { text-decoration: underline; }
 
 /* ── Floating panel ── */
 .float-panel { position: fixed; z-index: 200; background: var(--bg); border: 0.5px solid var(--border2); border-radius: var(--radius); padding: 12px; box-shadow: 0 4px 12px rgba(0,0,0,.15); min-width: 200px; }
@@ -301,7 +287,16 @@ input, select, textarea, button { font-family: 'Inter', sans-serif; }
     <div class="section-body" id="prompt-sec-body">
       <div class="prompt-box">
         <p>把你的備忘錄和 OpenEvidence 內容一起貼給 AI，AI 回覆後把結果貼到下方「新增卡片」。</p>
-        <div class="prompt-text" id="main-prompt">你是住院醫師的臨床教師兼醫學教育專家。請把以下兩個來源融合成一份結構化摘要，輸出以下七個段落，每段用【】標示，條列式、精簡行動導向。原文內容後加[原文]，補充的知識加[AI補充 (來源 年份)]。
+        <div class="prompt-text" id="main-prompt">⚠️ 輸出格式規定（必須嚴格遵守，違反會導致系統無法解析）：
+- 所有條列項目必須用「- 」開頭（包含子項目用「  - 」縮排）
+- 次標題用「## 」開頭，子標題用「### 」開頭
+- 重點關鍵字用 **文字** 標示粗體
+- 每個【】段落之間空一行，段落內不要多餘空行
+- 嚴禁純文字換行當條列（每個獨立概念必須有「- 」）
+- 嚴禁使用 emoji
+- 嚴禁使用表格（除非資料本身必須比較）
+
+你是住院醫師的臨床教師兼醫學教育專家。請把以下兩個來源融合成一份結構化摘要，輸出以下七個段落，每段用【】標示，條列式、精簡行動導向。原文內容後加[原文]，補充的知識加[AI補充 (來源 年份)]。
 
 七個維度各有明確範圍，請勿重疊：
 【診斷】怎麼診斷、鑑別診斷要點（補充 OpenEvidence）
@@ -316,15 +311,7 @@ input, select, textarea, button { font-family: 'Inter', sans-serif; }
 （貼上備忘錄內容）
 
 【OpenEvidence 內容】
-（貼上 OpenEvidence 查詢結果）
-
-輸出格式要求：
-- 條列用「- 」開頭
-- 標題用「## 」開頭
-- 粗體用 **文字**
-- 每個段落之間一個空行即可，不要多餘空行
-- 不要 emoji
-- 不要表格（除非資料本身是表格形式）</div>
+（貼上 OpenEvidence 查詢結果）</div>
         <button class="btn-ghost" style="margin-top:8px;font-size:12px" onclick="copyMainPrompt()"><i class="ti ti-copy"></i> 複製 Prompt</button>
       </div>
     </div>
@@ -440,16 +427,6 @@ input, select, textarea, button { font-family: 'Inter', sans-serif; }
       <div class="notes-preview" id="notes-preview"></div>
     </div>
 
-    <!-- Reference links -->
-    <div class="ref-block" id="vm-ref-block">
-      <div class="ref-block-title"><i class="ti ti-link"></i> 參考來源</div>
-      <div class="ref-rendered" id="vm-ref-rendered"></div>
-      <textarea class="ref-area" id="vm-ref-area"
-        placeholder="[1] 來源描述 https://&#10;[2] 來源描述 https://"
-        oninput="autoSaveRef()" style="display:none"></textarea>
-      <button class="btn-ghost" style="font-size:12px;margin-top:4px" id="vm-ref-toggle" onclick="toggleRefEdit()"><i class="ti ti-edit"></i> 編輯來源</button>
-    </div>
-
     <div style="margin-top:1rem;display:flex;gap:8px;flex-wrap:wrap">
       <button class="btn-outline" onclick="openEdit()"><i class="ti ti-edit"></i> 編輯</button>
       <button class="btn-outline" onclick="copyCardText()"><i class="ti ti-copy"></i> 複製</button>
@@ -485,11 +462,6 @@ input, select, textarea, button { font-family: 'Inter', sans-serif; }
     <label class="field-label">連結其他卡片</label>
     <div class="link-picker" id="link-picker"></div>
     <div id="edit-fields" style="margin-top:12px"></div>
-    <div style="margin-top:12px">
-      <label class="field-label">參考來源</label>
-      <textarea class="ref-area" id="edit-ref-links"
-        placeholder="[1] 來源描述 https://&#10;[2] 來源描述 https://"></textarea>
-    </div>
     <div style="display:flex;gap:8px;margin-top:12px">
       <button class="btn-primary" onclick="saveEdit()"><i class="ti ti-check"></i> 儲存</button>
       <button class="btn-outline" onclick="closeEdit()">取消</button>
@@ -603,16 +575,22 @@ function renderMd(text) {
     .replace(/\[原文\]/g, '__ORIG__')
     .replace(/\[AI補充([^\]]*)\]/g, '__AI__$1__AIEND__');
 
+  // 壓縮多餘空行
+  text = text.replace(/\n{3,}/g, '\n\n');
+
   var lines = text.split('\n');
   var html = [];
   var inTable = false;
   var inCode = false;
+  var inImplicitList = false; // 追蹤「無標記條列群組」
 
   for (var i = 0; i < lines.length; i++) {
     var line = lines[i];
+    var trimmed = line.trim();
 
     // code block
-    if (line.trim().startsWith('```')) {
+    if (trimmed.startsWith('```')) {
+      inImplicitList = false;
       if (!inCode) { html.push('<pre><code>'); inCode = true; }
       else { html.push('</code></pre>'); inCode = false; }
       continue;
@@ -620,10 +598,11 @@ function renderMd(text) {
     if (inCode) { html.push(escHtml(line) + '\n'); continue; }
 
     // table
-    if (line.includes('|') && line.trim().startsWith('|')) {
+    if (line.includes('|') && trimmed.startsWith('|')) {
+      inImplicitList = false;
       if (!inTable) { html.push('<table>'); inTable = true; }
-      var cells = line.trim().replace(/^\||\|$/g,'').split('|');
-      if (line.includes('---')) { continue; } // separator
+      var cells = trimmed.replace(/^\||\|$/g,'').split('|');
+      if (line.includes('---')) { continue; }
       var isHeader = i === 0 || (i > 0 && lines[i+1] && lines[i+1].includes('---'));
       var tag = isHeader ? 'th' : 'td';
       html.push('<tr>' + cells.map(function(c) { return '<' + tag + '>' + inlineMd(c.trim()) + '</' + tag + '>'; }).join('') + '</tr>');
@@ -631,28 +610,59 @@ function renderMd(text) {
     } else if (inTable) { html.push('</table>'); inTable = false; }
 
     // headings
-    if (/^### /.test(line)) { html.push('<h3>' + inlineMd(line.slice(4)) + '</h3>'); continue; }
-    if (/^## /.test(line))  { html.push('<h2>' + inlineMd(line.slice(3)) + '</h2>'); continue; }
-    if (/^# /.test(line))   { html.push('<h1>' + inlineMd(line.slice(2)) + '</h1>'); continue; }
+    if (/^### /.test(line)) { inImplicitList = false; html.push('<h3 style="font-size:12px;font-weight:600;color:var(--text2);margin:10px 0 3px;text-transform:uppercase;letter-spacing:.3px">' + inlineMd(line.slice(4)) + '</h3>'); continue; }
+    if (/^## /.test(line))  { inImplicitList = false; html.push('<h2 style="font-size:13px;font-weight:600;margin:12px 0 4px;padding-bottom:3px;border-bottom:1px solid var(--border)">' + inlineMd(line.slice(3)) + '</h2>'); continue; }
+    if (/^# /.test(line))   { inImplicitList = false; html.push('<h1 style="font-size:15px;font-weight:600;margin:12px 0 4px">' + inlineMd(line.slice(2)) + '</h1>'); continue; }
 
     // checkbox
     if (/^- \[( |x)\] /.test(line)) {
+      inImplicitList = false;
       var checked = line[3] === 'x';
-      html.push('<div class="cb"><input type="checkbox"' + (checked ? ' checked' : '') + ' onclick="return false">' + inlineMd(line.slice(6)) + '</div>');
+      html.push('<div class="cb"><input type="checkbox"' + (checked ? ' checked' : '') + ' onclick="return false"> ' + inlineMd(line.slice(6)) + '</div>');
       continue;
     }
 
-    // list
-    if (/^- /.test(line)) { html.push('<div style="display:flex;gap:6px;margin:2px 0"><span>•</span><span>' + inlineMd(line.slice(2)) + '</span></div>'); continue; }
+    // 明確條列（- 或縮排 - ）
+    if (/^- /.test(line)) {
+      inImplicitList = false;
+      html.push('<div style="display:flex;gap:6px;margin:2px 0;padding-left:0"><span style="color:var(--blue);flex-shrink:0">•</span><span>' + inlineMd(line.slice(2)) + '</span></div>');
+      continue;
+    }
+    if (/^ {2,}- /.test(line)) {
+      inImplicitList = false;
+      var depth = line.match(/^ +/)[0].length;
+      html.push('<div style="display:flex;gap:6px;margin:2px 0;padding-left:' + Math.min(depth*6,24) + 'px"><span style="color:var(--text3);flex-shrink:0">◦</span><span>' + inlineMd(trimmed.slice(2)) + '</span></div>');
+      continue;
+    }
     if (/^\d+\. /.test(line)) {
+      inImplicitList = false;
       var m = line.match(/^(\d+)\. (.*)/);
-      if (m) { html.push('<div style="display:flex;gap:6px;margin:2px 0"><span>' + m[1] + '.</span><span>' + inlineMd(m[2]) + '</span></div>'); continue; }
+      if (m) { html.push('<div style="display:flex;gap:6px;margin:2px 0"><span style="color:var(--blue);font-weight:500;flex-shrink:0">' + m[1] + '.</span><span>' + inlineMd(m[2]) + '</span></div>'); continue; }
     }
 
-    // empty
-    if (line.trim() === '') { html.push('<br>'); continue; }
+    // 空行：重置 implicitList
+    if (trimmed === '') {
+      inImplicitList = false;
+      html.push('<div style="height:6px"></div>');
+      continue;
+    }
 
-    html.push('<p style="margin:2px 0">' + inlineMd(line) + '</p>');
+    // 判斷是否為「短行隱式條列」
+    // 條件：行尾無標點結束句子，且下一行也是短行，推斷為條列
+    var nextLine = lines[i+1] ? lines[i+1].trim() : '';
+    var isShortLine = trimmed.length < 80;
+    var nextIsShort = nextLine.length > 0 && nextLine.length < 80 && !nextLine.startsWith('#') && !nextLine.startsWith('-');
+    var prevIsShort = i > 0 && lines[i-1].trim().length > 0 && lines[i-1].trim().length < 80 && !lines[i-1].trim().startsWith('#');
+    var endsWithPunct = /[。.！!？?：:」』）)》]$/.test(trimmed);
+
+    if (isShortLine && !endsWithPunct && (inImplicitList || nextIsShort)) {
+      // 作為隱式條列處理
+      inImplicitList = true;
+      html.push('<div style="display:flex;gap:6px;margin:2px 0"><span style="color:var(--text3);flex-shrink:0">–</span><span>' + inlineMd(trimmed) + '</span></div>');
+    } else {
+      inImplicitList = false;
+      html.push('<p style="margin:3px 0;line-height:1.8">' + inlineMd(trimmed) + '</p>');
+    }
   }
   if (inTable) html.push('</table>');
   if (inCode) html.push('</code></pre>');
@@ -989,21 +999,16 @@ function onPaste() {
   setTimeout(function() {
     var ta = document.getElementById('paste-input');
     var text = ta.value;
-    // 壓縮連續超過兩個空行為一個空行
     text = text.replace(/\n{3,}/g, '\n\n');
-    // 確保 【 在新行開頭
+    // ensure 【 on new line
     var out = '';
     for (var i = 0; i < text.length; i++) {
-      if (text[i] === '\u3010' && i > 0 && text[i-1] !== '\n') out += '\n';
+      if (text[i] === '【' && i > 0 && text[i-1] !== '\n') out += '\n';
       out += text[i];
     }
     ta.value = out;
     onPasteInput(ta);
   }, 50);
-}
-
-function compressBlankLines(text) {
-  return text.replace(/\n{3,}/g, '\n\n');
 }
 
 function parsePreview() {
@@ -1125,7 +1130,6 @@ function quickSave() {
     keypoints:'', memory:'', evidence:'',
     auto_keywords:'', notes:'', linked_cards:[],
     review_due: null, starred: false,
-    ref_links: '',
     view_count: 0, last_viewed: null,
     created_at: new Date().toISOString()
   };
@@ -1159,7 +1163,7 @@ function saveCard() {
     keypoints: parsed.keypoints || '', memory: parsed.memory || '',
     evidence: parsed.evidence || '',
     auto_keywords: extractKeywords(allText).join(' '),
-    notes: window._draftNote || '', ref_links: '', linked_cards: [], review_due: null, starred: false,
+    notes: '', linked_cards: [], review_due: null, starred: false,
     view_count: 0, last_viewed: null,
     created_at: new Date().toISOString()
   };
@@ -1169,7 +1173,6 @@ function saveCard() {
     var idx = cards.findIndex(function(c) { return String(c.id) === String(window._replaceDraftId); });
     if (idx !== -1) { dbDelete(cards[idx].id); cards.splice(idx, 1); }
     window._replaceDraftId = null;
-    window._draftNote = null;
   }
 
   cards.unshift(card);
@@ -1302,25 +1305,12 @@ function openCard(id) {
     + ctxs.map(function(c) { return '<span class="chip ctx">' + c + '</span>'; }).join('')
     + (currentCard.case_number ? '<span class="chip case">' + currentCard.case_number + '</span>' : '');
 
-  // linked cards - 顯示雙向連結
-  var linkedIds = currentCard.linked_cards || [];
-  // 也找反向連結（其他卡片連到這張的）
-  var backLinks = cards.filter(function(c) {
-    return String(c.id) !== String(currentCard.id) &&
-      (c.linked_cards || []).some(function(l) { return String(l) === String(currentCard.id); }) &&
-      linkedIds.indexOf(String(c.id)) === -1;
-  });
-  var allLinked = linkedIds.map(function(lid) {
-    return cards.find(function(c) { return String(c.id) === String(lid); });
-  }).filter(Boolean).concat(backLinks);
-
-  document.getElementById('vm-links').innerHTML = allLinked.length
-    ? '<div style="font-size:11px;color:var(--text3);margin-bottom:4px"><i class="ti ti-link"></i> 連結卡片</div>'
-      + allLinked.map(function(lc) {
-          return '<span class="chip" style="cursor:pointer;background:var(--purple-bg);color:var(--purple-text);border:0.5px solid var(--purple-text);margin-bottom:3px" onclick="openCard(\'' + lc.id + '\')">'
-            + lc.title + '</span> ';
-        }).join('')
-    : '';
+  // linked cards
+  document.getElementById('vm-links').innerHTML = (currentCard.linked_cards || []).map(function(lid) {
+    var lc = cards.find(function(c) { return String(c.id) === String(lid); });
+    return lc ? '<span class="chip ctx" style="cursor:pointer;background:var(--purple-bg);color:var(--purple-text)" onclick="openCard(\'' + lc.id + '\')">'
+      + '<i class="ti ti-link"></i> ' + lc.title + '</span>' : '';
+  }).join('');
 
   // keywords
   var kws = (currentCard.auto_keywords || '').split(' ').filter(Boolean);
@@ -1353,21 +1343,6 @@ function openCard(id) {
     document.getElementById('notes-preview-btn').textContent = '預覽';
     showNotesPreview = false;
   }
-
-  // ref_links
-  var refArea = document.getElementById('vm-ref-area');
-  var refRendered = document.getElementById('vm-ref-rendered');
-  var refToggle = document.getElementById('vm-ref-toggle');
-  var refVal = currentCard.ref_links || '';
-  refArea.value = refVal;
-  refRendered.innerHTML = renderRefLinks(refVal);
-  refRendered.style.display = 'block';
-  refArea.style.display = 'none';
-  if (refToggle) refToggle.innerHTML = '<i class="ti ti-edit"></i> 編輯來源';
-  refEditMode = false;
-  // 草稿隱藏 ref block
-  var refBlock = document.getElementById('vm-ref-block');
-  if (refBlock) refBlock.style.display = currentCard.is_draft ? 'none' : 'block';
 
   document.getElementById('view-bg').style.display = 'flex';
 }
@@ -1433,52 +1408,6 @@ function autoSaveNotes() {
 // ═══════════════════════════════════════════════════
 // CARD ACTIONS
 // ═══════════════════════════════════════════════════
-// ═══════════════════════════════════════════════════
-// REFERENCE LINKS
-// ═══════════════════════════════════════════════════
-function renderRefLinks(text) {
-  if (!text || !text.trim()) return '<span style="font-size:12px;color:var(--text3)">尚無參考來源</span>';
-  var lines = text.split('\n').filter(function(l) { return l.trim(); });
-  return lines.map(function(line) {
-    // 自動把 URL 變成連結
-    return '<div style="margin:3px 0">' + line.replace(/(https?:\/\/[^\s]+)/g, '<a href="$1" target="_blank" rel="noopener">$1</a>') + '</div>';
-  }).join('');
-}
-
-var refEditMode = false;
-function toggleRefEdit() {
-  refEditMode = !refEditMode;
-  var rendered = document.getElementById('vm-ref-rendered');
-  var area = document.getElementById('vm-ref-area');
-  var btn = document.getElementById('vm-ref-toggle');
-  if (refEditMode) {
-    rendered.style.display = 'none';
-    area.style.display = 'block';
-    area.focus();
-    btn.innerHTML = '<i class="ti ti-check"></i> 完成';
-  } else {
-    if (currentCard) {
-      currentCard.ref_links = area.value;
-      dbSave(currentCard);
-    }
-    rendered.innerHTML = renderRefLinks(area.value);
-    rendered.style.display = 'block';
-    area.style.display = 'none';
-    btn.innerHTML = '<i class="ti ti-edit"></i> 編輯來源';
-  }
-}
-
-var refTimer = null;
-function autoSaveRef() {
-  clearTimeout(refTimer);
-  refTimer = setTimeout(function() {
-    if (!currentCard) return;
-    currentCard.ref_links = document.getElementById('vm-ref-area').value;
-    dbSave(currentCard);
-    document.getElementById('vm-ref-rendered').innerHTML = renderRefLinks(currentCard.ref_links);
-  }, 1000);
-}
-
 function copyMainPrompt() {
   var text = document.getElementById('main-prompt').textContent;
   navigator.clipboard.writeText(text).then(function() { alert('Prompt 已複製！'); });
@@ -1491,8 +1420,6 @@ function copyDraftPrompt() {
 
 function expandDraft() {
   if (!currentCard) return;
-  // 記住草稿筆記，升級後帶入
-  window._draftNote = currentCard.draft_content || '';
   closeView();
   document.getElementById('card-title').value = currentCard.title;
   document.getElementById('paste-input').value = currentCard.draft_content || '';
@@ -1563,10 +1490,6 @@ function openEdit() {
           + '<textarea class="edit-field" id="ef-' + k + '">' + (currentCard[k] || '') + '</textarea>';
       }).join('');
 
-  // ref_links
-  var editRef = document.getElementById('edit-ref-links');
-  if (editRef) editRef.value = currentCard.ref_links || '';
-
   document.getElementById('view-bg').style.display = 'none';
   document.getElementById('edit-bg').style.display = 'flex';
 }
@@ -1611,10 +1534,6 @@ async function saveEdit() {
     var allText = currentCard.title + ' ' + KEYS.map(function(k) { return currentCard[k] || ''; }).join(' ');
     currentCard.auto_keywords = extractKeywords(allText).join(' ');
   }
-
-  // ref_links
-  var editRef = document.getElementById('edit-ref-links');
-  if (editRef) currentCard.ref_links = editRef.value;
 
   await dbSave(currentCard); renderCards(); closeEdit();
 }

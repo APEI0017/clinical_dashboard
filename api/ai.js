@@ -17,7 +17,7 @@ export default async function handler(req, res) {
     let result;
     switch (provider) {
       case 'gemini':
-        result = await callGemini(model || 'gemini-1.5-flash', prompt, content);
+        result = await callGemini(model || 'gemini-2.0-flash', prompt, content);
         break;
       case 'claude':
         result = await callClaude(model || 'claude-haiku-4-5-20251001', prompt, content);
@@ -35,12 +35,12 @@ export default async function handler(req, res) {
   }
 }
 
-// ── Gemini ──
+// ── Gemini ──（改用 v1，不用 v1beta）
 async function callGemini(model, prompt, content) {
   const key = process.env.GEMINI_API_KEY;
   if (!key) throw new Error('GEMINI_API_KEY 未設定');
 
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${key}`;
+  const url = `https://generativelanguage.googleapis.com/v1/models/${model}:generateContent?key=${key}`;
   const body = {
     contents: [{ parts: [{ text: prompt + '\n\n' + content }] }],
     generationConfig: { temperature: 0.3, maxOutputTokens: 4096 }

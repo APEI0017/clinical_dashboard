@@ -365,14 +365,23 @@ a:hover{text-decoration:underline}
         <button class="dim-nav-btn" onclick="nextDim()">下一個 →</button>
       </div>
       <div class="dim-tabs" id="vm-dims"></div>
-      <div class="content-area" id="vm-dim-content"></div>
-      <div style="margin-top:1rem">
-        <div style="font-size:12px;font-weight:500;color:var(--text2);margin-bottom:4px;display:flex;align-items:center;justify-content:space-between">
-          <span><i class="ti ti-file-text"></i> OE 原始內容（可直接標記）</span>
-          <button class="btn btn-ghost btn-sm" onclick="toggleOEContent()"><i class="ti ti-chevron-down" id="oe-chevron"></i></button>
+      <div class="content-area" id="vm-dim-content" onclick="startDimEdit()" style="cursor:text" title="點擊編輯"></div>
+      <div id="vm-dim-editor" style="display:none">
+        <div class="notes-toolbar" id="dim-edit-toolbar">
+          <button class="notes-tool" onclick="dimFormat('**','**')"><b>B</b></button>
+          <button class="notes-tool" onclick="dimFormat('*','*')"><i>I</i></button>
+          <button class="notes-tool" onclick="dimFormat('## ','')">H2</button>
+          <button class="notes-tool" onclick="dimFormat('### ','')">H3</button>
+          <button class="notes-tool" onclick="dimFormat('==','==')">🟡</button>
+          <button class="notes-tool" onclick="dimFormat('- ','')">• 條列</button>
+          <button class="notes-tool" onclick="dimFormat('  - ','')">↳ 縮排</button>
+          <button class="notes-tool" onclick="dimFormat('`','`')">code</button>
+          <button class="notes-tool" style="margin-left:auto;background:var(--blue);color:#fff" onclick="saveDimEdit()">儲存</button>
+          <button class="notes-tool" onclick="cancelDimEdit()">取消</button>
         </div>
-        <div id="vm-oe-content" class="content-area" style="display:none;user-select:text"></div>
+        <textarea class="textarea" id="vm-dim-textarea" style="min-height:200px;margin-top:4px" onkeydown="if((event.ctrlKey||event.metaKey)&&event.key==='Enter'){event.preventDefault();saveDimEdit();}"></textarea>
       </div>
+
     </div>
     <div class="notes-section" id="vm-notes-section">
       <div class="notes-label"><i class="ti ti-notes"></i> 我的臨床心得</div>
@@ -663,9 +672,8 @@ function renderTagSelector(wrapId,selectedSet,prefix){
   var wrap=document.getElementById(wrapId);if(!wrap) return;
   wrap.innerHTML=tags.map(function(t){
     var active=selectedSet.has(t)?' active':'';
-    var isDef=DEFAULT_TAGS.indexOf(t)!==-1;
     return '<span class="tag'+active+'" draggable="true"'
-      +' onclick="toggleTagSel(\''+esc(t)+'\',\''+prefix+'\')"'
+      +' onclick="toggleTagSel(\''+esc(t)+'\',\''+prefix+'\''+')"'
       +' ondblclick="editTagStart(event,\''+esc(t)+'\')"'
       +' ondragstart="tagDragStart(event,\''+esc(t)+'\')"'
       +' ondragover="tagDragOver(event)"'
@@ -673,10 +681,11 @@ function renderTagSelector(wrapId,selectedSet,prefix){
       +' ondragleave="this.classList.remove(\'drag-over\')"'
       +' ondragend="tagDragEnd()"'
       +' title="雙擊編輯・拖動排序">'+t
-      +(!isDef?'<span onclick="removeTag(event,\''+esc(t)+'\')" style="margin-left:4px;opacity:.5;font-size:10px">×</span>':'')
+      +'<span onclick="removeTag(event,\''+esc(t)+'\')" style="margin-left:4px;opacity:.5;font-size:10px">×</span>'
       +'</span>';
   }).join('')+'<button class="tag-add" onclick="tagAddStart(\''+wrapId+'\')"><i class="ti ti-plus" style="font-size:11px"></i> 新增</button>';
 }
+
 
 function renderFilterTags(wrapId,filterSet,prefix){
   var wrap=document.getElementById(wrapId);if(!wrap) return;
@@ -1042,6 +1051,7 @@ function toggleStar(e,id){
 
 // ── Open card ──
 function openCard(id){
+  dimEditActive = false;
   currentCard=allCards.find(function(c){return String(c.id)===String(id);});
   if(!currentCard) return;
   currentDim=0;
@@ -1066,9 +1076,6 @@ function openCard(id){
     document.getElementById('vm-case-area').style.display='none';
     document.getElementById('vm-card-area').style.display='block';
     renderDimTabs();renderDimContent();
-    document.getElementById('vm-oe-content').innerHTML=renderMd(currentCard.oe_content||'（無 OE 原始內容）');
-    document.getElementById('vm-oe-content').style.display='none';
-    document.getElementById('oe-chevron').className='ti ti-chevron-down';
   }
   document.getElementById('vm-notes').value=currentCard.notes||'';
   document.getElementById('vm-notes').style.display='block';
@@ -1094,19 +1101,76 @@ function renderViewLinks(){
     :'';
 }
 
-function toggleOEContent(){
-  var el=document.getElementById('vm-oe-content'),chev=document.getElementById('oe-chevron');
-  var show=el.style.display==='none';
-  el.style.display=show?'block':'none';
-  chev.className=show?'ti ti-chevron-up':'ti ti-chevron-down';
-  if(show) activeContentEl=el;
+// toggleOEContent removed
+// ── Dim inline edit ──
+var dimEditActive = false;
+
+function startDimEdit(){
+  if(dimEditActive) return;
+  if(!currentCard || currentCard.type !== 'knowledge') return;
+  dimEditActive = true;
+  var raw = currentCard[KEYS[currentDim]] || '';
+  document.getElementById('vm-dim-content').style.display = 'none';
+  var editor = document.getElementById('vm-dim-editor');
+  var ta = document.getElementById('vm-dim-textarea');
+  ta.value = raw;
+  editor.style.display = 'block';
+  ta.focus();
+  ta.style.height = 'auto';
+  ta.style.height = Math.max(ta.scrollHeight, 200) + 'px';
 }
+
+function dimFormat(before, after){
+  var ta = document.getElementById('vm-dim-textarea');
+  var s = ta.selectionStart, e = ta.selectionEnd;
+  var sel = ta.value.slice(s, e) || '文字';
+  ta.value = ta.value.slice(0,s) + before + sel + after + ta.value.slice(e);
+  ta.focus();
+  ta.setSelectionRange(s + before.length, s + before.length + sel.length);
+}
+
+function saveDimEdit(){
+  if(!currentCard) return;
+  var ta = document.getElementById('vm-dim-textarea');
+  currentCard[KEYS[currentDim]] = ta.value;
+  // 更新 keywords
+  currentCard.auto_keywords = extractKeywords(
+    currentCard.title + ' ' + KEYS.map(function(k){ return currentCard[k]||''; }).join(' ')
+  ).join(' ');
+  dbSave(currentCard);
+  renderKnowledgeCards();
+  closeDimEditor();
+  showToast('已儲存');
+}
+
+function cancelDimEdit(){
+  closeDimEditor();
+}
+
+function closeDimEditor(){
+  dimEditActive = false;
+  document.getElementById('vm-dim-editor').style.display = 'none';
+  document.getElementById('vm-dim-content').style.display = 'block';
+  renderDimContent();
+}
+
 function renderDimTabs(){document.getElementById('vm-dims').innerHTML=DIMS.map(function(d,i){return'<button class="dim-tab'+(i===currentDim?' active':'')+'" onclick="switchDim('+i+')">'+d+'</button>';}).join('');}
-function switchDim(i){currentDim=i;renderDimTabs();renderDimContent();}
+function switchDim(i){
+  if(dimEditActive) saveDimEdit();
+  currentDim=i;renderDimTabs();renderDimContent();
+  dimEditActive=false;
+  document.getElementById('vm-dim-editor').style.display='none';
+  document.getElementById('vm-dim-content').style.display='block';
+}
 function prevDim(){if(currentDim>0)switchDim(currentDim-1);}
 function nextDim(){if(currentDim<DIMS.length-1)switchDim(currentDim+1);}
 function renderDimContent(){if(!currentCard) return;document.getElementById('vm-dim-content').innerHTML=renderMd(currentCard[KEYS[currentDim]]||'（無資料）');}
-function closeView(){document.getElementById('view-bg').style.display='none';checkReview();}
+function closeView(){
+  if(dimEditActive) saveDimEdit();
+  dimEditActive=false;
+  document.getElementById('view-bg').style.display='none';
+  checkReview();
+}
 
 // ── Notes ──
 function insertNote(before,after){

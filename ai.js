@@ -17,7 +17,7 @@ export default async function handler(req, res) {
     let result;
     switch (provider) {
       case 'gemini':
-        result = await callGemini(model || 'gemini-2.0-flash', prompt, content);
+        result = await callGemini(model || 'gemini-2.5-flash-lite', prompt, content);
         break;
       case 'claude':
         result = await callClaude(model || 'claude-haiku-4-5-20251001', prompt, content);

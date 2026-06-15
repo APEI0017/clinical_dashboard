@@ -163,6 +163,7 @@ a:hover{text-decoration:underline}
 /* Toast */
 .toast{position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%);background:rgba(26,26,26,0.9);color:#fff;font-size:13px;padding:8px 18px;border-radius:20px;z-index:999;pointer-events:none;opacity:0;transition:opacity .2s;white-space:nowrap}
 .toast.show{opacity:1}
+.toast.error{background:rgba(163,45,45,0.95)}
 </style>
 </head>
 <body>
@@ -201,6 +202,8 @@ a:hover{text-decoration:underline}
       <div class="export-wrap">
         <button class="btn btn-ghost btn-sm" onclick="toggleExportMenu()"><i class="ti ti-download"></i> 匯出</button>
         <div class="export-menu" id="export-menu" style="display:none">
+          <button onclick="doExport('all','csv')"><i class="ti ti-table"></i> 全部（CSV / Google Sheets）</button>
+          <button onclick="doExport('filtered','csv')"><i class="ti ti-filter"></i> 篩選結果（CSV）</button>
           <button onclick="doExport('all','md')"><i class="ti ti-markdown"></i> 全部（Markdown）</button>
           <button onclick="doExport('filtered','md')"><i class="ti ti-filter"></i> 篩選結果（Markdown）</button>
           <button onclick="doExport('all','json')"><i class="ti ti-file-type-js"></i> 全部（JSON）</button>
@@ -273,6 +276,7 @@ a:hover{text-decoration:underline}
         <input class="search-input" id="all-search" placeholder="搜尋所有記錄…" oninput="renderAll()"/>
       </div>
       <div id="all-filter-tags" style="display:flex;gap:5px;flex-wrap:wrap"></div>
+      <button class="btn btn-ghost btn-sm" id="star-filter-all" onclick="toggleStarFilter('all')" title="只顯示星號記錄" style="font-size:16px;padding:4px 8px">☆</button>
       <span id="all-count" style="font-size:12px;color:var(--text3);white-space:nowrap"></span>
     </div>
     <div id="all-grid" class="cards-grid"></div>
@@ -305,6 +309,7 @@ a:hover{text-decoration:underline}
     <div class="top-bar">
       <div class="search-wrap"><i class="ti ti-search"></i><input class="search-input" id="case-search" placeholder="搜尋個案…" oninput="renderCases()"/></div>
       <div id="case-filter-tags" style="display:flex;gap:5px;flex-wrap:wrap"></div>
+      <button class="btn btn-ghost btn-sm" id="star-filter-case" onclick="toggleStarFilter('cases')" title="只顯示星號記錄" style="font-size:16px;padding:4px 8px">☆</button>
       <span id="case-count" style="font-size:12px;color:var(--text3);white-space:nowrap"></span>
     </div>
     <div id="cases-grid" class="cards-grid"></div>
@@ -356,6 +361,7 @@ a:hover{text-decoration:underline}
     <div class="top-bar">
       <div class="search-wrap"><i class="ti ti-search"></i><input class="search-input" id="card-search" placeholder="搜尋知識卡片…" oninput="renderKnowledgeCards()"/></div>
       <div id="card-filter-tags" style="display:flex;gap:5px;flex-wrap:wrap"></div>
+      <button class="btn btn-ghost btn-sm" id="star-filter-cards" onclick="toggleStarFilter('cards')" title="只顯示星號卡片" style="font-size:16px;padding:4px 8px">☆</button>
       <span id="card-count" style="font-size:12px;color:var(--text3);white-space:nowrap"></span>
     </div>
     <div id="cards-grid" class="cards-grid"></div>
@@ -502,6 +508,7 @@ var caseSelectedTags = new Set(), caseSelectedImp = 'red';
 var cardSelectedTags = new Set(), cardSelectedImp = 'red';
 var editSelectedTags = new Set(), editSelectedImp = 'red';
 var filterCaseTags = new Set(), filterCardTags = new Set();
+var filterStarred = false;
 var dragSrcTag = null;
 var editLinkedIds = new Set();
 var newCardLinkedIds = new Set();
@@ -513,11 +520,15 @@ function saveTags(){setCfg('tags_v2',JSON.stringify(tags));}
 function loadImpLevels(){var s=cfg('imp_v2');if(s)impLevels=JSON.parse(s);}
 function saveImpLevels(){setCfg('imp_v2',JSON.stringify(impLevels));}
 
-function showToast(msg){
+function showToast(msg, type){
   var t=document.getElementById('toast');
-  t.textContent=msg;t.classList.add('show');
-  setTimeout(function(){t.classList.remove('show');},1500);
+  t.textContent=msg;
+  t.classList.remove('error');
+  if(type==='error') t.classList.add('error');
+  t.classList.add('show');
+  setTimeout(function(){t.classList.remove('show','error');}, type==='error'?3000:1500);
 }
+function showError(msg){ showToast(msg,'error'); }
 
 function initSupabase(){
   var url=cfg('sb_url'),key=cfg('sb_key');
@@ -876,17 +887,29 @@ function addImpLevel(wrapId,prefix){
 // ── DB ──
 async function loadAllCards(){
   if(!SB_URL||!SB_KEY){renderCases();renderKnowledgeCards();return;}
-  try{allCards=await sbFetch('cards?order=created_at.desc');setConn(true);}
-  catch(e){setConn(false);var s=cfg('cards_v4');if(s){try{allCards=JSON.parse(s);}catch(e2){}}}
+  try{
+    allCards=await sbFetch('cards?order=created_at.desc');
+    setConn(true);
+  } catch(e){
+    setConn(false);
+    showError('無法連線至資料庫，使用本地快取');
+    var s=cfg('cards_v4');if(s){try{allCards=JSON.parse(s);}catch(e2){}}
+  }
   checkReview();renderCases();renderKnowledgeCards();if(currentTab==='all')renderAll();
 }
+
+
 function setConn(ok){document.getElementById('conn-dot').className='conn-dot '+(ok?'ok':'err');document.getElementById('conn-text').textContent=ok?'已連線':'離線模式';}
 async function dbSave(card){
   try{
     var id=card.id,rest=Object.assign({},card);delete rest.id;
     if(id&&!String(id).startsWith('local_')){await sbFetch('cards?id=eq.'+id,{method:'PATCH',body:JSON.stringify(rest)});}
     else{var r=await sbFetch('cards',{method:'POST',body:JSON.stringify(rest)});if(r&&r[0])card.id=r[0].id;}
-  }catch(e){console.error('dbSave:',e.message);try{setCfg('cards_v4',JSON.stringify(allCards));}catch(e2){}}
+  }catch(e){
+    console.error('dbSave:',e.message);
+    showError('儲存失敗：'+e.message.slice(0,60));
+    try{setCfg('cards_v4',JSON.stringify(allCards));}catch(e2){}
+  }
 }
 async function dbDelete(id){try{await sbFetch('cards?id=eq.'+id,{method:'DELETE'});}catch(e){}}
 
@@ -954,7 +977,16 @@ async function aiOrganize(){
     aiResult=parseAIResult(data.result);
     showAIPreview();
     document.getElementById('save-card-btn').style.display='inline-flex';
-  }catch(e){alert('AI 整理失敗：'+e.message);}
+  }catch(e){
+    var msg = e.message;
+    var hint = '';
+    if(msg.includes('429')) hint = '\nAPI 配額已用完，請明天再試或更換 API Key';
+    else if(msg.includes('404')) hint = '\nModel 名稱錯誤，請在設定頁更新 Model 名稱';
+    else if(msg.includes('API_KEY')) hint = '\nAPI Key 未設定或無效';
+    else if(msg.includes('Failed to fetch')) hint = '\n網路連線失敗，請檢查網路';
+    showError('AI 整理失敗' + hint);
+    console.error('AI error:', msg);
+  }
   loading.classList.remove('show');
 }
 function parseAIResult(text){
@@ -1026,6 +1058,7 @@ function showReviewCards(){switchTab('cards');document.getElementById('card-sear
 function getAllFiltered(){
   var s = document.getElementById('all-search') ? document.getElementById('all-search').value.toLowerCase().trim() : '';
   return allCards.filter(function(c){
+    if(filterStarred && !c.starred) return false;
     if(!s) return true;
     var searchable = [c.title, c.case_number, c.content,
       c.diagnosis, c.management, c.workup, c.pearl,
@@ -1080,10 +1113,26 @@ function renderAll(){
   }).join('');
 }
 
+function toggleStarFilter(tab){
+  filterStarred = !filterStarred;
+  var ids = ['star-filter-case','star-filter-cards','star-filter-all'];
+  ids.forEach(function(id){
+    var el = document.getElementById(id);
+    if(el){
+      el.textContent = filterStarred ? '★' : '☆';
+      el.style.color = filterStarred ? '#EF9F27' : '';
+    }
+  });
+  if(tab==='cases') renderCases();
+  else if(tab==='cards') renderKnowledgeCards();
+  else renderAll();
+}
+
 function getCasesFiltered(){
   var s=document.getElementById('case-search').value.toLowerCase().trim();
   return allCards.filter(function(c){
     if(c.type!=='case') return false;
+    if(filterStarred && !c.starred) return false;
     if(filterCaseTags.size){var cc=Array.isArray(c.contexts)?c.contexts:[];if(![].some.call(filterCaseTags,function(ft){return cc.indexOf(ft)!==-1;})) return false;}
     if(s){var searchable=[c.title,c.case_number,c.content,c.notes,c.auto_keywords].filter(Boolean).join(' ').toLowerCase();if(!s.split(/\s+/).every(function(t){return searchable.includes(t);})) return false;}
     return true;
@@ -1094,6 +1143,7 @@ function getCardsFiltered(){
   var now=new Date(),cutoff=new Date(now-REVIEW_DAYS*86400000);
   return allCards.filter(function(c){
     if(c.type==='case') return false;
+    if(filterStarred && !c.starred) return false;
     if(filterCardTags.size){var cc=Array.isArray(c.contexts)?c.contexts:[];if(![].some.call(filterCardTags,function(ft){return cc.indexOf(ft)!==-1;})) return false;}
     if(s==='待複習'){
       if(c.review_due&&new Date(c.review_due)<=now) return true;
@@ -1163,8 +1213,12 @@ function renderKnowledgeCards(){
 function toggleStar(e,id){
   e.stopPropagation();
   var c=allCards.find(function(x){return String(x.id)===String(id);});
-  if(!c) return;c.starred=!c.starred;dbSave(c);
-  if(currentTab==='cases') renderCases();else renderKnowledgeCards();
+  if(!c) return;
+  c.starred=!c.starred;
+  dbSave(c);
+  if(currentTab==='cases') renderCases();
+  else if(currentTab==='cards') renderKnowledgeCards();
+  else renderAll();
 }
 
 // ── Open card ──
@@ -1583,26 +1637,70 @@ function toggleExportMenu(){
   m.style.display=m.style.display==='none'?'block':'none';
   if(m.style.display==='block') setTimeout(function(){document.addEventListener('click',function h(){m.style.display='none';document.removeEventListener('click',h);});},50);
 }
+function csvEscape(val){
+  if(val===null||val===undefined) return '';
+  var s=String(val).replace(/"/g,'""');
+  if(s.includes(',')||s.includes('"')||s.includes('\n')) return '"'+s+'"';
+  return s;
+}
+
 function doExport(scope,fmt){
   document.getElementById('export-menu').style.display='none';
-  var data=scope==='filtered'?(currentTab==='cases'?getCasesFiltered():getCardsFiltered()):allCards;
-  var content,ext;
-  if(fmt==='json'){content=JSON.stringify(data,null,2);ext='json';}
-  else{
-    content=data.map(function(c){
-      if(c.type==='case') return'# [個案] '+c.title+(c.case_number?' ['+c.case_number+']':'')+'\n\n'+(c.content||'')+'\n\n'+(c.notes?'## 筆記\n'+c.notes+'\n\n':'')+'---\n';
-      return'# '+c.title+'\n\n**標籤：** '+(Array.isArray(c.contexts)?c.contexts.join(', '):'—')+'\n\n'
+  var data=scope==='filtered'
+    ?(currentTab==='cases'?getCasesFiltered():currentTab==='cards'?getCardsFiltered():getAllFiltered())
+    :allCards;
+  var fileContent,ext,mime;
+
+  if(fmt==='csv'){
+    var headers=['日期','類型','標題','病例號','標籤','重要程度','診斷','處置','Work-up','臨床價值','核心知識點','記憶法','必考延伸','臨床記錄','臨床心得','參考來源'];
+    var rows=[headers.map(csvEscape).join(',')];
+    data.forEach(function(c){
+      var impLv=impLevels.find(function(x){return x.id===(c.importance||'gray');});
+      var row=[
+        (c.created_at||'').slice(0,10),
+        c.type==='case'?'個案':'知識卡片',
+        c.title||'',
+        c.case_number||'',
+        Array.isArray(c.contexts)?c.contexts.join('、'):'',
+        impLv?impLv.label:'',
+        c.diagnosis||'',
+        c.management||'',
+        c.workup||'',
+        c.pearl||'',
+        c.keypoints||'',
+        c.memory||'',
+        c.evidence||'',
+        c.content||'',
+        c.notes||'',
+        c.ref_links||''
+      ];
+      rows.push(row.map(csvEscape).join(','));
+    });
+    fileContent='\uFEFF'+rows.join('\n');
+    ext='csv';mime='text/csv;charset=utf-8';
+  } else if(fmt==='json'){
+    fileContent=JSON.stringify(data,null,2);ext='json';mime='text/plain;charset=utf-8';
+  } else {
+    fileContent=data.map(function(c){
+      var base='# '+(c.type==='case'?'[個案] ':'')+c.title+(c.case_number?' ['+c.case_number+']':'')+'\n\n';
+      if(c.type==='case'){
+        return base+(c.content||'')+(c.notes?'\n\n## 臨床心得\n'+c.notes:'')+'\n\n---\n';
+      }
+      return base+'**標籤：** '+(Array.isArray(c.contexts)?c.contexts.join(', '):'—')+'\n\n'
         +DIMS.map(function(d,i){return'## '+d+'\n\n'+(c[KEYS[i]]||'—');}).join('\n\n')
-        +(c.notes?'\n\n## 我的筆記\n\n'+c.notes:'')
+        +(c.notes?'\n\n## 臨床心得\n\n'+c.notes:'')
         +(c.ref_links?'\n\n## 參考來源\n\n'+c.ref_links:'')+'\n\n---\n';
-    }).join('\n');ext='md';
+    }).join('\n');ext='md';mime='text/plain;charset=utf-8';
   }
-  var blob=new Blob([content],{type:'text/plain;charset=utf-8'});
+
+  var blob=new Blob([fileContent],{type:mime});
   var url=URL.createObjectURL(blob);
-  var a=document.createElement('a');a.href=url;a.download='clinical_'+new Date().toISOString().slice(0,10)+'.'+ext;
+  var a=document.createElement('a');a.href=url;
+  a.download='clinical_'+new Date().toISOString().slice(0,10)+'.'+ext;
   a.click();URL.revokeObjectURL(url);
   showToast('匯出完成');
 }
+
 
 // ── Boot ──
 (function boot(){

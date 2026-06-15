@@ -7,16 +7,16 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css">
 <style>
-:root {
-  --bg:#fff; --bg2:#f8f8f7; --bg3:#f1f0eb;
-  --text:#1a1a1a; --text2:#6b6b6b; --text3:#9b9b9b;
-  --border:rgba(0,0,0,0.08); --border2:rgba(0,0,0,0.15);
-  --blue:#185FA5; --blue-dark:#0C447C; --blue-bg:#E6F1FB; --blue-text:#0C447C;
-  --green:#1A7C4A; --green-bg:#E1F5EE; --green-text:#085041;
-  --amber:#BA7517; --amber-bg:#FAEEDA; --amber-text:#633806;
-  --red:#A32D2D; --red-bg:#FCEBEB;
-  --purple:#3C3489; --purple-bg:#EEEDFE;
-  --radius:8px; --radius-lg:14px;
+:root{
+  --bg:#fff;--bg2:#f8f8f7;--bg3:#f1f0eb;
+  --text:#1a1a1a;--text2:#6b6b6b;--text3:#9b9b9b;
+  --border:rgba(0,0,0,0.08);--border2:rgba(0,0,0,0.15);
+  --blue:#185FA5;--blue-dark:#0C447C;--blue-bg:#E6F1FB;--blue-text:#0C447C;
+  --green:#1A7C4A;--green-bg:#E1F5EE;--green-text:#085041;
+  --amber:#BA7517;--amber-bg:#FAEEDA;--amber-text:#633806;
+  --red:#A32D2D;--red-bg:#FCEBEB;
+  --purple:#3C3489;--purple-bg:#EEEDFE;
+  --radius:8px;--radius-lg:14px;
   --shadow:0 1px 3px rgba(0,0,0,0.06);
 }
 *{box-sizing:border-box;margin:0;padding:0}
@@ -24,8 +24,6 @@ body{font-family:'Inter',sans-serif;background:var(--bg3);color:var(--text);min-
 input,select,textarea,button{font-family:'Inter',sans-serif}
 a{color:var(--blue);text-decoration:none}
 a:hover{text-decoration:underline}
-
-/* ── Layout ── */
 .app{max-width:1100px;margin:0 auto;padding:1.5rem}
 .header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem;flex-wrap:wrap;gap:8px}
 .header h1{font-size:17px;font-weight:600;letter-spacing:-.3px}
@@ -34,15 +32,10 @@ a:hover{text-decoration:underline}
 .user-chip img{width:20px;height:20px;border-radius:50%}
 .conn-dot{width:7px;height:7px;border-radius:50%;display:inline-block;margin-right:4px}
 .conn-dot.ok{background:#22c55e}.conn-dot.err{background:var(--red)}
-
-/* ── Tabs ── */
 .tabs{display:flex;gap:4px;margin-bottom:1.25rem;background:var(--bg);border-radius:var(--radius-lg);padding:4px;border:0.5px solid var(--border);box-shadow:var(--shadow)}
 .tab{flex:1;text-align:center;padding:8px;border-radius:var(--radius);font-size:13px;font-weight:500;cursor:pointer;border:none;background:none;color:var(--text2);transition:all .15s}
 .tab.active{background:var(--blue);color:#fff}
-.tab-panel{display:none}
-.tab-panel.active{display:block}
-
-/* ── Buttons ── */
+.tab-panel{display:none}.tab-panel.active{display:block}
 .btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:var(--radius);font-size:13px;font-weight:500;cursor:pointer;border:none;white-space:nowrap;transition:all .15s}
 .btn-primary{background:var(--blue);color:#fff}.btn-primary:hover{background:var(--blue-dark)}
 .btn-outline{background:none;border:0.5px solid var(--border2);color:var(--text2)}.btn-outline:hover{background:var(--bg2)}
@@ -50,8 +43,6 @@ a:hover{text-decoration:underline}
 .btn-danger{background:none;border:0.5px solid var(--red);color:var(--red)}.btn-danger:hover{background:var(--red-bg)}
 .btn-green{background:var(--green);color:#fff}.btn-green:hover{filter:brightness(.9)}
 .btn-sm{padding:5px 10px;font-size:12px}
-
-/* ── Section accordion ── */
 .section{background:var(--bg);border:0.5px solid var(--border);border-radius:var(--radius-lg);margin-bottom:.75rem;overflow:hidden;box-shadow:var(--shadow)}
 .section-hd{display:flex;align-items:center;justify-content:space-between;padding:.875rem 1.25rem;cursor:pointer;user-select:none}
 .section-hd:hover{background:var(--bg2)}
@@ -62,39 +53,25 @@ a:hover{text-decoration:underline}
 .chevron.open{transform:rotate(180deg)}
 .section-bd{max-height:0;overflow:hidden;transition:max-height .3s ease,padding .2s;padding:0 1.25rem}
 .section-bd.open{max-height:5000px;padding:0 1.25rem 1.25rem}
-
-/* ── Forms ── */
 .field-label{font-size:11px;color:var(--text3);font-weight:500;text-transform:uppercase;letter-spacing:.3px;display:block;margin-bottom:5px}
 .plain-input{width:100%;font-size:13px;padding:7px 10px;border:0.5px solid var(--border2);border-radius:var(--radius);background:var(--bg);color:var(--text);outline:none}
 .plain-input:focus{border-color:var(--blue)}
 .textarea{width:100%;font-size:13px;padding:10px;border:0.5px solid var(--border2);border-radius:var(--radius);background:var(--bg);color:var(--text);resize:vertical;min-height:80px;outline:none;line-height:1.7}
 .textarea:focus{border-color:var(--blue)}
-.textarea-auto{resize:none;overflow:hidden;min-height:36px;max-height:400px}
-
-/* ── Tags ── */
 .tags-wrap{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
 .tag{display:inline-flex;align-items:center;gap:4px;font-size:12px;padding:4px 10px;border-radius:20px;border:0.5px solid var(--border2);background:var(--bg2);color:var(--text2);cursor:pointer;user-select:none;transition:all .15s}
 .tag:hover{border-color:var(--blue);color:var(--blue)}
 .tag.active{background:var(--blue);color:#fff;border-color:var(--blue)}
-.tag.dragging{opacity:.4}
-.tag.drag-over{border-color:var(--blue);transform:scale(1.05)}
+.tag.dragging{opacity:.4}.tag.drag-over{border-color:var(--blue);transform:scale(1.05)}
 .tag-add{display:inline-flex;align-items:center;gap:4px;font-size:12px;padding:4px 10px;border-radius:20px;border:0.5px dashed var(--border2);color:var(--text3);cursor:pointer;background:none}
 .tag-add:hover{border-color:var(--blue);color:var(--blue)}
 .tag-edit-input{font-size:12px;padding:3px 8px;border:0.5px solid var(--blue);border-radius:20px;outline:none;width:90px;background:var(--bg)}
-
-/* ── Importance dots ── */
 .imp-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0;display:inline-block}
-
-/* ── Quick bar ── */
 .quick-bar{background:var(--bg);border:0.5px solid var(--border);border-radius:var(--radius-lg);padding:.75rem 1rem;margin-bottom:.75rem;display:flex;gap:8px;align-items:flex-end;box-shadow:var(--shadow)}
-
-/* ── Cards grid ── */
 .cards-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1rem}
 .card{background:var(--bg);border:0.5px solid var(--border);border-radius:var(--radius-lg);padding:1rem 1.25rem;cursor:pointer;transition:all .15s;position:relative;box-shadow:var(--shadow)}
 .card:hover{border-color:var(--border2);box-shadow:0 4px 12px rgba(0,0,0,.08);transform:translateY(-1px)}
-.card.draft{border-style:dashed;border-color:var(--amber)}
-.card.imp-red{border-left:3px solid var(--red)}
-.card.imp-amber{border-left:3px solid var(--amber)}
+.card.imp-red{border-left:3px solid var(--red)}.card.imp-amber{border-left:3px solid var(--amber)}
 .card-hd{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:6px;gap:8px}
 .card-title{font-size:14px;font-weight:500;line-height:1.4;flex:1}
 .card-actions{display:flex;gap:2px;flex-shrink:0}
@@ -105,128 +82,97 @@ a:hover{text-decoration:underline}
 .chip{font-size:11px;padding:2px 7px;border-radius:20px}
 .chip-ctx{background:var(--bg2);color:var(--text2);border:0.5px solid var(--border)}
 .chip-case{background:var(--purple-bg);color:var(--purple);font-family:monospace}
-.chip-imp{font-size:10px;color:var(--text3)}
 .chip-link{background:var(--purple-bg);color:var(--purple);border:0.5px solid var(--purple);cursor:pointer}
 .card-preview{font-size:12px;color:var(--text2);line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .card-footer{font-size:11px;color:var(--text3);margin-top:7px;display:flex;align-items:center;justify-content:space-between}
 .review-badge{position:absolute;top:10px;right:10px;font-size:10px;background:var(--amber-bg);color:var(--amber-text);padding:2px 7px;border-radius:20px;font-weight:500}
-.draft-badge{font-size:10px;background:var(--amber-bg);color:var(--amber-text);padding:2px 7px;border-radius:20px;font-weight:500;display:inline-flex;align-items:center;gap:3px;margin-bottom:4px}
-
-/* ── Review banner ── */
 .review-banner{background:var(--amber-bg);border:0.5px solid var(--amber);border-radius:var(--radius);padding:.75rem 1rem;margin-bottom:.75rem;display:flex;align-items:center;gap:10px;cursor:pointer}
 .review-banner p{font-size:13px;color:var(--amber-text);flex:1}
-
-/* ── Top bar ── */
 .top-bar{display:flex;gap:8px;margin-bottom:1.25rem;flex-wrap:wrap;align-items:center}
 .search-wrap{flex:1;min-width:180px;position:relative}
 .search-wrap i{position:absolute;left:10px;top:50%;transform:translateY(-50%);font-size:15px;color:var(--text3);pointer-events:none}
 .search-input{width:100%;padding:8px 10px 8px 32px;font-size:13px;border:0.5px solid var(--border2);border-radius:var(--radius);background:var(--bg);color:var(--text);outline:none}
 .search-input:focus{border-color:var(--blue)}
-
-/* ── Empty state ── */
 .empty-state{text-align:center;padding:4rem 1rem;color:var(--text3)}
 .empty-state i{font-size:36px;display:block;margin-bottom:10px}
-
-/* ── Modal ── */
 .modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:100;display:flex;align-items:flex-start;justify-content:center;padding:2rem 1rem;overflow-y:auto;backdrop-filter:blur(2px)}
 .modal{background:var(--bg);border-radius:var(--radius-lg);width:100%;max-width:780px;padding:1.5rem;position:relative;box-shadow:0 20px 60px rgba(0,0,0,.15)}
 .modal-close{position:absolute;top:1rem;right:1rem;background:none;border:none;font-size:20px;cursor:pointer;color:var(--text3);width:28px;height:28px;display:flex;align-items:center;justify-content:center;border-radius:var(--radius)}
 .modal-close:hover{background:var(--bg2)}
 .modal h2{font-size:17px;font-weight:600;margin-bottom:.5rem;padding-right:2rem;line-height:1.3}
-
-/* ── Dim tabs ── */
 .dim-tabs{display:flex;gap:4px;flex-wrap:wrap;margin:1rem 0 .75rem}
 .dim-tab{font-size:12px;padding:4px 10px;border-radius:20px;border:0.5px solid var(--border2);background:var(--bg2);color:var(--text2);cursor:pointer;transition:all .15s}
 .dim-tab.active{background:var(--blue);color:#fff;border-color:var(--blue)}
 .dim-nav{display:flex;gap:6px;margin-bottom:6px}
 .dim-nav-btn{background:none;border:0.5px solid var(--border2);padding:3px 10px;border-radius:var(--radius);cursor:pointer;font-size:12px;color:var(--text2)}
 .dim-nav-btn:hover{background:var(--bg2)}
-
-/* ── Content area (dim + case notes) ── */
 .content-area{background:var(--bg2);border-radius:var(--radius);padding:1rem;min-height:120px;font-size:13px;line-height:1.9;position:relative}
-.content-area strong{font-weight:600}
-.content-area em{font-style:italic}
+.content-area strong{font-weight:600}.content-area em{font-style:italic}
 .content-area mark{background:#FFF176;padding:0 2px;border-radius:2px}
 .content-area code{background:var(--bg3);padding:1px 4px;border-radius:3px;font-family:monospace;font-size:12px}
 .content-area pre{background:var(--bg3);padding:8px 10px;border-radius:var(--radius);font-family:monospace;font-size:12px;overflow-x:auto;margin:4px 0;white-space:pre-wrap}
 .content-area table{border-collapse:collapse;width:100%;font-size:12px;margin:6px 0}
 .content-area th{background:var(--bg3);font-weight:600;padding:4px 8px;border:0.5px solid var(--border2)}
 .content-area td{padding:4px 8px;border:0.5px solid var(--border2)}
-.content-area .cb{display:flex;align-items:center;gap:6px;margin:2px 0}
 .content-area h1{font-size:15px;font-weight:600;margin:10px 0 4px}
 .content-area h2{font-size:13px;font-weight:600;margin:10px 0 3px;padding-bottom:3px;border-bottom:1px solid var(--border)}
 .content-area h3{font-size:12px;font-weight:600;color:var(--text2);margin:8px 0 3px;text-transform:uppercase;letter-spacing:.3px}
 .source-badge{display:inline-block;font-size:10px;padding:1px 6px;border-radius:var(--radius);margin-left:3px;font-weight:500}
 .badge-orig{background:var(--green-bg);color:var(--green-text)}
 .badge-ai{background:var(--blue-bg);color:var(--blue-text)}
-
-/* ── Floating toolbar (selection) ── */
-.float-toolbar{position:fixed;z-index:200;background:var(--text);border-radius:var(--radius);padding:4px 6px;display:flex;gap:2px;box-shadow:0 4px 12px rgba(0,0,0,.2);pointer-events:auto}
-.float-toolbar button{background:none;border:none;color:#fff;cursor:pointer;padding:4px 7px;border-radius:5px;font-size:13px;font-weight:500;transition:background .15s}
+.float-toolbar{position:fixed;z-index:200;background:var(--text);border-radius:var(--radius);padding:4px 6px;display:flex;gap:2px;box-shadow:0 4px 12px rgba(0,0,0,.2)}
+.float-toolbar button{background:none;border:none;color:#fff;cursor:pointer;padding:4px 7px;border-radius:5px;font-size:13px;font-weight:500}
 .float-toolbar button:hover{background:rgba(255,255,255,.15)}
-
-/* ── Notes ── */
 .notes-section{margin-top:1rem}
 .notes-label{font-size:12px;font-weight:500;color:var(--text2);margin-bottom:4px;display:flex;align-items:center;gap:6px}
 .notes-toolbar{display:flex;gap:4px;margin-bottom:4px}
 .notes-tool{background:none;border:0.5px solid var(--border2);padding:3px 8px;border-radius:var(--radius);cursor:pointer;font-size:12px;color:var(--text2)}
 .notes-tool:hover{background:var(--bg2)}
 .notes-preview{background:var(--bg2);border-radius:var(--radius);padding:10px;font-size:13px;line-height:1.9;min-height:60px;display:none}
-.notes-preview strong{font-weight:600}
-.notes-preview em{font-style:italic}
+.notes-preview strong{font-weight:600}.notes-preview em{font-style:italic}
 .notes-preview mark{background:#FFF176;padding:0 2px;border-radius:2px}
-
-/* ── Ref links ── */
 .ref-section{margin-top:1rem}
 .ref-label{font-size:12px;font-weight:500;color:var(--text2);margin-bottom:4px;display:flex;align-items:center;gap:6px}
 .ref-rendered a{color:var(--blue);word-break:break-all}
 .ref-rendered div{font-size:13px;margin:3px 0;line-height:1.7}
-
-/* ── Edit fields ── */
 .edit-field{width:100%;font-size:13px;padding:8px 10px;border:0.5px solid var(--border2);border-radius:var(--radius);background:var(--bg);color:var(--text);resize:vertical;min-height:80px;outline:none;line-height:1.6;margin-bottom:4px}
 .edit-field:focus{border-color:var(--blue)}
-.link-picker{background:var(--bg2);border-radius:var(--radius);padding:.75rem;max-height:180px;overflow-y:auto;margin-top:4px}
+.link-picker{background:var(--bg2);border-radius:var(--radius);padding:.75rem;max-height:240px;overflow-y:auto;margin-top:4px}
+.link-search{width:100%;font-size:13px;padding:6px 10px;border:0.5px solid var(--border2);border-radius:var(--radius);background:var(--bg);color:var(--text);outline:none;margin-bottom:8px}
+.link-search:focus{border-color:var(--blue)}
 .link-item{display:flex;align-items:center;gap:8px;padding:4px 0;font-size:13px}
-
-/* ── AI loading ── */
 .ai-loading{display:none;align-items:center;gap:8px;font-size:13px;color:var(--text2);padding:8px 0}
 .ai-loading.show{display:flex}
 .spinner{width:16px;height:16px;border:2px solid var(--border2);border-top-color:var(--blue);border-radius:50%;animation:spin .7s linear infinite;flex-shrink:0}
 @keyframes spin{to{transform:rotate(360deg)}}
-
-/* ── Settings ── */
 .pw-wrap{position:relative;display:flex;align-items:center}
 .pw-wrap input{width:100%;font-size:13px;padding:7px 36px 7px 10px;border:0.5px solid var(--border2);border-radius:var(--radius);background:var(--bg);color:var(--text);outline:none}
 .pw-toggle{position:absolute;right:8px;background:none;border:none;cursor:pointer;font-size:16px;color:var(--text3);padding:0}
 .select-input{width:100%;font-size:13px;padding:7px 10px;border:0.5px solid var(--border2);border-radius:var(--radius);background:var(--bg);color:var(--text);outline:none;cursor:pointer}
-
-/* ── Export ── */
 .export-wrap{position:relative}
-.export-menu{position:absolute;right:0;top:calc(100%+4px);background:var(--bg);border:0.5px solid var(--border2);border-radius:var(--radius);z-index:10;min-width:200px;overflow:hidden;box-shadow:0 4px 16px rgba(0,0,0,.1)}
+.export-menu{position:absolute;right:0;top:calc(100% + 4px);background:var(--bg);border:0.5px solid var(--border2);border-radius:var(--radius);z-index:10;min-width:200px;overflow:hidden;box-shadow:0 4px 16px rgba(0,0,0,.1)}
 .export-menu button{display:block;width:100%;text-align:left;padding:9px 14px;font-size:13px;background:none;border:none;cursor:pointer;color:var(--text);font-family:'Inter',sans-serif}
 .export-menu button:hover{background:var(--bg2)}
-
-/* ── Login screen ── */
 .login-screen{min-height:100vh;display:flex;align-items:center;justify-content:center;background:var(--bg3)}
 .login-card{background:var(--bg);border-radius:var(--radius-lg);padding:3rem;text-align:center;box-shadow:0 8px 32px rgba(0,0,0,.08);max-width:400px;width:90%}
 .login-card h1{font-size:22px;font-weight:600;margin-bottom:8px}
 .login-card p{font-size:14px;color:var(--text2);margin-bottom:2rem;line-height:1.6}
 .google-btn{display:inline-flex;align-items:center;gap:10px;padding:12px 24px;border:0.5px solid var(--border2);border-radius:var(--radius);background:var(--bg);cursor:pointer;font-size:14px;font-weight:500;color:var(--text);transition:all .15s;width:100%;justify-content:center}
-.google-btn:hover{background:var(--bg2);border-color:var(--border2)}
-.google-btn svg{flex-shrink:0}
-
-/* ── Float panel ── */
+.google-btn:hover{background:var(--bg2)}
 .float-panel{position:fixed;z-index:200;background:var(--bg);border:0.5px solid var(--border2);border-radius:var(--radius);padding:12px;box-shadow:0 4px 12px rgba(0,0,0,.15);min-width:200px}
+/* Toast */
+.toast{position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%);background:rgba(26,26,26,0.9);color:#fff;font-size:13px;padding:8px 18px;border-radius:20px;z-index:999;pointer-events:none;opacity:0;transition:opacity .2s;white-space:nowrap}
+.toast.show{opacity:1}
 </style>
 </head>
 <body>
 
-<!-- Login screen -->
+<!-- Login -->
 <div id="login-screen" class="login-screen" style="display:none">
   <div class="login-card">
     <i class="ti ti-stethoscope" style="font-size:40px;color:var(--blue);display:block;margin-bottom:12px"></i>
     <h1>臨床知識看板</h1>
-    <p>個案記錄 · 知識卡片 · 智慧複習<br>專為住院醫師設計的學習系統</p>
+    <p>個案記錄 · 知識卡片 · 智慧複習</p>
     <button class="google-btn" onclick="signInWithGoogle()">
       <svg width="18" height="18" viewBox="0 0 18 18">
         <path fill="#4285F4" d="M16.51 8H8.98v3h4.3c-.18 1-.74 1.48-1.6 2.04v2.01h2.6a7.8 7.8 0 0 0 2.38-5.88c0-.57-.05-.66-.15-1.18z"/>
@@ -239,26 +185,26 @@ a:hover{text-decoration:underline}
   </div>
 </div>
 
-<!-- Main app -->
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<!-- Main -->
 <div id="main-app" style="display:none">
 <div class="app">
 
-  <!-- Header -->
   <div class="header">
-    <div>
-      <h1><i class="ti ti-stethoscope" style="margin-right:6px;color:var(--blue)"></i>臨床知識看板</h1>
-    </div>
+    <div><h1><i class="ti ti-stethoscope" style="margin-right:6px;color:var(--blue)"></i>臨床知識看板</h1></div>
     <div class="header-right">
       <span style="font-size:12px;color:var(--text2)">
         <span class="conn-dot ok" id="conn-dot"></span><span id="conn-text">已連線</span>
       </span>
       <div class="export-wrap">
-        <button class="btn btn-ghost btn-sm" onclick="toggleExportMenu()"><i class="ti ti-download"></i></button>
+        <button class="btn btn-ghost btn-sm" onclick="toggleExportMenu()"><i class="ti ti-download"></i> 匯出</button>
         <div class="export-menu" id="export-menu" style="display:none">
-          <button onclick="doExport('all','json')"><i class="ti ti-file-type-js"></i> 全部（JSON）</button>
           <button onclick="doExport('all','md')"><i class="ti ti-markdown"></i> 全部（Markdown）</button>
+          <button onclick="doExport('filtered','md')"><i class="ti ti-filter"></i> 篩選結果（Markdown）</button>
+          <button onclick="doExport('all','json')"><i class="ti ti-file-type-js"></i> 全部（JSON）</button>
           <button onclick="doExport('filtered','json')"><i class="ti ti-filter"></i> 篩選結果（JSON）</button>
-          <button onclick="doExport('filtered','md')"><i class="ti ti-filter"></i> 篩選結果（MD）</button>
         </div>
       </div>
       <div class="user-chip" onclick="toggleSection('settings-sec')">
@@ -269,7 +215,6 @@ a:hover{text-decoration:underline}
     </div>
   </div>
 
-  <!-- Review banner -->
   <div id="review-banner" class="review-banner" style="display:none" onclick="showReviewCards()">
     <i class="ti ti-bell" style="font-size:18px;color:var(--amber)"></i>
     <p id="review-text"></p>
@@ -279,10 +224,7 @@ a:hover{text-decoration:underline}
   <!-- Settings -->
   <div class="section" id="settings-sec">
     <div class="section-hd" onclick="toggleSection('settings-sec')">
-      <div class="section-hd-left">
-        <i class="ti ti-settings" style="color:var(--text3)"></i>
-        <span class="section-title">設定</span>
-      </div>
+      <div class="section-hd-left"><i class="ti ti-settings" style="color:var(--text3)"></i><span class="section-title">設定</span></div>
       <i class="ti ti-chevron-down chevron" id="settings-sec-chevron"></i>
     </div>
     <div class="section-bd" id="settings-sec-body">
@@ -290,7 +232,7 @@ a:hover{text-decoration:underline}
         <div style="display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap">
           <div style="flex:1;min-width:140px">
             <label class="field-label">AI 供應商</label>
-            <select class="select-input" id="ai-provider" onchange="updateModelPlaceholder()">
+            <select class="select-input" id="ai-provider" onchange="updateModelDefault()">
               <option value="gemini">Gemini（Google）</option>
               <option value="claude">Claude（Anthropic）</option>
               <option value="openai">OpenAI</option>
@@ -298,7 +240,7 @@ a:hover{text-decoration:underline}
           </div>
           <div style="flex:2;min-width:180px">
             <label class="field-label">Model 名稱</label>
-            <input class="plain-input" type="text" id="ai-model" placeholder="gemini-1.5-flash"/>
+            <input class="plain-input" type="text" id="ai-model" placeholder="gemini-2.0-flash"/>
           </div>
         </div>
         <label class="field-label">Supabase URL</label>
@@ -318,121 +260,70 @@ a:hover{text-decoration:underline}
 
   <!-- Tabs -->
   <div class="tabs">
-    <button class="tab active" id="tab-cases" onclick="switchTab('cases')">
-      <i class="ti ti-clipboard-list"></i> 個案記錄
-    </button>
-    <button class="tab" id="tab-cards" onclick="switchTab('cards')">
-      <i class="ti ti-cards"></i> 知識卡片
-    </button>
+    <button class="tab active" id="tab-cases" onclick="switchTab('cases')"><i class="ti ti-clipboard-list"></i> 個案記錄</button>
+    <button class="tab" id="tab-cards" onclick="switchTab('cards')"><i class="ti ti-cards"></i> 知識卡片</button>
   </div>
 
-  <!-- ══ Tab: 個案記錄 ══ -->
+  <!-- ══ 個案記錄 ══ -->
   <div class="tab-panel active" id="panel-cases">
-
-    <!-- Quick record -->
     <div class="section" style="margin-bottom:.75rem">
       <div class="section-hd" onclick="toggleSection('quick-sec')">
-        <div class="section-hd-left">
-          <i class="ti ti-plus" style="color:var(--blue)"></i>
-          <div>
-            <div class="section-title">新增個案記錄</div>
-            <div class="section-sub">值班觀察、臨床心得</div>
-          </div>
+        <div class="section-hd-left"><i class="ti ti-plus" style="color:var(--blue)"></i>
+          <div><div class="section-title">新增個案記錄</div><div class="section-sub">值班觀察、臨床心得</div></div>
         </div>
         <i class="ti ti-chevron-down chevron" id="quick-sec-chevron"></i>
       </div>
       <div class="section-bd" id="quick-sec-body">
         <div style="display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap">
-          <div style="flex:2;min-width:140px">
-            <label class="field-label">標題</label>
-            <input class="plain-input" type="text" id="case-title" placeholder="如：75歲 UTI with septic shock"/>
-          </div>
-          <div style="flex:1;min-width:120px">
-            <label class="field-label">病例號（選填）</label>
-            <input class="plain-input" type="text" id="case-number-input" placeholder="7-8 碼數字"/>
-          </div>
+          <div style="flex:2;min-width:140px"><label class="field-label">標題</label><input class="plain-input" type="text" id="case-title" placeholder="如：75歲 UTI with septic shock"/></div>
+          <div style="flex:1;min-width:120px"><label class="field-label">病例號（選填）</label><input class="plain-input" type="text" id="case-number-input" placeholder="7-8 碼數字"/></div>
         </div>
-        <div style="margin-bottom:10px">
-          <label class="field-label">標籤</label>
-          <div class="tags-wrap" id="case-tag-select"></div>
-        </div>
-        <div style="margin-bottom:10px">
-          <label class="field-label">重要程度</label>
-          <div class="tags-wrap" id="case-imp-select"></div>
-        </div>
+        <div style="margin-bottom:10px"><label class="field-label">標籤</label><div class="tags-wrap" id="case-tag-select"></div></div>
+        <div style="margin-bottom:10px"><label class="field-label">重要程度</label><div class="tags-wrap" id="case-imp-select"></div></div>
         <label class="field-label">臨床記錄（支援 Markdown）</label>
-        <textarea class="textarea" id="case-content" rows="5"
-          placeholder="記錄臨床觀察、處置決策、學習心得…&#10;&#10;支援 **粗體**、==螢光==、# 標題、- 條列"></textarea>
+        <textarea class="textarea" id="case-content" rows="5" placeholder="記錄臨床觀察、處置決策、學習心得…&#10;&#10;支援 **粗體**、==螢光==、# 標題、- 條列"></textarea>
         <div style="display:flex;justify-content:flex-end;margin-top:10px">
           <button class="btn btn-primary" onclick="saveCase()"><i class="ti ti-device-floppy"></i> 儲存個案</button>
         </div>
       </div>
     </div>
-
-    <!-- Filter -->
     <div class="top-bar">
-      <div class="search-wrap">
-        <i class="ti ti-search"></i>
-        <input class="search-input" id="case-search" placeholder="搜尋個案…" oninput="renderCases()"/>
-      </div>
+      <div class="search-wrap"><i class="ti ti-search"></i><input class="search-input" id="case-search" placeholder="搜尋個案…" oninput="renderCases()"/></div>
       <div id="case-filter-tags" style="display:flex;gap:5px;flex-wrap:wrap"></div>
       <span id="case-count" style="font-size:12px;color:var(--text3);white-space:nowrap"></span>
     </div>
-
     <div id="cases-grid" class="cards-grid"></div>
-    <div id="cases-empty" class="empty-state" style="display:none">
-      <i class="ti ti-clipboard"></i><p>尚無個案記錄</p>
-    </div>
+    <div id="cases-empty" class="empty-state" style="display:none"><i class="ti ti-clipboard"></i><p>尚無個案記錄</p></div>
   </div>
 
-  <!-- ══ Tab: 知識卡片 ══ -->
+  <!-- ══ 知識卡片 ══ -->
   <div class="tab-panel" id="panel-cards">
-
-    <!-- New card -->
     <div class="section" style="margin-bottom:.75rem">
       <div class="section-hd" onclick="toggleSection('newcard-sec')">
-        <div class="section-hd-left">
-          <i class="ti ti-sparkles" style="color:var(--amber)"></i>
-          <div>
-            <div class="section-title">新增知識卡片</div>
-            <div class="section-sub">貼上 OE 內容 → AI 自動整理</div>
-          </div>
+        <div class="section-hd-left"><i class="ti ti-sparkles" style="color:var(--amber)"></i>
+          <div><div class="section-title">新增知識卡片</div><div class="section-sub">貼上 OE 內容 → AI 自動整理</div></div>
         </div>
         <i class="ti ti-chevron-down chevron" id="newcard-sec-chevron"></i>
       </div>
       <div class="section-bd" id="newcard-sec-body">
         <div style="display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap">
-          <div style="flex:2;min-width:140px">
-            <label class="field-label">標題</label>
-            <input class="plain-input" type="text" id="card-title-input" placeholder="如：Septic Shock 處置"/>
-          </div>
+          <div style="flex:2;min-width:140px"><label class="field-label">標題</label><input class="plain-input" type="text" id="card-title-input" placeholder="如：Septic Shock 處置"/></div>
         </div>
-        <div style="margin-bottom:10px">
-          <label class="field-label">標籤</label>
-          <div class="tags-wrap" id="card-tag-select"></div>
-        </div>
-        <div style="margin-bottom:10px">
-          <label class="field-label">重要程度</label>
-          <div class="tags-wrap" id="card-imp-select"></div>
-        </div>
+        <div style="margin-bottom:10px"><label class="field-label">標籤</label><div class="tags-wrap" id="card-tag-select"></div></div>
+        <div style="margin-bottom:10px"><label class="field-label">重要程度</label><div class="tags-wrap" id="card-imp-select"></div></div>
         <div style="margin-bottom:8px">
-          <label class="field-label">參考來源 URL（選填，貼上後不經過 AI）</label>
+          <label class="field-label">參考來源 URL（貼上 OE 內容後自動偵測，或手動填入）</label>
           <input class="plain-input" type="text" id="card-ref-url" placeholder="https://www.openevidence.com/..."/>
         </div>
         <label class="field-label">OE 內容（貼上後按「AI 整理」）</label>
         <textarea class="textarea" id="card-oe-content" rows="8"
-          placeholder="貼上 OpenEvidence 的內容…"></textarea>
-        <div class="ai-loading" id="ai-loading">
-          <div class="spinner"></div>
-          <span id="ai-loading-text">AI 整理中…</span>
-        </div>
+          placeholder="貼上 OpenEvidence 的內容…"
+          onpaste="detectUrlFromOE()"></textarea>
+        <div class="ai-loading" id="ai-loading"><div class="spinner"></div><span id="ai-loading-text">AI 整理中…</span></div>
         <div style="display:flex;justify-content:space-between;margin-top:10px;flex-wrap:wrap;gap:8px">
           <button class="btn btn-green" onclick="aiOrganize()"><i class="ti ti-sparkles"></i> AI 整理</button>
-          <button class="btn btn-primary" onclick="saveKnowledgeCard()" id="save-card-btn" style="display:none">
-            <i class="ti ti-device-floppy"></i> 儲存卡片
-          </button>
+          <button class="btn btn-primary" onclick="saveKnowledgeCard()" id="save-card-btn" style="display:none"><i class="ti ti-device-floppy"></i> 儲存卡片</button>
         </div>
-        <!-- AI result preview -->
         <div id="ai-result-preview" style="display:none;margin-top:1rem">
           <div style="font-size:12px;color:var(--text2);font-weight:500;margin-bottom:8px">AI 整理結果預覽：</div>
           <div class="dim-tabs" id="preview-dims"></div>
@@ -440,27 +331,19 @@ a:hover{text-decoration:underline}
         </div>
       </div>
     </div>
-
-    <!-- Filter -->
     <div class="top-bar">
-      <div class="search-wrap">
-        <i class="ti ti-search"></i>
-        <input class="search-input" id="card-search" placeholder="搜尋知識卡片…" oninput="renderKnowledgeCards()"/>
-      </div>
+      <div class="search-wrap"><i class="ti ti-search"></i><input class="search-input" id="card-search" placeholder="搜尋知識卡片…" oninput="renderKnowledgeCards()"/></div>
       <div id="card-filter-tags" style="display:flex;gap:5px;flex-wrap:wrap"></div>
       <span id="card-count" style="font-size:12px;color:var(--text3);white-space:nowrap"></span>
     </div>
-
     <div id="cards-grid" class="cards-grid"></div>
-    <div id="cards-empty" class="empty-state" style="display:none">
-      <i class="ti ti-cards"></i><p>尚無知識卡片</p>
-    </div>
+    <div id="cards-empty" class="empty-state" style="display:none"><i class="ti ti-cards"></i><p>尚無知識卡片</p></div>
   </div>
 
-</div><!-- .app -->
-</div><!-- #main-app -->
+</div>
+</div>
 
-<!-- Floating selection toolbar -->
+<!-- Float toolbar -->
 <div class="float-toolbar" id="float-toolbar" style="display:none">
   <button onclick="applyFormat('bold')" title="粗體"><b>B</b></button>
   <button onclick="applyFormat('highlight')" title="螢光">🟡</button>
@@ -468,20 +351,14 @@ a:hover{text-decoration:underline}
   <button onclick="applyFormat('link')" title="連結"><i class="ti ti-link"></i></button>
 </div>
 
-<!-- View Modal (cases + cards) -->
+<!-- View Modal -->
 <div id="view-bg" class="modal-bg" style="display:none" onclick="if(event.target===this)closeView()">
   <div class="modal">
     <button class="modal-close" onclick="closeView()"><i class="ti ti-x"></i></button>
     <h2 id="vm-title"></h2>
     <div id="vm-meta" style="display:flex;flex-wrap:wrap;gap:4px;margin-bottom:8px"></div>
     <div id="vm-links" style="margin-bottom:6px"></div>
-
-    <!-- Case view -->
-    <div id="vm-case-area" style="display:none">
-      <div class="content-area" id="vm-case-content"></div>
-    </div>
-
-    <!-- Knowledge card view -->
+    <div id="vm-case-area" style="display:none"><div class="content-area" id="vm-case-content"></div></div>
     <div id="vm-card-area" style="display:none">
       <div class="dim-nav">
         <button class="dim-nav-btn" onclick="prevDim()">← 上一個</button>
@@ -489,8 +366,6 @@ a:hover{text-decoration:underline}
       </div>
       <div class="dim-tabs" id="vm-dims"></div>
       <div class="content-area" id="vm-dim-content"></div>
-
-      <!-- OE original content -->
       <div style="margin-top:1rem">
         <div style="font-size:12px;font-weight:500;color:var(--text2);margin-bottom:4px;display:flex;align-items:center;justify-content:space-between">
           <span><i class="ti ti-file-text"></i> OE 原始內容（可直接標記）</span>
@@ -499,8 +374,6 @@ a:hover{text-decoration:underline}
         <div id="vm-oe-content" class="content-area" style="display:none;user-select:text"></div>
       </div>
     </div>
-
-    <!-- Notes (shared) -->
     <div class="notes-section" id="vm-notes-section">
       <div class="notes-label"><i class="ti ti-notes"></i> 我的臨床心得</div>
       <div class="notes-toolbar">
@@ -513,23 +386,14 @@ a:hover{text-decoration:underline}
         <button class="notes-tool" onclick="insertNote('- [ ] ','')">☐</button>
         <button class="notes-tool" onclick="toggleNotesPreview()" id="notes-preview-btn" style="margin-left:auto">預覽</button>
       </div>
-      <textarea class="textarea" id="vm-notes" style="min-height:80px"
-        placeholder="支援 **粗體**、==螢光==、# 標題…" oninput="autoSaveNotes()"></textarea>
+      <textarea class="textarea" id="vm-notes" style="min-height:80px" placeholder="支援 **粗體**、==螢光==、# 標題…" oninput="autoSaveNotes()"></textarea>
       <div class="notes-preview" id="vm-notes-preview"></div>
     </div>
-
-    <!-- Ref links -->
     <div class="ref-section">
-      <div class="ref-label">
-        <i class="ti ti-link"></i> 參考來源
-        <button class="btn btn-ghost btn-sm" onclick="toggleRefEdit()" id="ref-edit-btn">編輯</button>
-      </div>
+      <div class="ref-label"><i class="ti ti-link"></i> 參考來源<button class="btn btn-ghost btn-sm" onclick="toggleRefEdit()" id="ref-edit-btn">編輯</button></div>
       <div class="ref-rendered" id="vm-ref-rendered"></div>
-      <textarea class="textarea" id="vm-ref-area" style="display:none;min-height:60px"
-        placeholder="[1] 來源名稱 https://&#10;[2] 來源名稱 https://"
-        oninput="autoSaveRef()"></textarea>
+      <textarea class="textarea" id="vm-ref-area" style="display:none;min-height:60px" placeholder="[1] 來源名稱 https://&#10;[2] 來源名稱 https://" oninput="autoSaveRef()"></textarea>
     </div>
-
     <div style="margin-top:1rem;display:flex;gap:8px;flex-wrap:wrap">
       <button class="btn btn-outline" onclick="openEdit()"><i class="ti ti-edit"></i> 編輯</button>
       <button class="btn btn-outline" onclick="copyCurrentCard()"><i class="ti ti-copy"></i> 複製</button>
@@ -545,31 +409,18 @@ a:hover{text-decoration:underline}
     <button class="modal-close" onclick="closeEdit()"><i class="ti ti-x"></i></button>
     <h2 style="margin-bottom:1rem">編輯</h2>
     <div style="display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap">
-      <div style="flex:2;min-width:140px">
-        <label class="field-label">標題</label>
-        <input type="text" id="edit-title" class="plain-input"/>
-      </div>
-      <div style="flex:1;min-width:120px">
-        <label class="field-label">病例號</label>
-        <input type="text" id="edit-case-num" class="plain-input" placeholder="選填"/>
-      </div>
+      <div style="flex:2;min-width:140px"><label class="field-label">標題</label><input type="text" id="edit-title" class="plain-input"/></div>
+      <div style="flex:1;min-width:120px"><label class="field-label">病例號</label><input type="text" id="edit-case-num" class="plain-input" placeholder="選填"/></div>
     </div>
-    <div style="margin-bottom:10px">
-      <label class="field-label">標籤</label>
-      <div class="tags-wrap" id="edit-tags-wrap"></div>
-    </div>
-    <div style="margin-bottom:12px">
-      <label class="field-label">重要程度</label>
-      <div class="tags-wrap" id="edit-imp-wrap"></div>
-    </div>
+    <div style="margin-bottom:10px"><label class="field-label">標籤</label><div class="tags-wrap" id="edit-tags-wrap"></div></div>
+    <div style="margin-bottom:12px"><label class="field-label">重要程度</label><div class="tags-wrap" id="edit-imp-wrap"></div></div>
     <label class="field-label">連結其他記錄</label>
-    <div class="link-picker" id="edit-link-picker"></div>
-    <div id="edit-fields" style="margin-top:12px"></div>
-    <div style="margin-top:10px">
-      <label class="field-label">參考來源</label>
-      <textarea class="textarea" id="edit-ref" style="min-height:60px"
-        placeholder="[1] 來源名稱 https://"></textarea>
+    <div class="link-picker" id="edit-link-picker">
+      <input class="link-search" id="link-search" placeholder="搜尋記錄…" oninput="renderLinkPicker()"/>
+      <div id="link-list"></div>
     </div>
+    <div id="edit-fields" style="margin-top:12px"></div>
+    <div style="margin-top:10px"><label class="field-label">參考來源</label><textarea class="textarea" id="edit-ref" style="min-height:60px" placeholder="[1] 來源名稱 https://"></textarea></div>
     <div style="display:flex;gap:8px;margin-top:12px">
       <button class="btn btn-primary" onclick="saveEdit()"><i class="ti ti-check"></i> 儲存</button>
       <button class="btn btn-outline" onclick="closeEdit()">取消</button>
@@ -578,227 +429,107 @@ a:hover{text-decoration:underline}
 </div>
 
 <script>
-// ═══════════════════════════════════════
-// CONSTANTS
-// ═══════════════════════════════════════
 var DIMS = ['診斷','處置','Work-up','臨床價值','核心知識點','記憶法','必考延伸'];
 var KEYS = ['diagnosis','management','workup','pearl','keypoints','memory','evidence'];
 var REVIEW_DAYS = 14;
-
 var IMP_COLORS = {
-  red:    {dot:'#A32D2D', bg:'var(--red-bg)',    text:'var(--red)',         border:'var(--red)',    emoji:'🔴'},
-  orange: {dot:'#E07B24', bg:'#FEF0E6',           text:'#7A3A10',           border:'#E07B24',       emoji:'🟠'},
-  amber:  {dot:'#BA7517', bg:'var(--amber-bg)',   text:'var(--amber-text)', border:'var(--amber)',  emoji:'🟡'},
-  green:  {dot:'#1A7C4A', bg:'var(--green-bg)',   text:'var(--green-text)', border:'#1A7C4A',       emoji:'🟢'},
-  blue:   {dot:'#185FA5', bg:'var(--blue-bg)',    text:'var(--blue-text)',  border:'var(--blue)',   emoji:'🔵'},
-  gray:   {dot:'#9b9b9b', bg:'var(--bg2)',        text:'var(--text2)',      border:'var(--border2)',emoji:'⚪'}
+  red:   {dot:'#A32D2D',bg:'var(--red-bg)',   text:'var(--red)',        border:'var(--red)',    emoji:'🔴'},
+  orange:{dot:'#E07B24',bg:'#FEF0E6',          text:'#7A3A10',          border:'#E07B24',       emoji:'🟠'},
+  amber: {dot:'#BA7517',bg:'var(--amber-bg)',  text:'var(--amber-text)',border:'var(--amber)',  emoji:'🟡'},
+  green: {dot:'#1A7C4A',bg:'var(--green-bg)',  text:'var(--green-text)',border:'#1A7C4A',       emoji:'🟢'},
+  blue:  {dot:'#185FA5',bg:'var(--blue-bg)',   text:'var(--blue-text)', border:'var(--blue)',   emoji:'🔵'},
+  gray:  {dot:'#9b9b9b',bg:'var(--bg2)',       text:'var(--text2)',     border:'var(--border2)',emoji:'⚪'}
 };
+var AI_PROMPT = '⚠️ 輸出格式規定（必須嚴格遵守）：\n- 所有條列項目必須用「- 」開頭，子項目用「  - 」縮排\n- 次標題用「## 」開頭，子標題用「### 」開頭\n- 重點關鍵字用 **文字** 標示粗體\n- 每個【】段落之間空一行，段落內不要多餘空行\n- 嚴禁純文字換行當條列\n- 嚴禁使用 emoji\n- 嚴禁使用表格（除非資料本身必須比較）\n\n你是住院醫師的臨床教師兼醫學教育專家。請把以下 OpenEvidence 內容整理成結構化摘要，輸出以下七個段落，每段用【】標示，條列式、精簡行動導向。原文內容後加[原文]，補充的知識加[AI補充 (來源 年份)]。\n\n七個維度各有明確範圍，請勿重疊：\n【診斷】怎麼診斷、鑑別診斷要點\n【處置】治療流程、一線藥物劑量、手術適應症\n【Work-up】檢查順序、抽血項目、影像學選擇\n【臨床價值】盲點（Pitfall）、容易漏掉的細節、人文關懷\n【核心知識點】定義、分類、關鍵數字（考試直接考的）\n【記憶法】口訣、聯想法、比喻（不重複前面內容）\n【必考延伸】Guideline 版本年份、爭議點、證據來源（只寫名稱年份，不捏造 URL）\n\n內容：';
 
-var AI_PROMPT = `⚠️ 輸出格式規定（必須嚴格遵守）：
-- 所有條列項目必須用「- 」開頭，子項目用「  - 」縮排
-- 次標題用「## 」開頭，子標題用「### 」開頭
-- 重點關鍵字用 **文字** 標示粗體
-- 每個【】段落之間空一行，段落內不要多餘空行
-- 嚴禁純文字換行當條列
-- 嚴禁使用 emoji
-- 嚴禁使用表格（除非資料本身必須比較）
-
-你是住院醫師的臨床教師兼醫學教育專家。請把以下 OpenEvidence 內容整理成結構化摘要，輸出以下七個段落，每段用【】標示，條列式、精簡行動導向。原文內容後加[原文]，補充的知識加[AI補充 (來源 年份)]。
-
-七個維度各有明確範圍，請勿重疊：
-【診斷】怎麼診斷、鑑別診斷要點
-【處置】治療流程、一線藥物劑量、手術適應症
-【Work-up】檢查順序、抽血項目、影像學選擇
-【臨床價值】盲點（Pitfall）、容易漏掉的細節、人文關懷
-【核心知識點】定義、分類、關鍵數字（考試直接考的）
-【記憶法】口訣、聯想法、比喻（不重複前面內容）
-【必考延伸】Guideline 版本年份、爭議點、證據來源（只寫名稱年份，不捏造 URL）
-
-內容：`;
-
-// ═══════════════════════════════════════
-// STATE
-// ═══════════════════════════════════════
-var allCards = [];        // 全部（個案＋知識卡片）
-var currentCard = null;
-var currentDim = 0;
-var currentTab = 'cases';
-var notesTimer = null;
-var refTimer = null;
-var showNotesPreview = false;
-var refEditMode = false;
-var SB_URL = '';
-var SB_KEY = '';
-var currentUser = null;
-
-// 選取工具列
-var activeContentEl = null;
-var aiResult = {};        // AI 整理後的七維度結果
-
-// 標籤
+var allCards = [], currentCard = null, currentDim = 0, currentTab = 'cases';
+var notesTimer = null, refTimer = null;
+var showNotesPreview = false, refEditMode = false;
+var SB_URL = '', SB_KEY = '', currentUser = null;
+var activeContentEl = null, aiResult = {}, previewDim = 0;
 var tags = ['🏥 急診','🌙 值班','🔪 外科','💊 內科','👶 小兒','📚 自學'];
 var DEFAULT_TAGS = ['🏥 急診','🌙 值班','🔪 外科','💊 內科','👶 小兒','📚 自學'];
-var impLevels = [
-  {id:'red',   label:'不能忘', color:'red'},
-  {id:'amber', label:'要記得', color:'amber'},
-  {id:'gray',  label:'參考用', color:'gray'}
-];
-
-// 新增個案/卡片時的選取狀態
-var caseSelectedTags = new Set();
-var caseSelectedImp = 'red';
-var cardSelectedTags = new Set();
-var cardSelectedImp = 'red';
-var editSelectedTags = new Set();
-var editSelectedImp = 'red';
-var filterCaseTags = new Set();
-var filterCardTags = new Set();
-
-// drag
+var impLevels = [{id:'red',label:'不能忘',color:'red'},{id:'amber',label:'要記得',color:'amber'},{id:'gray',label:'參考用',color:'gray'}];
+var caseSelectedTags = new Set(), caseSelectedImp = 'red';
+var cardSelectedTags = new Set(), cardSelectedImp = 'red';
+var editSelectedTags = new Set(), editSelectedImp = 'red';
+var filterCaseTags = new Set(), filterCardTags = new Set();
 var dragSrcTag = null;
+var editLinkedIds = new Set();
 
-// ═══════════════════════════════════════
-// STORAGE
-// ═══════════════════════════════════════
-function cfg(k){ return localStorage.getItem(k)||''; }
-function setCfg(k,v){ localStorage.setItem(k,v); }
-function loadTags(){ var s=cfg('tags_v2'); if(s) tags=JSON.parse(s); }
-function saveTags(){ setCfg('tags_v2', JSON.stringify(tags)); }
-function loadImpLevels(){ var s=cfg('imp_v2'); if(s) impLevels=JSON.parse(s); }
-function saveImpLevels(){ setCfg('imp_v2', JSON.stringify(impLevels)); }
+function cfg(k){return localStorage.getItem(k)||'';}
+function setCfg(k,v){localStorage.setItem(k,v);}
+function loadTags(){var s=cfg('tags_v2');if(s)tags=JSON.parse(s);}
+function saveTags(){setCfg('tags_v2',JSON.stringify(tags));}
+function loadImpLevels(){var s=cfg('imp_v2');if(s)impLevels=JSON.parse(s);}
+function saveImpLevels(){setCfg('imp_v2',JSON.stringify(impLevels));}
 
-// ═══════════════════════════════════════
-// SUPABASE
-// ═══════════════════════════════════════
-var supabase = null;
+function showToast(msg){
+  var t=document.getElementById('toast');
+  t.textContent=msg;t.classList.add('show');
+  setTimeout(function(){t.classList.remove('show');},1500);
+}
 
 function initSupabase(){
-  var url = cfg('sb_url'), key = cfg('sb_key');
+  var url=cfg('sb_url'),key=cfg('sb_key');
   if(!url||!key) return false;
-  SB_URL = url.replace(/\/$/,'');
-  SB_KEY = key;
-  return true;
+  SB_URL=url.replace(/\/$/,'');SB_KEY=key;return true;
 }
 
-async function sbFetch(path, opts){
-  opts = opts||{};
-  var headers = {
-    'apikey': SB_KEY,
-    'Authorization': 'Bearer ' + (currentUser ? currentUser.access_token : SB_KEY),
-    'Content-Type': 'application/json',
-    'Prefer': 'return=representation'
-  };
-  Object.assign(headers, opts.headers||{});
-  var r = await fetch(SB_URL+'/rest/v1/'+path, {
-    headers: headers,
-    method: opts.method||'GET',
-    body: opts.body
+async function sbFetch(path,opts){
+  opts=opts||{};
+  var r=await fetch(SB_URL+'/rest/v1/'+path,{
+    headers:Object.assign({'apikey':SB_KEY,'Authorization':'Bearer '+(currentUser?currentUser.access_token:SB_KEY),'Content-Type':'application/json','Prefer':'return=representation'},opts.headers||{}),
+    method:opts.method||'GET',body:opts.body
   });
-  if(!r.ok){ var t=await r.text(); throw new Error(t); }
-  var ct = r.headers.get('content-type')||'';
-  return ct.includes('json') ? r.json() : r.text();
+  if(!r.ok){var t=await r.text();throw new Error(t);}
+  var ct=r.headers.get('content-type')||'';
+  return ct.includes('json')?r.json():r.text();
 }
 
-// ═══════════════════════════════════════
-// AUTH (Google OAuth via Supabase)
-// ═══════════════════════════════════════
 function signInWithGoogle(){
-  var url = SB_URL + '/auth/v1/authorize?provider=google&redirect_to=' + encodeURIComponent(window.location.href);
-  window.location.href = url;
+  var url=SB_URL+'/auth/v1/authorize?provider=google&redirect_to='+encodeURIComponent(window.location.origin+window.location.pathname);
+  window.location.href=url;
 }
-
-function signOut(){
-  setCfg('auth_token','');
-  setCfg('auth_user','');
-  currentUser = null;
-  showLogin();
-}
+function signOut(){setCfg('auth_token','');currentUser=null;showLogin();}
 
 function handleAuthCallback(){
-  // Supabase OAuth callback 會把 token 放在 URL hash
-  var hash = window.location.hash;
-  if(hash && hash.includes('access_token')){
-    var params = new URLSearchParams(hash.slice(1));
-    var token = params.get('access_token');
-    var userStr = params.get('user') || '';
-    if(token){
-      setCfg('auth_token', token);
-      // 清除 URL hash
-      history.replaceState(null,'',window.location.pathname);
-      currentUser = {access_token: token};
-      // 取得 user info
-      fetchUserInfo(token);
-      return true;
-    }
+  var hash=window.location.hash;
+  if(hash&&hash.includes('access_token')){
+    var params=new URLSearchParams(hash.slice(1));
+    var token=params.get('access_token');
+    if(token){setCfg('auth_token',token);history.replaceState(null,'',window.location.pathname);currentUser={access_token:token};fetchUserInfo(token);return true;}
   }
-  // 嘗試從 localStorage 讀取
-  var savedToken = cfg('auth_token');
-  if(savedToken){
-    currentUser = {access_token: savedToken};
-    fetchUserInfo(savedToken);
-    return true;
-  }
+  var saved=cfg('auth_token');
+  if(saved){currentUser={access_token:saved};fetchUserInfo(saved);return true;}
   return false;
 }
 
 async function fetchUserInfo(token){
   try{
-    var r = await fetch(SB_URL+'/auth/v1/user', {
-      headers: {'apikey': SB_KEY, 'Authorization': 'Bearer '+token}
-    });
+    var r=await fetch(SB_URL+'/auth/v1/user',{headers:{'apikey':SB_KEY,'Authorization':'Bearer '+token}});
     if(r.ok){
-      var u = await r.json();
-      currentUser = {access_token: token, ...u};
-      var name = u.user_metadata?.full_name || u.email || '已登入';
-      var avatar = u.user_metadata?.avatar_url || '';
-      document.getElementById('user-name').textContent = name;
-      if(avatar){
-        var img = document.getElementById('user-avatar');
-        img.src = avatar; img.style.display='block';
-        document.getElementById('user-icon').style.display='none';
-      }
+      var u=await r.json();currentUser=Object.assign({access_token:token},u);
+      document.getElementById('user-name').textContent=u.user_metadata&&u.user_metadata.full_name?u.user_metadata.full_name:u.email||'已登入';
+      var av=u.user_metadata&&u.user_metadata.avatar_url;
+      if(av){var img=document.getElementById('user-avatar');img.src=av;img.style.display='block';document.getElementById('user-icon').style.display='none';}
       showApp();
-    } else {
-      // token 可能過期
-      setCfg('auth_token','');
-      showLogin();
-    }
-  } catch(e){
-    showApp(); // offline mode
-  }
+    } else {setCfg('auth_token','');showLogin();}
+  } catch(e){showApp();}
 }
 
-function showLogin(){
-  document.getElementById('login-screen').style.display='flex';
-  document.getElementById('main-app').style.display='none';
-}
+function showLogin(){document.getElementById('login-screen').style.display='flex';document.getElementById('main-app').style.display='none';}
+function showApp(){document.getElementById('login-screen').style.display='none';document.getElementById('main-app').style.display='block';initApp();}
 
-function showApp(){
-  document.getElementById('login-screen').style.display='none';
-  document.getElementById('main-app').style.display='block';
-  initApp();
-}
-
-// ═══════════════════════════════════════
-// INIT
-// ═══════════════════════════════════════
 function initApp(){
-  loadTags();
-  loadImpLevels();
-  initSupabase();
-  // Settings prefill
-  document.getElementById('sb-url').value = cfg('sb_url');
-  document.getElementById('sb-key').value = cfg('sb_key');
-  document.getElementById('ai-provider').value = cfg('ai_provider')||'gemini';
-  document.getElementById('ai-model').value = cfg('ai_model')||'gemini-1.5-flash';
-  renderAllTagSelectors();
-  loadAllCards();
-  setupSelectionToolbar();
+  loadTags();loadImpLevels();initSupabase();
+  document.getElementById('sb-url').value=cfg('sb_url');
+  document.getElementById('sb-key').value=cfg('sb_key');
+  document.getElementById('ai-provider').value=cfg('ai_provider')||'gemini';
+  document.getElementById('ai-model').value=cfg('ai_model')||'gemini-2.0-flash';
+  renderAllTagSelectors();loadAllCards();setupSelectionToolbar();
 }
 
-// ═══════════════════════════════════════
-// UI HELPERS
-// ═══════════════════════════════════════
 function toggleSection(id){
   var body=document.getElementById(id+'-body');
   var chev=document.getElementById(id+'-chevron');
@@ -807,237 +538,129 @@ function toggleSection(id){
   body.classList.toggle('open',!open);
   if(chev) chev.classList.toggle('open',!open);
 }
-
-function toggleVis(id){
-  var el=document.getElementById(id);
-  el.type=el.type==='password'?'text':'password';
-}
-
-function updateModelPlaceholder(){
+function toggleVis(id){var el=document.getElementById(id);el.type=el.type==='password'?'text':'password';}
+function updateModelDefault(){
   var p=document.getElementById('ai-provider').value;
-  var m=document.getElementById('ai-model');
-  var defaults={gemini:'gemini-1.5-flash',claude:'claude-haiku-4-5-20251001',openai:'gpt-4o-mini'};
-  m.placeholder=defaults[p]||'';
-  if(!m.value) m.value=defaults[p]||'';
+  var defaults={gemini:'gemini-2.0-flash',claude:'claude-haiku-4-5-20251001',openai:'gpt-4o-mini'};
+  document.getElementById('ai-model').placeholder=defaults[p]||'';
 }
-
 function saveSettings(){
-  setCfg('sb_url', document.getElementById('sb-url').value.trim().replace(/\/$/,''));
-  setCfg('sb_key', document.getElementById('sb-key').value.trim());
-  setCfg('ai_provider', document.getElementById('ai-provider').value);
-  setCfg('ai_model', document.getElementById('ai-model').value.trim());
-  initSupabase();
-  toggleSection('settings-sec');
-  loadAllCards();
+  setCfg('sb_url',document.getElementById('sb-url').value.trim().replace(/\/$/,''));
+  setCfg('sb_key',document.getElementById('sb-key').value.trim());
+  setCfg('ai_provider',document.getElementById('ai-provider').value);
+  setCfg('ai_model',document.getElementById('ai-model').value.trim());
+  initSupabase();toggleSection('settings-sec');loadAllCards();
 }
-
 function switchTab(tab){
-  currentTab = tab;
-  document.getElementById('tab-cases').classList.toggle('active', tab==='cases');
-  document.getElementById('tab-cards').classList.toggle('active', tab==='cards');
-  document.getElementById('panel-cases').classList.toggle('active', tab==='cases');
-  document.getElementById('panel-cards').classList.toggle('active', tab==='cards');
+  currentTab=tab;
+  document.getElementById('tab-cases').classList.toggle('active',tab==='cases');
+  document.getElementById('tab-cards').classList.toggle('active',tab==='cards');
+  document.getElementById('panel-cases').classList.toggle('active',tab==='cases');
+  document.getElementById('panel-cards').classList.toggle('active',tab==='cards');
 }
+function esc(s){return String(s).replace(/\\/g,'\\\\').replace(/'/g,"\\'");}
+function escHtml(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 
-function autoGrow(el){
-  el.style.height='auto';
-  el.style.height=Math.min(el.scrollHeight,400)+'px';
-}
-
-function esc(s){ return String(s).replace(/\\/g,'\\\\').replace(/'/g,"\\'"); }
-function escHtml(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
-
-// ═══════════════════════════════════════
-// MARKDOWN RENDERER
-// ═══════════════════════════════════════
+// ── Markdown ──
 function renderMd(text){
   if(!text) return '';
-  text = text
-    .replace(/\[原文\]/g,'__ORIG__')
-    .replace(/\[AI補充([^\]]*)\]/g,'__AI__$1__AIEND__');
-  text = text.replace(/\n{3,}/g,'\n\n');
-  var lines = text.split('\n');
-  var html = [];
-  var inCode = false;
-  var inTable = false;
-  var inImplicit = false;
-
+  text=text.replace(/\[原文\]/g,'__ORIG__').replace(/\[AI補充([^\]]*)\]/g,'__AI__$1__AIEND__');
+  text=text.replace(/\n{3,}/g,'\n\n');
+  var lines=text.split('\n'),html=[],inCode=false,inTable=false,inImplicit=false;
   for(var i=0;i<lines.length;i++){
-    var line = lines[i];
-    var tr = line.trim();
-
-    if(tr.startsWith('```')){
-      inImplicit=false;
-      if(!inCode){html.push('<pre><code>');inCode=true;}
-      else{html.push('</code></pre>');inCode=false;}
-      continue;
-    }
+    var line=lines[i],tr=line.trim();
+    if(tr.startsWith('```')){inImplicit=false;if(!inCode){html.push('<pre><code>');inCode=true;}else{html.push('</code></pre>');inCode=false;}continue;}
     if(inCode){html.push(escHtml(line)+'\n');continue;}
-
     if(line.includes('|')&&tr.startsWith('|')){
       inImplicit=false;
       if(!inTable){html.push('<table>');inTable=true;}
-      if(tr.includes('---')){continue;}
+      if(tr.includes('---')) continue;
       var cells=tr.replace(/^\||\|$/g,'').split('|');
       var isHdr=i===0||(lines[i+1]&&lines[i+1].includes('---'));
       var tg=isHdr?'th':'td';
-      html.push('<tr>'+cells.map(function(c){return'<'+tg+'>'+inlineMd(c.trim())+'</'+tg+'>';}).join('')+'</tr>');
-      continue;
+      html.push('<tr>'+cells.map(function(c){return'<'+tg+'>'+inlineMd(c.trim())+'</'+tg+'>';}).join('')+'</tr>');continue;
     } else if(inTable){html.push('</table>');inTable=false;}
-
     if(/^### /.test(line)){inImplicit=false;html.push('<h3>'+inlineMd(line.slice(4))+'</h3>');continue;}
-    if(/^## /.test(line)) {inImplicit=false;html.push('<h2>'+inlineMd(line.slice(3))+'</h2>');continue;}
-    if(/^# /.test(line))  {inImplicit=false;html.push('<h1>'+inlineMd(line.slice(2))+'</h1>');continue;}
-
-    if(/^- \[( |x)\] /.test(line)){
-      inImplicit=false;
-      var checked=line[3]==='x';
-      html.push('<div class="cb"><input type="checkbox"'+(checked?' checked':'')+' onclick="return false"> '+inlineMd(line.slice(6))+'</div>');
-      continue;
-    }
-    if(/^- /.test(line)){
-      inImplicit=false;
-      html.push('<div style="display:flex;gap:6px;margin:2px 0"><span style="color:var(--blue);flex-shrink:0">•</span><span>'+inlineMd(line.slice(2))+'</span></div>');
-      continue;
-    }
-    if(/^ {2,}- /.test(line)){
-      inImplicit=false;
-      var depth=line.match(/^ +/)[0].length;
-      html.push('<div style="display:flex;gap:6px;margin:2px 0;padding-left:'+Math.min(depth*6,24)+'px"><span style="color:var(--text3);flex-shrink:0">◦</span><span>'+inlineMd(tr.slice(2))+'</span></div>');
-      continue;
-    }
-    if(/^\d+\. /.test(line)){
-      inImplicit=false;
-      var m2=line.match(/^(\d+)\. (.*)/);
-      if(m2){html.push('<div style="display:flex;gap:6px;margin:2px 0"><span style="color:var(--blue);font-weight:500;flex-shrink:0">'+m2[1]+'.</span><span>'+inlineMd(m2[2])+'</span></div>');continue;}
-    }
-
+    if(/^## /.test(line)){inImplicit=false;html.push('<h2>'+inlineMd(line.slice(3))+'</h2>');continue;}
+    if(/^# /.test(line)){inImplicit=false;html.push('<h1>'+inlineMd(line.slice(2))+'</h1>');continue;}
+    if(/^- \[( |x)\] /.test(line)){inImplicit=false;var ck=line[3]==='x';html.push('<div style="display:flex;align-items:center;gap:6px;margin:2px 0"><input type="checkbox"'+(ck?' checked':'')+' onclick="return false"> '+inlineMd(line.slice(6))+'</div>');continue;}
+    if(/^- /.test(line)){inImplicit=false;html.push('<div style="display:flex;gap:6px;margin:2px 0"><span style="color:var(--blue);flex-shrink:0">•</span><span>'+inlineMd(line.slice(2))+'</span></div>');continue;}
+    if(/^ {2,}- /.test(line)){inImplicit=false;var dp=line.match(/^ +/)[0].length;html.push('<div style="display:flex;gap:6px;margin:2px 0;padding-left:'+Math.min(dp*6,24)+'px"><span style="color:var(--text3);flex-shrink:0">◦</span><span>'+inlineMd(tr.slice(2))+'</span></div>');continue;}
+    if(/^\d+\. /.test(line)){inImplicit=false;var m2=line.match(/^(\d+)\. (.*)/);if(m2){html.push('<div style="display:flex;gap:6px;margin:2px 0"><span style="color:var(--blue);font-weight:500;flex-shrink:0">'+m2[1]+'.</span><span>'+inlineMd(m2[2])+'</span></div>');continue;}}
     if(tr===''){inImplicit=false;html.push('<div style="height:6px"></div>');continue;}
-
-    // implicit list detection
     var next=lines[i+1]?lines[i+1].trim():'';
     var isShort=tr.length<80;
     var nextShort=next.length>0&&next.length<80&&!next.startsWith('#')&&!next.startsWith('-')&&!/^\d+\./.test(next);
     var endsPunct=/[。.！!？?：:」』）)》]$/.test(tr);
-    if(isShort&&!endsPunct&&(inImplicit||nextShort)){
-      inImplicit=true;
-      html.push('<div style="display:flex;gap:6px;margin:2px 0"><span style="color:var(--text3);flex-shrink:0">–</span><span>'+inlineMd(tr)+'</span></div>');
-    } else {
-      inImplicit=false;
-      html.push('<p style="margin:3px 0;line-height:1.8">'+inlineMd(tr)+'</p>');
-    }
+    if(isShort&&!endsPunct&&(inImplicit||nextShort)){inImplicit=true;html.push('<div style="display:flex;gap:6px;margin:2px 0"><span style="color:var(--text3);flex-shrink:0">–</span><span>'+inlineMd(tr)+'</span></div>');}
+    else{inImplicit=false;html.push('<p style="margin:3px 0;line-height:1.8">'+inlineMd(tr)+'</p>');}
   }
   if(inTable) html.push('</table>');
   if(inCode) html.push('</code></pre>');
-
   var result=html.join('');
-  result=result
-    .replace(/__ORIG__/g,'<span class="source-badge badge-orig">原文</span>')
-    .replace(/__AI__(.*?)__AIEND__/g,'<span class="source-badge badge-ai">AI補充$1</span>');
-  return result;
+  return result.replace(/__ORIG__/g,'<span class="source-badge badge-orig">原文</span>').replace(/__AI__(.*?)__AIEND__/g,'<span class="source-badge badge-ai">AI補充$1</span>');
 }
-
 function inlineMd(text){
-  return text
-    .replace(/`([^`]+)`/g,'<code>$1</code>')
-    .replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>')
-    .replace(/==(.+?)==/g,'<mark>$1</mark>')
-    .replace(/\*(.+?)\*/g,'<em>$1</em>')
-    .replace(/(https?:\/\/[^\s<>"]+)/g,'<a href="$1" target="_blank" rel="noopener">$1</a>');
+  return text.replace(/`([^`]+)`/g,'<code>$1</code>').replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>').replace(/==(.+?)==/g,'<mark>$1</mark>').replace(/\*(.+?)\*/g,'<em>$1</em>').replace(/(https?:\/\/[^\s<>"]+)/g,'<a href="$1" target="_blank" rel="noopener">$1</a>');
 }
 
-// ═══════════════════════════════════════
-// SELECTION TOOLBAR
-// ═══════════════════════════════════════
+// ── Selection toolbar ──
 function setupSelectionToolbar(){
-  document.addEventListener('mouseup', function(e){
-    var toolbar = document.getElementById('float-toolbar');
-    if(toolbar.contains(e.target)) return;
-
-    var sel = window.getSelection();
-    if(!sel || sel.isCollapsed || !sel.toString().trim()){
-      toolbar.style.display='none';
-      return;
-    }
-    // 只在 content-area 或 notes-area 內顯示
-    var range = sel.getRangeAt(0);
-    var container = range.commonAncestorContainer;
-    var inContent = false;
-    var el = container.nodeType===3 ? container.parentElement : container;
-    while(el){
-      if(el.classList && (el.classList.contains('content-area')||el.classList.contains('notes-preview'))){
-        inContent=true; activeContentEl=el; break;
-      }
-      el=el.parentElement;
-    }
-    if(!inContent){toolbar.style.display='none';return;}
-
-    var rect = range.getBoundingClientRect();
-    toolbar.style.left = (rect.left + rect.width/2 - 80) + 'px';
-    toolbar.style.top = (rect.top + window.scrollY - 44) + 'px';
-    toolbar.style.display = 'flex';
+  document.addEventListener('mouseup',function(e){
+    var tb=document.getElementById('float-toolbar');
+    if(tb.contains(e.target)) return;
+    var sel=window.getSelection();
+    if(!sel||sel.isCollapsed||!sel.toString().trim()){tb.style.display='none';return;}
+    var range=sel.getRangeAt(0);
+    var el=range.commonAncestorContainer;
+    if(el.nodeType===3) el=el.parentElement;
+    var inContent=false;
+    while(el){if(el.classList&&(el.classList.contains('content-area')||el.classList.contains('notes-preview'))){inContent=true;activeContentEl=el;break;}el=el.parentElement;}
+    if(!inContent){tb.style.display='none';return;}
+    var rect=range.getBoundingClientRect();
+    tb.style.left=(rect.left+rect.width/2-80)+'px';
+    tb.style.top=(rect.top+window.scrollY-44)+'px';
+    tb.style.display='flex';
   });
-
-  document.addEventListener('mousedown', function(e){
-    var toolbar = document.getElementById('float-toolbar');
-    if(!toolbar.contains(e.target)) toolbar.style.display='none';
+  document.addEventListener('mousedown',function(e){
+    var tb=document.getElementById('float-toolbar');
+    if(!tb.contains(e.target)) tb.style.display='none';
   });
 }
-
 function applyFormat(type){
-  var sel = window.getSelection();
-  if(!sel||sel.isCollapsed) return;
-  var text = sel.toString();
-  var formatted;
+  var sel=window.getSelection();if(!sel||sel.isCollapsed) return;
+  var text=sel.toString(),formatted;
   if(type==='bold') formatted='**'+text+'**';
   else if(type==='highlight') formatted='=='+text+'==';
   else if(type==='italic') formatted='*'+text+'*';
-  else if(type==='link'){
-    var url=prompt('輸入連結 URL：','https://');
-    if(!url) return;
-    formatted='['+text+']('+url+')';
-  } else return;
-
-  // 如果選取在筆記 textarea 就直接插入
-  var notesArea=document.getElementById('vm-notes');
-  if(document.activeElement===notesArea){
-    var s=notesArea.selectionStart,e=notesArea.selectionEnd;
-    notesArea.value=notesArea.value.slice(0,s)+formatted+notesArea.value.slice(e);
-    notesArea.focus();
-    notesArea.setSelectionRange(s,s+formatted.length);
-    autoSaveNotes();
+  else if(type==='link'){var url=prompt('輸入連結 URL：','https://');if(!url) return;formatted='['+text+']('+url+')';}
+  else return;
+  var na=document.getElementById('vm-notes');
+  if(document.activeElement===na){
+    var s=na.selectionStart,e=na.selectionEnd;
+    na.value=na.value.slice(0,s)+formatted+na.value.slice(e);
+    na.focus();na.setSelectionRange(s,s+formatted.length);autoSaveNotes();
   } else {
-    // 在 rendered content 上：記錄標記到 notes
-    var existing=document.getElementById('vm-notes').value;
-    var note='\n[標記] '+formatted;
-    document.getElementById('vm-notes').value=existing+note;
+    var ex=document.getElementById('vm-notes').value;
+    document.getElementById('vm-notes').value=ex+'\n[標記] '+formatted;
     autoSaveNotes();
-    // 視覺反饋
-    var range=sel.getRangeAt(0);
-    var span=document.createElement('span');
-    if(type==='bold') span.style.fontWeight='600';
-    else if(type==='highlight') span.style.cssText='background:#FFF176;padding:0 2px;border-radius:2px';
-    else if(type==='italic') span.style.fontStyle='italic';
-    try{range.surroundContents(span);}catch(e){}
+    try{var range=sel.getRangeAt(0),span=document.createElement('span');if(type==='bold')span.style.fontWeight='600';else if(type==='highlight')span.style.cssText='background:#FFF176;padding:0 2px;border-radius:2px';else if(type==='italic')span.style.fontStyle='italic';range.surroundContents(span);}catch(er){}
   }
   document.getElementById('float-toolbar').style.display='none';
 }
 
-// ═══════════════════════════════════════
-// TAG SELECTORS
-// ═══════════════════════════════════════
+// ── Tags ──
 function renderAllTagSelectors(){
-  renderTagSelector('case-tag-select', caseSelectedTags, 'case');
-  renderTagSelector('card-tag-select', cardSelectedTags, 'card');
-  renderFilterTags('case-filter-tags', filterCaseTags, 'case');
-  renderFilterTags('card-filter-tags', filterCardTags, 'card');
-  renderImpSelector('case-imp-select', caseSelectedImp, 'case');
-  renderImpSelector('card-imp-select', cardSelectedImp, 'card');
+  renderTagSelector('case-tag-select',caseSelectedTags,'case');
+  renderTagSelector('card-tag-select',cardSelectedTags,'card');
+  renderFilterTags('case-filter-tags',filterCaseTags,'case');
+  renderFilterTags('card-filter-tags',filterCardTags,'card');
+  renderImpSelector('case-imp-select',caseSelectedImp,'case');
+  renderImpSelector('card-imp-select',cardSelectedImp,'card');
 }
 
-function renderTagSelector(wrapId, selectedSet, prefix){
-  var wrap=document.getElementById(wrapId);
-  if(!wrap) return;
+function renderTagSelector(wrapId,selectedSet,prefix){
+  var wrap=document.getElementById(wrapId);if(!wrap) return;
   wrap.innerHTML=tags.map(function(t){
     var active=selectedSet.has(t)?' active':'';
     var isDef=DEFAULT_TAGS.indexOf(t)!==-1;
@@ -1055,20 +678,15 @@ function renderTagSelector(wrapId, selectedSet, prefix){
   }).join('')+'<button class="tag-add" onclick="tagAddStart(\''+wrapId+'\')"><i class="ti ti-plus" style="font-size:11px"></i> 新增</button>';
 }
 
-function renderFilterTags(wrapId, filterSet, prefix){
-  var wrap=document.getElementById(wrapId);
-  if(!wrap) return;
+function renderFilterTags(wrapId,filterSet,prefix){
+  var wrap=document.getElementById(wrapId);if(!wrap) return;
   wrap.innerHTML=tags.map(function(t){
-    return '<span class="tag'+(filterSet.has(t)?' active':'')+'"'
-      +' style="font-size:12px"'
-      +' onclick="toggleFilterTag(\''+esc(t)+'\',\''+prefix+'\')">'
-      +t+'</span>';
+    return '<span class="tag'+(filterSet.has(t)?' active':'')+'" style="font-size:12px" onclick="toggleFilterTag(\''+esc(t)+'\',\''+prefix+'\')">'+t+'</span>';
   }).join('');
 }
 
-function renderImpSelector(wrapId, curVal, prefix){
-  var wrap=document.getElementById(wrapId);
-  if(!wrap) return;
+function renderImpSelector(wrapId,curVal,prefix){
+  var wrap=document.getElementById(wrapId);if(!wrap) return;
   wrap.innerHTML=impLevels.map(function(lv){
     var cm=IMP_COLORS[lv.color]||IMP_COLORS.gray;
     var isActive=lv.id===curVal;
@@ -1084,32 +702,24 @@ function renderImpSelector(wrapId, curVal, prefix){
   }).join('')+'<button class="tag-add" onclick="addImpLevel(\''+wrapId+'\',\''+prefix+'\')" style="font-size:12px"><i class="ti ti-plus" style="font-size:11px"></i> 新增</button>';
 }
 
-function toggleTagSel(t, prefix){
-  var s = prefix==='case'?caseSelectedTags:prefix==='card'?cardSelectedTags:editSelectedTags;
+function toggleTagSel(t,prefix){
+  var s=prefix==='case'?caseSelectedTags:prefix==='card'?cardSelectedTags:editSelectedTags;
   s.has(t)?s.delete(t):s.add(t);
-  if(prefix==='case') renderTagSelector('case-tag-select', caseSelectedTags, 'case');
-  else if(prefix==='card') renderTagSelector('card-tag-select', cardSelectedTags, 'card');
-  else renderTagSelector('edit-tags-wrap', editSelectedTags, 'edit');
+  var wid=prefix==='case'?'case-tag-select':prefix==='card'?'card-tag-select':'edit-tags-wrap';
+  renderTagSelector(wid,s,prefix);
 }
-
-function toggleFilterTag(t, prefix){
+function toggleFilterTag(t,prefix){
   var f=prefix==='case'?filterCaseTags:filterCardTags;
   f.has(t)?f.delete(t):f.add(t);
-  renderFilterTags(prefix==='case'?'case-filter-tags':'card-filter-tags', f, prefix);
-  if(prefix==='case') renderCases();
-  else renderKnowledgeCards();
+  renderFilterTags(prefix==='case'?'case-filter-tags':'card-filter-tags',f,prefix);
+  if(prefix==='case') renderCases();else renderKnowledgeCards();
 }
-
 function selectImp(el){
-  var id=el.dataset.impId, prefix=el.dataset.impPrefix;
-  if(prefix==='case') caseSelectedImp=id;
-  else if(prefix==='card') cardSelectedImp=id;
-  else editSelectedImp=id;
-  var wrapId=prefix==='case'?'case-imp-select':prefix==='card'?'card-imp-select':'edit-imp-wrap';
-  renderImpSelector(wrapId, id, prefix);
+  var id=el.dataset.impId,prefix=el.dataset.impPrefix;
+  if(prefix==='case') caseSelectedImp=id;else if(prefix==='card') cardSelectedImp=id;else editSelectedImp=id;
+  var wid=prefix==='case'?'case-imp-select':prefix==='card'?'card-imp-select':'edit-imp-wrap';
+  renderImpSelector(wid,id,prefix);
 }
-
-// Tag drag
 function tagDragStart(e,t){dragSrcTag=t;setTimeout(function(){if(e.target)e.target.classList.add('dragging');},0);e.dataTransfer.effectAllowed='move';}
 function tagDragOver(e){e.preventDefault();e.currentTarget.classList.add('drag-over');}
 function tagDragEnd(){document.querySelectorAll('.tag').forEach(function(el){el.classList.remove('dragging','drag-over');});}
@@ -1121,12 +731,10 @@ function tagDrop(e,target){
   tags.splice(fi,1);tags.splice(ti,0,dragSrcTag);
   dragSrcTag=null;saveTags();renderAllTagSelectors();
 }
-
 function editTagStart(e,t){
   e.stopPropagation();
   var span=e.currentTarget;
-  var inp=document.createElement('input');
-  inp.className='tag-edit-input';inp.value=t;
+  var inp=document.createElement('input');inp.className='tag-edit-input';inp.value=t;
   inp.onclick=function(ev){ev.stopPropagation();};
   inp.onblur=function(){commitEditTag(t,inp.value.trim());};
   inp.onkeydown=function(ev){if(ev.key==='Enter')inp.blur();if(ev.key==='Escape')renderAllTagSelectors();};
@@ -1135,23 +743,19 @@ function editTagStart(e,t){
 function commitEditTag(old,nv){
   if(!nv||nv===old){renderAllTagSelectors();return;}
   var idx=tags.indexOf(old);if(idx!==-1)tags[idx]=nv;
-  [caseSelectedTags,cardSelectedTags,editSelectedTags,filterCaseTags,filterCardTags].forEach(function(s){
-    if(s.has(old)){s.delete(old);s.add(nv);}
-  });
+  [caseSelectedTags,cardSelectedTags,editSelectedTags,filterCaseTags,filterCardTags].forEach(function(s){if(s.has(old)){s.delete(old);s.add(nv);}});
   saveTags();renderAllTagSelectors();
 }
 function removeTag(e,t){
-  e.stopPropagation();
-  if(!confirm('刪除標籤「'+t+'」？')) return;
+  e.stopPropagation();if(!confirm('刪除標籤「'+t+'」？')) return;
   tags=tags.filter(function(x){return x!==t;});
   [caseSelectedTags,cardSelectedTags,editSelectedTags,filterCaseTags,filterCardTags].forEach(function(s){s.delete(t);});
   saveTags();renderAllTagSelectors();
 }
 function tagAddStart(wrapId){
   var wrap=document.getElementById(wrapId);
-  var btn=wrap.querySelector('.tag-add');if(!btn)return;
-  var inp=document.createElement('input');
-  inp.className='tag-edit-input';inp.placeholder='新標籤…';
+  var btn=wrap.querySelector('.tag-add');if(!btn) return;
+  var inp=document.createElement('input');inp.className='tag-edit-input';inp.placeholder='新標籤…';
   inp.onblur=function(){commitAddTag(inp.value.trim());};
   inp.onkeydown=function(ev){if(ev.key==='Enter')inp.blur();if(ev.key==='Escape')renderAllTagSelectors();};
   btn.parentNode.replaceChild(inp,btn);inp.focus();
@@ -1161,29 +765,27 @@ function commitAddTag(v){
   renderAllTagSelectors();
 }
 
-// Importance edit
+// ── Importance edit ──
 function editImpStart(e,el){
   e.stopPropagation();
-  var id=el.dataset.impId, prefix=el.dataset.impPrefix;
-  var lv=impLevels.find(function(x){return x.id===id;});
-  if(!lv) return;
-  var panel=document.createElement('div');
-  panel.className='float-panel';panel.dataset.panel='1';
+  var id=el.dataset.impId,prefix=el.dataset.impPrefix;
+  var lv=impLevels.find(function(x){return x.id===id;});if(!lv) return;
+  var panel=document.createElement('div');panel.className='float-panel';panel.dataset.panel='1';
   var lbl=document.createElement('div');lbl.style.cssText='font-size:11px;color:var(--text3);margin-bottom:6px';lbl.textContent='編輯等級';panel.appendChild(lbl);
-  var inp=document.createElement('input');inp.id='imp-lv-inp';inp.value=lv.label;inp.style.cssText='width:100%;font-size:13px;padding:5px 8px;border:0.5px solid var(--border2);border-radius:8px;margin-bottom:8px;outline:none;box-sizing:border-box';panel.appendChild(inp);
+  var inp=document.createElement('input');inp.value=lv.label;inp.style.cssText='width:100%;font-size:13px;padding:5px 8px;border:0.5px solid var(--border2);border-radius:8px;margin-bottom:8px;outline:none;box-sizing:border-box';panel.appendChild(inp);
+  var cl=document.createElement('div');cl.style.cssText='font-size:11px;color:var(--text3);margin-bottom:4px';cl.textContent='顏色';panel.appendChild(cl);
   var sw=document.createElement('div');sw.style.cssText='display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px';
   Object.keys(IMP_COLORS).forEach(function(c){
     var s=document.createElement('span');
     s.style.cssText='width:22px;height:22px;border-radius:50%;background:'+IMP_COLORS[c].dot+';cursor:pointer;display:inline-block;border:2px solid '+(lv.color===c?'var(--text)':'transparent');
-    s.dataset.color=c;s.title=c;
+    s.dataset.color=c;s.title=IMP_COLORS[c].emoji+' '+c;
     s.onclick=function(){lv.color=c;panel.querySelectorAll('span[data-color]').forEach(function(x){x.style.borderColor='transparent';});s.style.borderColor='var(--text)';};
     sw.appendChild(s);
   });panel.appendChild(sw);
   var btns=document.createElement('div');btns.style.cssText='display:flex;gap:6px';
   var ok=document.createElement('button');ok.textContent='確認';ok.style.cssText='font-size:12px;padding:4px 10px;background:var(--blue);color:#fff;border:none;border-radius:8px;cursor:pointer';
-  ok.onclick=function(){lv.label=inp.value.trim()||lv.label;saveImpLevels();panel.remove();var wrapId=prefix==='case'?'case-imp-select':prefix==='card'?'card-imp-select':'edit-imp-wrap';renderImpSelector(wrapId,prefix==='case'?caseSelectedImp:prefix==='card'?cardSelectedImp:editSelectedImp,prefix);};
-  var cancel=document.createElement('button');cancel.textContent='取消';cancel.style.cssText='font-size:12px;padding:4px 10px;background:none;border:0.5px solid var(--border2);border-radius:8px;cursor:pointer';
-  cancel.onclick=function(){panel.remove();};
+  ok.onclick=function(){lv.label=inp.value.trim()||lv.label;saveImpLevels();panel.remove();var wid=prefix==='case'?'case-imp-select':prefix==='card'?'card-imp-select':'edit-imp-wrap';renderImpSelector(wid,prefix==='case'?caseSelectedImp:prefix==='card'?cardSelectedImp:editSelectedImp,prefix);};
+  var cancel=document.createElement('button');cancel.textContent='取消';cancel.style.cssText='font-size:12px;padding:4px 10px;background:none;border:0.5px solid var(--border2);border-radius:8px;cursor:pointer';cancel.onclick=function(){panel.remove();};
   btns.appendChild(ok);btns.appendChild(cancel);panel.appendChild(btns);
   document.body.appendChild(panel);
   var rect=el.getBoundingClientRect();
@@ -1194,9 +796,8 @@ function editImpStart(e,el){
   setTimeout(function(){document.addEventListener('mousedown',close);},100);
 }
 function removeImpLevel(e,el){
-  e.stopPropagation();
-  var btn=el.closest('[data-imp-id]');
-  var id=btn.dataset.impId, prefix=btn.dataset.impPrefix;
+  e.stopPropagation();var btn=el.closest('[data-imp-id]');
+  var id=btn.dataset.impId,prefix=btn.dataset.impPrefix;
   if(impLevels.length<=1){alert('至少保留一個等級');return;}
   if(!confirm('刪除此等級？')) return;
   impLevels=impLevels.filter(function(x){return x.id!==id;});
@@ -1204,232 +805,141 @@ function removeImpLevel(e,el){
   if(cardSelectedImp===id) cardSelectedImp=impLevels[0].id;
   if(editSelectedImp===id) editSelectedImp=impLevels[0].id;
   saveImpLevels();
-  var wrapId=prefix==='case'?'case-imp-select':prefix==='card'?'card-imp-select':'edit-imp-wrap';
-  renderImpSelector(wrapId,prefix==='case'?caseSelectedImp:prefix==='card'?cardSelectedImp:editSelectedImp,prefix);
+  var wid=prefix==='case'?'case-imp-select':prefix==='card'?'card-imp-select':'edit-imp-wrap';
+  renderImpSelector(wid,prefix==='case'?caseSelectedImp:prefix==='card'?cardSelectedImp:editSelectedImp,prefix);
 }
 function addImpLevel(wrapId,prefix){
-  var id='imp_'+Date.now();
-  impLevels.push({id:id,label:'新等級',color:'gray'});
-  saveImpLevels();
+  var id='imp_'+Date.now();impLevels.push({id:id,label:'新等級',color:'gray'});saveImpLevels();
   var cur=prefix==='case'?caseSelectedImp:prefix==='card'?cardSelectedImp:editSelectedImp;
   renderImpSelector(wrapId,cur,prefix);
 }
 
-// ═══════════════════════════════════════
-// LOAD ALL CARDS
-// ═══════════════════════════════════════
+// ── DB ──
 async function loadAllCards(){
   if(!SB_URL||!SB_KEY){renderCases();renderKnowledgeCards();return;}
-  try{
-    allCards=await sbFetch('cards?order=created_at.desc');
-    setConn(true);
-  } catch(e){
-    setConn(false);
-    var s=cfg('cards_v4');if(s){try{allCards=JSON.parse(s);}catch(e2){}}
-  }
-  checkReview();
-  renderCases();
-  renderKnowledgeCards();
+  try{allCards=await sbFetch('cards?order=created_at.desc');setConn(true);}
+  catch(e){setConn(false);var s=cfg('cards_v4');if(s){try{allCards=JSON.parse(s);}catch(e2){}}}
+  checkReview();renderCases();renderKnowledgeCards();
 }
-
-function setConn(ok){
-  document.getElementById('conn-dot').className='conn-dot '+(ok?'ok':'err');
-  document.getElementById('conn-text').textContent=ok?'已連線':'離線模式';
-}
-
+function setConn(ok){document.getElementById('conn-dot').className='conn-dot '+(ok?'ok':'err');document.getElementById('conn-text').textContent=ok?'已連線':'離線模式';}
 async function dbSave(card){
   try{
-    var id=card.id;
-    var rest=Object.assign({},card);delete rest.id;
-    if(id&&!String(id).startsWith('local_')){
-      await sbFetch('cards?id=eq.'+id,{method:'PATCH',body:JSON.stringify(rest)});
-    } else {
-      var r=await sbFetch('cards',{method:'POST',body:JSON.stringify(rest)});
-      if(r&&r[0]) card.id=r[0].id;
-    }
-  } catch(e){
-    console.error('dbSave:',e.message);
-    try{setCfg('cards_v4',JSON.stringify(allCards));}catch(e2){}
-  }
+    var id=card.id,rest=Object.assign({},card);delete rest.id;
+    if(id&&!String(id).startsWith('local_')){await sbFetch('cards?id=eq.'+id,{method:'PATCH',body:JSON.stringify(rest)});}
+    else{var r=await sbFetch('cards',{method:'POST',body:JSON.stringify(rest)});if(r&&r[0])card.id=r[0].id;}
+  }catch(e){console.error('dbSave:',e.message);try{setCfg('cards_v4',JSON.stringify(allCards));}catch(e2){}}
 }
+async function dbDelete(id){try{await sbFetch('cards?id=eq.'+id,{method:'DELETE'});}catch(e){}}
 
-async function dbDelete(id){
-  try{await sbFetch('cards?id=eq.'+id,{method:'DELETE'});}catch(e){}
-}
-
-// ═══════════════════════════════════════
-// KEYWORDS
-// ═══════════════════════════════════════
 function extractKeywords(text){
   if(!text) return [];
-  var en=(text.match(/[A-Za-z]{3,}/g)||[]);
-  var zh=(text.match(/[\u4e00-\u9fa5]{2,4}/g)||[]);
-  var abbr=(text.match(/[A-Z]{2,6}/g)||[]);
+  var en=(text.match(/[A-Za-z]{3,}/g)||[]),zh=(text.match(/[\u4e00-\u9fa5]{2,4}/g)||[]),abbr=(text.match(/[A-Z]{2,6}/g)||[]);
   var stop={the:1,and:1,for:1,with:1,from:1,that:1,this:1,have:1,been:1,will:1,are:1,was:1,were:1,has:1,had:1,not:1,but:1,can:1,may:1,per:1,via:1,its:1,you:1,our:1,all:1};
   var all={};
   en.forEach(function(w){if(!stop[w.toLowerCase()]&&w.length>=3)all[w]=1;});
-  abbr.forEach(function(w){all[w]=1;});
-  zh.forEach(function(w){all[w]=1;});
+  abbr.forEach(function(w){all[w]=1;});zh.forEach(function(w){all[w]=1;});
   return Object.keys(all).slice(0,20);
 }
+function detectCaseNumber(text){var m=text.match(/(?:^|[\s,;])(\d{7,8})(?:[\s,;]|$)/);return m?m[1]:'';}
 
-function detectCaseNumber(text){
-  var m=text.match(/(?:^|[\s,;])(\d{7,8})(?:[\s,;]|$)/);
-  return m?m[1]:'';
+// ── OE URL 偵測 ──
+function detectUrlFromOE(){
+  setTimeout(function(){
+    var text=document.getElementById('card-oe-content').value;
+    var refField=document.getElementById('card-ref-url');
+    if(refField.value.trim()) return; // 已有內容不覆蓋
+    var urls=text.match(/https?:\/\/[^\s\n"'<>]+/g);
+    if(urls&&urls.length>0){
+      var mainUrls=urls.filter(function(u){
+        return !u.match(/\.(png|jpg|jpeg|gif|svg|ico|css|js|woff)/i)&&!u.includes('cdn.')&&!u.includes('static.');
+      });
+      if(mainUrls.length>0) refField.value=mainUrls[0];
+    }
+  },100);
 }
 
-// ═══════════════════════════════════════
-// SAVE CASE
-// ═══════════════════════════════════════
+// ── Save case ──
 function saveCase(){
   var title=document.getElementById('case-title').value.trim();
   var content=document.getElementById('case-content').value.trim();
   var caseNum=document.getElementById('case-number-input').value.trim();
   if(!title){alert('請填入標題！');return;}
-  var detectedNum=caseNum||detectCaseNumber(content);
   var card={
-    id:'local_'+Date.now(),
-    type:'case',
-    title:title,
-    case_number:detectedNum,
-    importance:caseSelectedImp,
-    contexts:Array.from(caseSelectedTags),
-    content:content,
-    notes:'',ref_links:'',linked_cards:[],
-    review_due:null,starred:false,
-    view_count:0,last_viewed:null,
+    id:'local_'+Date.now(),type:'case',title:title,
+    case_number:caseNum||detectCaseNumber(content),
+    importance:caseSelectedImp,contexts:Array.from(caseSelectedTags),
+    content:content,notes:'',ref_links:'',linked_cards:[],
+    review_due:null,starred:false,view_count:0,last_viewed:null,
     auto_keywords:extractKeywords(title+' '+content).join(' '),
     created_at:new Date().toISOString()
   };
-  allCards.unshift(card);
-  dbSave(card);
-  renderCases();
-  document.getElementById('case-title').value='';
-  document.getElementById('case-content').value='';
-  document.getElementById('case-number-input').value='';
-  caseSelectedTags.clear();
-  caseSelectedImp=impLevels[0]?impLevels[0].id:'red';
-  renderTagSelector('case-tag-select',caseSelectedTags,'case');
-  renderImpSelector('case-imp-select',caseSelectedImp,'case');
-  toggleSection('quick-sec');
+  allCards.unshift(card);dbSave(card);renderCases();
+  document.getElementById('case-title').value='';document.getElementById('case-content').value='';document.getElementById('case-number-input').value='';
+  caseSelectedTags.clear();caseSelectedImp=impLevels[0]?impLevels[0].id:'red';
+  renderTagSelector('case-tag-select',caseSelectedTags,'case');renderImpSelector('case-imp-select',caseSelectedImp,'case');
+  toggleSection('quick-sec');showToast('個案已儲存');
 }
 
-// ═══════════════════════════════════════
-// AI ORGANIZE
-// ═══════════════════════════════════════
+// ── AI organize ──
 async function aiOrganize(){
   var content=document.getElementById('card-oe-content').value.trim();
   if(!content){alert('請先貼上 OE 內容！');return;}
   var provider=cfg('ai_provider')||'gemini';
-  var model=cfg('ai_model')||'gemini-1.5-flash';
+  var model=cfg('ai_model')||'gemini-2.0-flash';
   var loading=document.getElementById('ai-loading');
   loading.classList.add('show');
-  document.getElementById('ai-loading-text').textContent='AI 整理中…';
   try{
-    var r=await fetch('/api/ai',{
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({provider:provider,model:model,prompt:AI_PROMPT,content:content})
-    });
+    var r=await fetch('/api/ai',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({provider:provider,model:model,prompt:AI_PROMPT,content:content})});
     var data=await r.json();
     if(data.error) throw new Error(data.error);
     aiResult=parseAIResult(data.result);
     showAIPreview();
     document.getElementById('save-card-btn').style.display='inline-flex';
-  } catch(e){
-    alert('AI 整理失敗：'+e.message);
-  }
+  }catch(e){alert('AI 整理失敗：'+e.message);}
   loading.classList.remove('show');
 }
-
 function parseAIResult(text){
   var result={raw:text};
   for(var i=0;i<DIMS.length;i++){
-    var marker='【'+DIMS[i]+'】';
-    var start=text.indexOf(marker);
+    var marker='【'+DIMS[i]+'】';var start=text.indexOf(marker);
     if(start===-1){result[KEYS[i]]='';continue;}
-    var cs=start+marker.length;
-    var end=text.length;
-    for(var j=0;j<DIMS.length;j++){
-      if(j===i) continue;
-      var np=text.indexOf('【'+DIMS[j]+'】',cs);
-      if(np!==-1&&np<end) end=np;
-    }
+    var cs=start+marker.length,end=text.length;
+    for(var j=0;j<DIMS.length;j++){if(j===i) continue;var np=text.indexOf('【'+DIMS[j]+'】',cs);if(np!==-1&&np<end)end=np;}
     result[KEYS[i]]=text.slice(cs,end).trim();
   }
   return result;
 }
-
-var previewDim=0;
-function showAIPreview(){
-  previewDim=0;
-  document.getElementById('ai-result-preview').style.display='block';
-  renderPreviewTabs();
-  renderPreviewContent();
-}
-function renderPreviewTabs(){
-  document.getElementById('preview-dims').innerHTML=DIMS.map(function(d,i){
-    return '<button class="dim-tab'+(i===previewDim?' active':'')+'" onclick="switchPreviewDim('+i+')">'+d+'</button>';
-  }).join('');
-}
+function showAIPreview(){previewDim=0;document.getElementById('ai-result-preview').style.display='block';renderPreviewTabs();renderPreviewContent();}
+function renderPreviewTabs(){document.getElementById('preview-dims').innerHTML=DIMS.map(function(d,i){return'<button class="dim-tab'+(i===previewDim?' active':'')+'" onclick="switchPreviewDim('+i+')">'+d+'</button>';}).join('');}
 function switchPreviewDim(i){previewDim=i;renderPreviewTabs();renderPreviewContent();}
-function renderPreviewContent(){
-  document.getElementById('preview-content').innerHTML=renderMd(aiResult[KEYS[previewDim]]||'（無資料）');
-}
+function renderPreviewContent(){document.getElementById('preview-content').innerHTML=renderMd(aiResult[KEYS[previewDim]]||'（無資料）');}
 
-// ═══════════════════════════════════════
-// SAVE KNOWLEDGE CARD
-// ═══════════════════════════════════════
+// ── Save knowledge card ──
 function saveKnowledgeCard(){
   var title=document.getElementById('card-title-input').value.trim();
   if(!title){alert('請填入標題！');return;}
-  var oeContent=document.getElementById('card-oe-content').value.trim();
-  var refUrl=document.getElementById('card-ref-url').value.trim();
   var card={
-    id:'local_'+Date.now(),
-    type:'knowledge',
-    title:title,
-    case_number:'',
-    importance:cardSelectedImp,
-    contexts:Array.from(cardSelectedTags),
-    oe_content:oeContent,
-    ref_links:refUrl,
-    diagnosis:aiResult.diagnosis||'',
-    management:aiResult.management||'',
-    workup:aiResult.workup||'',
-    pearl:aiResult.pearl||'',
-    keypoints:aiResult.keypoints||'',
-    memory:aiResult.memory||'',
-    evidence:aiResult.evidence||'',
-    notes:'',linked_cards:[],
-    review_due:null,starred:false,
-    view_count:0,last_viewed:null,
+    id:'local_'+Date.now(),type:'knowledge',title:title,case_number:'',
+    importance:cardSelectedImp,contexts:Array.from(cardSelectedTags),
+    oe_content:document.getElementById('card-oe-content').value.trim(),
+    ref_links:document.getElementById('card-ref-url').value.trim(),
+    diagnosis:aiResult.diagnosis||'',management:aiResult.management||'',workup:aiResult.workup||'',
+    pearl:aiResult.pearl||'',keypoints:aiResult.keypoints||'',memory:aiResult.memory||'',evidence:aiResult.evidence||'',
+    notes:'',linked_cards:[],review_due:null,starred:false,view_count:0,last_viewed:null,
     auto_keywords:extractKeywords(title+' '+Object.values(aiResult).join(' ')).join(' '),
     created_at:new Date().toISOString()
   };
-  allCards.unshift(card);
-  dbSave(card);
-  renderKnowledgeCards();
-  // reset
-  document.getElementById('card-title-input').value='';
-  document.getElementById('card-oe-content').value='';
-  document.getElementById('card-ref-url').value='';
-  document.getElementById('ai-result-preview').style.display='none';
-  document.getElementById('save-card-btn').style.display='none';
-  cardSelectedTags.clear();
-  cardSelectedImp=impLevels[0]?impLevels[0].id:'red';
-  renderTagSelector('card-tag-select',cardSelectedTags,'card');
-  renderImpSelector('card-imp-select',cardSelectedImp,'card');
-  aiResult={};
-  toggleSection('newcard-sec');
+  allCards.unshift(card);dbSave(card);renderKnowledgeCards();
+  document.getElementById('card-title-input').value='';document.getElementById('card-oe-content').value='';document.getElementById('card-ref-url').value='';
+  document.getElementById('ai-result-preview').style.display='none';document.getElementById('save-card-btn').style.display='none';
+  cardSelectedTags.clear();cardSelectedImp=impLevels[0]?impLevels[0].id:'red';
+  renderTagSelector('card-tag-select',cardSelectedTags,'card');renderImpSelector('card-imp-select',cardSelectedImp,'card');
+  aiResult={};toggleSection('newcard-sec');showToast('卡片已儲存');
 }
 
-// ═══════════════════════════════════════
-// REVIEW
-// ═══════════════════════════════════════
+// ── Review ──
 function checkReview(){
-  var now=new Date();
-  var cutoff=new Date(now-REVIEW_DAYS*86400000);
+  var now=new Date(),cutoff=new Date(now-REVIEW_DAYS*86400000);
   var due=allCards.filter(function(c){
     if(c.type==='case') return false;
     if(c.review_due&&new Date(c.review_due)<=now) return true;
@@ -1437,138 +947,89 @@ function checkReview(){
     return lv<cutoff;
   });
   var b=document.getElementById('review-banner');
-  if(due.length){
-    b.style.display='flex';
-    document.getElementById('review-text').textContent=due.length+' 張知識卡片超過 '+REVIEW_DAYS+' 天未複習，點此查看';
-  } else b.style.display='none';
+  if(due.length){b.style.display='flex';document.getElementById('review-text').textContent=due.length+' 張知識卡片超過 '+REVIEW_DAYS+' 天未複習，點此查看';}
+  else b.style.display='none';
 }
+function showReviewCards(){switchTab('cards');document.getElementById('card-search').value='待複習';renderKnowledgeCards();}
 
-function showReviewCards(){
-  switchTab('cards');
-  document.getElementById('card-search').value='待複習';
-  renderKnowledgeCards();
-}
-
-// ═══════════════════════════════════════
-// RENDER CASES
-// ═══════════════════════════════════════
+// ── Render ──
 function getCasesFiltered(){
   var s=document.getElementById('case-search').value.toLowerCase().trim();
   return allCards.filter(function(c){
     if(c.type!=='case') return false;
-    if(filterCaseTags.size){
-      var cc=Array.isArray(c.contexts)?c.contexts:[];
-      if(![].some.call(filterCaseTags,function(ft){return cc.indexOf(ft)!==-1;})) return false;
+    if(filterCaseTags.size){var cc=Array.isArray(c.contexts)?c.contexts:[];if(![].some.call(filterCaseTags,function(ft){return cc.indexOf(ft)!==-1;})) return false;}
+    if(s){var searchable=[c.title,c.case_number,c.content,c.notes,c.auto_keywords].filter(Boolean).join(' ').toLowerCase();if(!s.split(/\s+/).every(function(t){return searchable.includes(t);})) return false;}
+    return true;
+  });
+}
+function getCardsFiltered(){
+  var s=document.getElementById('card-search').value.toLowerCase().trim();
+  var now=new Date(),cutoff=new Date(now-REVIEW_DAYS*86400000);
+  return allCards.filter(function(c){
+    if(c.type==='case') return false;
+    if(filterCardTags.size){var cc=Array.isArray(c.contexts)?c.contexts:[];if(![].some.call(filterCardTags,function(ft){return cc.indexOf(ft)!==-1;})) return false;}
+    if(s==='待複習'){
+      if(c.review_due&&new Date(c.review_due)<=now) return true;
+      var lv=c.last_viewed?new Date(c.last_viewed):new Date(c.created_at);
+      return lv<cutoff;
     }
-    if(s){
-      var searchable=[c.title,c.case_number,c.content,c.notes,c.auto_keywords].filter(Boolean).join(' ').toLowerCase();
-      if(!s.split(/\s+/).every(function(t){return searchable.includes(t);})) return false;
-    }
+    if(s){var searchable=[c.title,c.diagnosis,c.management,c.workup,c.pearl,c.keypoints,c.memory,c.evidence,c.notes,c.auto_keywords].filter(Boolean).join(' ').toLowerCase();if(!s.split(/\s+/).every(function(t){return searchable.includes(t);})) return false;}
     return true;
   });
 }
 
 function renderCases(){
   var f=getCasesFiltered();
-  var grid=document.getElementById('cases-grid');
-  var empty=document.getElementById('cases-empty');
+  var grid=document.getElementById('cases-grid'),empty=document.getElementById('cases-empty');
   document.getElementById('case-count').textContent=f.length+' 筆';
   if(!f.length){grid.innerHTML='';empty.style.display='block';return;}
   empty.style.display='none';
-  var now=new Date();
   grid.innerHTML=f.map(function(c){
-    var imp=c.importance||'gray';
-    var cm=IMP_COLORS[imp]||IMP_COLORS.gray;
+    var imp=c.importance||'gray',cm=IMP_COLORS[imp]||IMP_COLORS.gray;
     var ctxs=Array.isArray(c.contexts)?c.contexts:[];
     var id="'"+String(c.id)+"'";
     var preview=(c.content||'').replace(/[#*=`\[\]]/g,'').slice(0,90);
     return '<div class="card '+(imp==='gray'?'':'imp-'+imp)+'" onclick="openCard('+id+')">'
-      +'<div class="card-hd">'
-      +'<div class="card-title">'+escHtml(c.title)+'</div>'
-      +'<div class="card-actions">'
-      +'<button class="icon-btn" onclick="editById(event,'+id+')"><i class="ti ti-edit"></i></button>'
-      +'<button class="icon-btn'+(c.starred?' starred':'')+'" onclick="toggleStar(event,'+id+')"><i class="ti ti-star'+(c.starred?'-filled':'')+'"></i></button>'
-      +'</div></div>'
-      +'<div class="card-chips">'
-      +ctxs.map(function(t){return'<span class="chip chip-ctx">'+t+'</span>';}).join('')
-      +(c.case_number?'<span class="chip chip-case">'+c.case_number+'</span>':'')
-      +'<span class="chip chip-imp">'+cm.emoji+'</span>'
-      +'</div>'
+      +'<div class="card-hd"><div class="card-title">'+escHtml(c.title)+'</div>'
+      +'<div class="card-actions"><button class="icon-btn" onclick="editById(event,'+id+')"><i class="ti ti-edit"></i></button>'
+      +'<button class="icon-btn'+(c.starred?' starred':'')+'" onclick="toggleStar(event,'+id+')"><i class="ti ti-star'+(c.starred?'-filled':'')+'"></i></button></div></div>'
+      +'<div class="card-chips">'+ctxs.map(function(t){return'<span class="chip chip-ctx">'+t+'</span>';}).join('')
+      +(c.case_number?'<span class="chip chip-case">'+c.case_number+'</span>':'')+'<span style="font-size:10px;color:var(--text3);margin-left:2px">'+cm.emoji+'</span></div>'
       +(preview?'<div class="card-preview">'+escHtml(preview)+(preview.length>=90?'…':'')+'</div>':'')
-      +'<div class="card-footer">'
-      +'<span><i class="ti ti-clock"></i> '+(c.created_at||'').slice(0,10)+'</span>'
-      +'<span><i class="ti ti-eye"></i> '+(c.view_count||0)+'</span>'
-      +(c.notes?'<span><i class="ti ti-notes"></i></span>':'')
-      +'</div></div>';
+      +'<div class="card-footer"><span><i class="ti ti-clock"></i> '+(c.created_at||'').slice(0,10)+'</span>'
+      +'<span><i class="ti ti-eye"></i> '+(c.view_count||0)+'</span>'+(c.notes?'<span><i class="ti ti-notes"></i></span>':'')+'</div></div>';
   }).join('');
-}
-
-// ═══════════════════════════════════════
-// RENDER KNOWLEDGE CARDS
-// ═══════════════════════════════════════
-function getCardsFiltered(){
-  var s=document.getElementById('card-search').value.toLowerCase().trim();
-  var now=new Date();
-  var cutoff=new Date(now-REVIEW_DAYS*86400000);
-  return allCards.filter(function(c){
-    if(c.type==='case') return false;
-    if(filterCardTags.size){
-      var cc=Array.isArray(c.contexts)?c.contexts:[];
-      if(![].some.call(filterCardTags,function(ft){return cc.indexOf(ft)!==-1;})) return false;
-    }
-    if(s==='待複習'){
-      if(c.review_due&&new Date(c.review_due)<=now) return true;
-      var lv=c.last_viewed?new Date(c.last_viewed):new Date(c.created_at);
-      return lv<cutoff;
-    }
-    if(s){
-      var searchable=[c.title,c.case_number,c.diagnosis,c.management,c.workup,c.pearl,c.keypoints,c.memory,c.evidence,c.notes,c.auto_keywords].filter(Boolean).join(' ').toLowerCase();
-      if(!s.split(/\s+/).every(function(t){return searchable.includes(t);})) return false;
-    }
-    return true;
-  });
 }
 
 function renderKnowledgeCards(){
   var f=getCardsFiltered();
-  var grid=document.getElementById('cards-grid');
-  var empty=document.getElementById('cards-empty');
+  var grid=document.getElementById('cards-grid'),empty=document.getElementById('cards-empty');
   document.getElementById('card-count').textContent=f.length+' 張';
   if(!f.length){grid.innerHTML='';empty.style.display='block';return;}
   empty.style.display='none';
-  var now=new Date();
-  var cutoff=new Date(now-REVIEW_DAYS*86400000);
+  var now=new Date(),cutoff=new Date(now-REVIEW_DAYS*86400000);
   grid.innerHTML=f.map(function(c){
-    var imp=c.importance||'gray';
-    var cm=IMP_COLORS[imp]||IMP_COLORS.gray;
+    var imp=c.importance||'gray',cm=IMP_COLORS[imp]||IMP_COLORS.gray;
     var ctxs=Array.isArray(c.contexts)?c.contexts:[];
     var lv=c.last_viewed?new Date(c.last_viewed):new Date(c.created_at);
     var isReview=(c.review_due&&new Date(c.review_due)<=now)||lv<cutoff;
     var kws=(c.auto_keywords||'').split(' ').filter(Boolean).slice(0,4);
     var preview=(c.diagnosis||c.keypoints||'').replace(/[#*=`\[\]]/g,'').slice(0,90);
     var id="'"+String(c.id)+"'";
-    // 找連結的個案數
     var linkedCases=allCards.filter(function(x){return x.type==='case'&&(x.linked_cards||[]).some(function(l){return String(l)===String(c.id);});}).length;
     return '<div class="card '+(imp==='gray'?'':'imp-'+imp)+'" onclick="openCard('+id+')">'
       +(isReview?'<span class="review-badge"><i class="ti ti-bell"></i> 待複習</span>':'')
-      +'<div class="card-hd">'
-      +'<div class="card-title">'+escHtml(c.title)+'</div>'
+      +'<div class="card-hd"><div class="card-title">'+escHtml(c.title)+'</div>'
       +'<div class="card-actions">'
       +(linkedCases?'<span style="font-size:10px;color:var(--purple);padding:3px"><i class="ti ti-clipboard-list"></i>'+linkedCases+'</span>':'')
       +'<button class="icon-btn" onclick="editById(event,'+id+')"><i class="ti ti-edit"></i></button>'
-      +'<button class="icon-btn'+(c.starred?' starred':'')+'" onclick="toggleStar(event,'+id+')"><i class="ti ti-star'+(c.starred?'-filled':'')+'"></i></button>'
-      +'</div></div>'
-      +'<div class="card-chips">'
-      +ctxs.map(function(t){return'<span class="chip chip-ctx">'+t+'</span>';}).join('')
-      +'<span class="chip chip-imp">'+cm.emoji+'</span>'
-      +'</div>'
+      +'<button class="icon-btn'+(c.starred?' starred':'')+'" onclick="toggleStar(event,'+id+')"><i class="ti ti-star'+(c.starred?'-filled':'')+'"></i></button></div></div>'
+      +'<div class="card-chips">'+ctxs.map(function(t){return'<span class="chip chip-ctx">'+t+'</span>';}).join('')
+      +'<span style="font-size:10px;color:var(--text3);margin-left:2px">'+cm.emoji+'</span></div>'
       +(preview?'<div class="card-preview">'+escHtml(preview)+(preview.length>=90?'…':'')+'</div>':'')
       +(kws.length?'<div style="display:flex;flex-wrap:wrap;gap:3px;margin-top:5px">'+kws.map(function(k){return'<span style="font-size:10px;padding:1px 6px;border-radius:var(--radius);background:var(--bg2);color:var(--text3);border:0.5px solid var(--border)">'+k+'</span>';}).join('')+'</div>':'')
-      +'<div class="card-footer">'
-      +'<span><i class="ti ti-clock"></i> '+(c.created_at||'').slice(0,10)+'</span>'
-      +'<span><i class="ti ti-eye"></i> '+(c.view_count||0)+'</span>'
-      +(c.notes?'<span><i class="ti ti-notes"></i></span>':'')
-      +'</div></div>';
+      +'<div class="card-footer"><span><i class="ti ti-clock"></i> '+(c.created_at||'').slice(0,10)+'</span>'
+      +'<span><i class="ti ti-eye"></i> '+(c.view_count||0)+'</span>'+(c.notes?'<span><i class="ti ti-notes"></i></span>':'')+'</div></div>';
   }).join('');
 }
 
@@ -1579,9 +1040,7 @@ function toggleStar(e,id){
   if(currentTab==='cases') renderCases();else renderKnowledgeCards();
 }
 
-// ═══════════════════════════════════════
-// OPEN CARD
-// ═══════════════════════════════════════
+// ── Open card ──
 function openCard(id){
   currentCard=allCards.find(function(c){return String(c.id)===String(id);});
   if(!currentCard) return;
@@ -1589,23 +1048,16 @@ function openCard(id){
   currentCard.view_count=(currentCard.view_count||0)+1;
   currentCard.last_viewed=new Date().toISOString();
   dbSave(currentCard);
-
   document.getElementById('vm-title').textContent=currentCard.title;
   var ctxs=Array.isArray(currentCard.contexts)?currentCard.contexts:[];
-  var imp=currentCard.importance||'gray';
-  var cm=IMP_COLORS[imp]||IMP_COLORS.gray;
+  var imp=currentCard.importance||'gray',cm=IMP_COLORS[imp]||IMP_COLORS.gray;
   var impLv=impLevels.find(function(x){return x.id===imp;});
-  var impLabel=impLv?cm.emoji+' '+impLv.label:'';
-
   document.getElementById('vm-meta').innerHTML=
-    '<span style="font-size:12px">'+impLabel+'</span>'
+    '<span style="font-size:12px">'+(impLv?cm.emoji+' '+impLv.label:'')+'</span>'
     +ctxs.map(function(t){return'<span class="chip chip-ctx">'+t+'</span>';}).join('')
     +(currentCard.case_number?'<span class="chip chip-case">'+currentCard.case_number+'</span>':'')
     +(currentCard.type==='case'?'<span class="chip" style="background:var(--green-bg);color:var(--green-text)">個案</span>':'<span class="chip" style="background:var(--blue-bg);color:var(--blue-text)">知識卡片</span>');
-
-  // 連結
   renderViewLinks();
-
   if(currentCard.type==='case'){
     document.getElementById('vm-case-area').style.display='block';
     document.getElementById('vm-card-area').style.display='none';
@@ -1614,93 +1066,59 @@ function openCard(id){
     document.getElementById('vm-case-area').style.display='none';
     document.getElementById('vm-card-area').style.display='block';
     renderDimTabs();renderDimContent();
-    // OE content
-    var oeEl=document.getElementById('vm-oe-content');
-    oeEl.innerHTML=renderMd(currentCard.oe_content||'（無 OE 原始內容）');
-    oeEl.style.display='none';
+    document.getElementById('vm-oe-content').innerHTML=renderMd(currentCard.oe_content||'（無 OE 原始內容）');
+    document.getElementById('vm-oe-content').style.display='none';
     document.getElementById('oe-chevron').className='ti ti-chevron-down';
   }
-
-  // notes
   document.getElementById('vm-notes').value=currentCard.notes||'';
   document.getElementById('vm-notes').style.display='block';
   document.getElementById('vm-notes-preview').style.display='none';
-  document.getElementById('notes-preview-btn').textContent='預覽';
-  showNotesPreview=false;
-
-  // ref
+  document.getElementById('notes-preview-btn').textContent='預覽';showNotesPreview=false;
   var refVal=currentCard.ref_links||'';
   document.getElementById('vm-ref-area').value=refVal;
   document.getElementById('vm-ref-rendered').innerHTML=renderRefLinks(refVal);
   document.getElementById('vm-ref-area').style.display='none';
-  document.getElementById('ref-edit-btn').textContent='編輯';
-  refEditMode=false;
-
+  document.getElementById('ref-edit-btn').textContent='編輯';refEditMode=false;
   document.getElementById('view-bg').style.display='flex';
 }
 
 function renderViewLinks(){
   var linked=currentCard.linked_cards||[];
-  // 反向連結
   var backLinks=allCards.filter(function(c){
-    return String(c.id)!==String(currentCard.id)&&
-      (c.linked_cards||[]).some(function(l){return String(l)===String(currentCard.id);})&&
-      linked.indexOf(String(c.id))===-1;
+    return String(c.id)!==String(currentCard.id)&&(c.linked_cards||[]).some(function(l){return String(l)===String(currentCard.id);})&&linked.indexOf(String(c.id))===-1;
   });
-  var allLinked=linked.map(function(lid){
-    return allCards.find(function(c){return String(c.id)===String(lid);});
-  }).filter(Boolean).concat(backLinks);
-
+  var allLinked=linked.map(function(lid){return allCards.find(function(c){return String(c.id)===String(lid);});}).filter(Boolean).concat(backLinks);
   document.getElementById('vm-links').innerHTML=allLinked.length
     ?'<div style="font-size:11px;color:var(--text3);margin-bottom:4px"><i class="ti ti-link"></i> 連結</div>'
-      +allLinked.map(function(lc){
-        var isCase=lc.type==='case';
-        return '<span class="chip '+(isCase?'chip-case':'chip-link')+'" style="cursor:pointer;margin-bottom:3px" onclick="openCard(\''+lc.id+'\')">'
-          +(isCase?'<i class="ti ti-clipboard-list"></i> ':'')+lc.title+'</span> ';
-      }).join('')
+      +allLinked.map(function(lc){var isCase=lc.type==='case';return'<span class="chip '+(isCase?'chip-case':'chip-link')+'" style="cursor:pointer;margin-bottom:3px" onclick="openCard(\''+lc.id+'\')">'+(isCase?'<i class="ti ti-clipboard-list"></i> ':'')+lc.title+'</span> ';}).join('')
     :'';
 }
 
 function toggleOEContent(){
-  var el=document.getElementById('vm-oe-content');
-  var chev=document.getElementById('oe-chevron');
+  var el=document.getElementById('vm-oe-content'),chev=document.getElementById('oe-chevron');
   var show=el.style.display==='none';
   el.style.display=show?'block':'none';
   chev.className=show?'ti ti-chevron-up':'ti ti-chevron-down';
   if(show) activeContentEl=el;
 }
-
-function renderDimTabs(){
-  document.getElementById('vm-dims').innerHTML=DIMS.map(function(d,i){
-    return '<button class="dim-tab'+(i===currentDim?' active':'')+'" onclick="switchDim('+i+')">'+d+'</button>';
-  }).join('');
-}
+function renderDimTabs(){document.getElementById('vm-dims').innerHTML=DIMS.map(function(d,i){return'<button class="dim-tab'+(i===currentDim?' active':'')+'" onclick="switchDim('+i+')">'+d+'</button>';}).join('');}
 function switchDim(i){currentDim=i;renderDimTabs();renderDimContent();}
 function prevDim(){if(currentDim>0)switchDim(currentDim-1);}
 function nextDim(){if(currentDim<DIMS.length-1)switchDim(currentDim+1);}
-function renderDimContent(){
-  if(!currentCard) return;
-  document.getElementById('vm-dim-content').innerHTML=renderMd(currentCard[KEYS[currentDim]]||'（無資料）');
-}
-
+function renderDimContent(){if(!currentCard) return;document.getElementById('vm-dim-content').innerHTML=renderMd(currentCard[KEYS[currentDim]]||'（無資料）');}
 function closeView(){document.getElementById('view-bg').style.display='none';checkReview();}
 
-// ═══════════════════════════════════════
-// NOTES
-// ═══════════════════════════════════════
+// ── Notes ──
 function insertNote(before,after){
   var ta=document.getElementById('vm-notes');
   var s=ta.selectionStart,e=ta.selectionEnd;
   var sel=ta.value.slice(s,e)||'文字';
   ta.value=ta.value.slice(0,s)+before+sel+after+ta.value.slice(e);
-  ta.focus();ta.setSelectionRange(s+before.length,s+before.length+sel.length);
-  autoSaveNotes();
+  ta.focus();ta.setSelectionRange(s+before.length,s+before.length+sel.length);autoSaveNotes();
 }
 function toggleNotesPreview(){
   showNotesPreview=!showNotesPreview;
-  var ta=document.getElementById('vm-notes');
-  var pv=document.getElementById('vm-notes-preview');
-  var btn=document.getElementById('notes-preview-btn');
+  var ta=document.getElementById('vm-notes'),pv=document.getElementById('vm-notes-preview'),btn=document.getElementById('notes-preview-btn');
   if(showNotesPreview){pv.innerHTML=renderMd(ta.value);pv.style.display='block';ta.style.display='none';btn.textContent='編輯';}
   else{pv.style.display='none';ta.style.display='block';btn.textContent='預覽';ta.focus();}
 }
@@ -1714,9 +1132,7 @@ function autoSaveNotes(){
   },1000);
 }
 
-// ═══════════════════════════════════════
-// REF LINKS
-// ═══════════════════════════════════════
+// ── Ref ──
 function renderRefLinks(text){
   if(!text||!text.trim()) return '<span style="font-size:12px;color:var(--text3)">尚無參考來源</span>';
   return text.split('\n').filter(function(l){return l.trim();}).map(function(line){
@@ -1725,45 +1141,34 @@ function renderRefLinks(text){
 }
 function toggleRefEdit(){
   refEditMode=!refEditMode;
-  var ra=document.getElementById('vm-ref-area');
-  var rr=document.getElementById('vm-ref-rendered');
-  var btn=document.getElementById('ref-edit-btn');
+  var ra=document.getElementById('vm-ref-area'),rr=document.getElementById('vm-ref-rendered'),btn=document.getElementById('ref-edit-btn');
   if(refEditMode){rr.style.display='none';ra.style.display='block';ra.focus();btn.textContent='完成';}
-  else{
-    if(currentCard){currentCard.ref_links=ra.value;dbSave(currentCard);}
-    rr.innerHTML=renderRefLinks(ra.value);rr.style.display='block';ra.style.display='none';btn.textContent='編輯';
-  }
+  else{if(currentCard){currentCard.ref_links=ra.value;dbSave(currentCard);}rr.innerHTML=renderRefLinks(ra.value);rr.style.display='block';ra.style.display='none';btn.textContent='編輯';}
 }
 function autoSaveRef(){
   clearTimeout(refTimer);
   refTimer=setTimeout(function(){
     if(!currentCard) return;
     currentCard.ref_links=document.getElementById('vm-ref-area').value;
-    dbSave(currentCard);
-    document.getElementById('vm-ref-rendered').innerHTML=renderRefLinks(currentCard.ref_links);
+    dbSave(currentCard);document.getElementById('vm-ref-rendered').innerHTML=renderRefLinks(currentCard.ref_links);
   },1000);
 }
 
-// ═══════════════════════════════════════
-// CARD ACTIONS
-// ═══════════════════════════════════════
+// ── Card actions ──
 async function markReview(){
   if(!currentCard) return;
-  var d=new Date();d.setDate(d.getDate()+3);
-  currentCard.review_due=d.toISOString();
+  var d=new Date();d.setDate(d.getDate()+3);currentCard.review_due=d.toISOString();
   await dbSave(currentCard);checkReview();
   if(currentTab==='cases') renderCases();else renderKnowledgeCards();
-  alert('已標記！3天後提醒複習。');
+  showToast('已標記！3天後提醒複習');
 }
-
 function copyCurrentCard(){
   if(!currentCard) return;
   var text=currentCard.type==='case'
     ?(currentCard.case_number?'病例號：'+currentCard.case_number+'\n\n':'')+currentCard.content
     :DIMS.map(function(d,i){return'【'+d+'】\n'+(currentCard[KEYS[i]]||'—');}).join('\n\n');
-  navigator.clipboard.writeText(text).then(function(){alert('已複製！');});
+  navigator.clipboard.writeText(text).then(function(){showToast('已複製！');});
 }
-
 async function deleteCurrentCard(){
   if(!currentCard||!confirm('確定刪除「'+currentCard.title+'」？')) return;
   await dbDelete(currentCard.id);
@@ -1772,15 +1177,39 @@ async function deleteCurrentCard(){
   closeView();
 }
 
-// ═══════════════════════════════════════
-// EDIT MODAL
-// ═══════════════════════════════════════
+// ── Edit modal ──
 function editById(e,id){
   e.stopPropagation();
   currentCard=allCards.find(function(c){return String(c.id)===String(id);});
   if(currentCard) openEdit();
 }
-
+function renderLinkPicker(){
+  var s=(document.getElementById('link-search').value||'').toLowerCase().trim();
+  var linked=Array.from(editLinkedIds);
+  // 最新 5 張 + 搜尋結果 + 已連結的
+  var candidates=allCards.filter(function(c){
+    if(String(c.id)===String(currentCard.id)) return false;
+    if(editLinkedIds.has(String(c.id))) return true; // 已連結永遠顯示
+    if(s) return c.title.toLowerCase().includes(s)||(c.auto_keywords||'').toLowerCase().includes(s);
+    return false; // 未搜尋時只顯示已連結
+  });
+  // 加上最新 5 張（未搜尋時）
+  if(!s){
+    var recent=allCards.filter(function(c){return String(c.id)!==String(currentCard.id)&&!editLinkedIds.has(String(c.id));}).slice(0,5);
+    candidates=candidates.concat(recent);
+  }
+  document.getElementById('link-list').innerHTML=candidates.length
+    ?candidates.map(function(c){
+      var isLinked=editLinkedIds.has(String(c.id));
+      return '<label class="link-item"><input type="checkbox" value="'+c.id+'" '+(isLinked?'checked':'')
+        +' onchange="toggleLinkCheck(this)"/> '+(c.type==='case'?'📋 ':'📚 ')+escHtml(c.title)+'</label>';
+    }).join('')
+    :'<p style="font-size:12px;color:var(--text2)">輸入關鍵字搜尋記錄</p>';
+}
+function toggleLinkCheck(checkbox){
+  var id=checkbox.value;
+  if(checkbox.checked) editLinkedIds.add(id);else editLinkedIds.delete(id);
+}
 function openEdit(){
   if(!currentCard) return;
   document.getElementById('edit-title').value=currentCard.title;
@@ -1788,34 +1217,19 @@ function openEdit(){
   document.getElementById('edit-ref').value=currentCard.ref_links||'';
   editSelectedImp=currentCard.importance||'gray';
   editSelectedTags=new Set(Array.isArray(currentCard.contexts)?currentCard.contexts:[]);
+  editLinkedIds=new Set((currentCard.linked_cards||[]).map(String));
   renderTagSelector('edit-tags-wrap',editSelectedTags,'edit');
   renderImpSelector('edit-imp-wrap',editSelectedImp,'edit');
-
-  var linked=currentCard.linked_cards||[];
-  document.getElementById('edit-link-picker').innerHTML=allCards
-    .filter(function(c){return String(c.id)!==String(currentCard.id);})
-    .map(function(c){
-      return '<label class="link-item"><input type="checkbox" value="'+c.id+'" '
-        +(linked.some(function(l){return String(l)===String(c.id);})?'checked':'')
-        +'/> '+(c.type==='case'?'📋 ':'📚 ')+escHtml(c.title)+'</label>';
-    }).join('')||'<p style="font-size:12px;color:var(--text2)">尚無其他記錄</p>';
-
+  document.getElementById('link-search').value='';
+  renderLinkPicker();
   if(currentCard.type==='case'){
-    document.getElementById('edit-fields').innerHTML=
-      '<label class="field-label">臨床記錄</label>'
-      +'<textarea class="edit-field" id="ef-content">'+escHtml(currentCard.content||'')+'</textarea>';
+    document.getElementById('edit-fields').innerHTML='<label class="field-label">臨床記錄</label><textarea class="edit-field" id="ef-content">'+escHtml(currentCard.content||'')+'</textarea>';
   } else {
-    document.getElementById('edit-fields').innerHTML=
-      KEYS.map(function(k,i){
-        return '<label class="field-label" style="margin-top:10px">'+DIMS[i]+'</label>'
-          +'<textarea class="edit-field" id="ef-'+k+'">'+escHtml(currentCard[k]||'')+'</textarea>';
-      }).join('');
+    document.getElementById('edit-fields').innerHTML=KEYS.map(function(k,i){return'<label class="field-label" style="margin-top:10px">'+DIMS[i]+'</label><textarea class="edit-field" id="ef-'+k+'">'+escHtml(currentCard[k]||'')+'</textarea>';}).join('');
   }
-
   document.getElementById('view-bg').style.display='none';
   document.getElementById('edit-bg').style.display='flex';
 }
-
 async function saveEdit(){
   if(!currentCard) return;
   currentCard.title=document.getElementById('edit-title').value.trim()||currentCard.title;
@@ -1823,83 +1237,57 @@ async function saveEdit(){
   currentCard.importance=editSelectedImp;
   currentCard.contexts=Array.from(editSelectedTags);
   currentCard.ref_links=document.getElementById('edit-ref').value;
-
-  var newLinks=Array.from(document.getElementById('edit-link-picker').querySelectorAll('input:checked')).map(function(i){return i.value;});
+  var newLinks=Array.from(editLinkedIds);
   var oldLinks=currentCard.linked_cards||[];
-  // 移除舊反向連結
   oldLinks.forEach(function(lid){
-    if(newLinks.indexOf(lid)===-1){
-      var lc=allCards.find(function(c){return String(c.id)===String(lid);});
-      if(lc){lc.linked_cards=(lc.linked_cards||[]).filter(function(x){return String(x)!==String(currentCard.id);});dbSave(lc);}
-    }
+    if(newLinks.indexOf(lid)===-1){var lc=allCards.find(function(c){return String(c.id)===String(lid);});if(lc){lc.linked_cards=(lc.linked_cards||[]).filter(function(x){return String(x)!==String(currentCard.id);});dbSave(lc);}}
   });
-  // 加入新反向連結
   newLinks.forEach(function(lid){
     var lc=allCards.find(function(c){return String(c.id)===String(lid);});
-    if(lc&&!(lc.linked_cards||[]).some(function(x){return String(x)===String(currentCard.id);})){
-      (lc.linked_cards=lc.linked_cards||[]).push(String(currentCard.id));dbSave(lc);
-    }
+    if(lc&&!(lc.linked_cards||[]).some(function(x){return String(x)===String(currentCard.id);})){(lc.linked_cards=lc.linked_cards||[]).push(String(currentCard.id));dbSave(lc);}
   });
   currentCard.linked_cards=newLinks;
-
-  if(currentCard.type==='case'){
-    var ef=document.getElementById('ef-content');if(ef)currentCard.content=ef.value;
-  } else {
-    KEYS.forEach(function(k){var el=document.getElementById('ef-'+k);if(el)currentCard[k]=el.value;});
-    currentCard.auto_keywords=extractKeywords(currentCard.title+' '+KEYS.map(function(k){return currentCard[k]||'';}).join(' ')).join(' ');
-  }
-
+  if(currentCard.type==='case'){var ef=document.getElementById('ef-content');if(ef)currentCard.content=ef.value;}
+  else{KEYS.forEach(function(k){var el=document.getElementById('ef-'+k);if(el)currentCard[k]=el.value;});currentCard.auto_keywords=extractKeywords(currentCard.title+' '+KEYS.map(function(k){return currentCard[k]||'';}).join(' ')).join(' ');}
   await dbSave(currentCard);
   if(currentTab==='cases') renderCases();else renderKnowledgeCards();
-  closeEdit();
+  closeEdit();showToast('已儲存');
 }
-
 function closeEdit(){document.getElementById('edit-bg').style.display='none';}
 
-// ═══════════════════════════════════════
-// EXPORT
-// ═══════════════════════════════════════
+// ── Export ──
 function toggleExportMenu(){
   var m=document.getElementById('export-menu');
   m.style.display=m.style.display==='none'?'block':'none';
   if(m.style.display==='block') setTimeout(function(){document.addEventListener('click',function h(){m.style.display='none';document.removeEventListener('click',h);});},50);
 }
-
 function doExport(scope,fmt){
   document.getElementById('export-menu').style.display='none';
-  var data=scope==='filtered'
-    ?(currentTab==='cases'?getCasesFiltered():getCardsFiltered())
-    :allCards;
+  var data=scope==='filtered'?(currentTab==='cases'?getCasesFiltered():getCardsFiltered()):allCards;
   var content,ext;
   if(fmt==='json'){content=JSON.stringify(data,null,2);ext='json';}
   else{
     content=data.map(function(c){
-      if(c.type==='case') return'# [個案] '+c.title+'\n\n'+( c.content||'')+'\n\n---\n';
-      return'# '+c.title+'\n\n'
-        +DIMS.map(function(d,i){return'## '+d+'\n'+(c[KEYS[i]]||'—');}).join('\n\n')
-        +(c.notes?'\n\n## 筆記\n'+c.notes:'')+'\n\n---\n';
+      if(c.type==='case') return'# [個案] '+c.title+(c.case_number?' ['+c.case_number+']':'')+'\n\n'+(c.content||'')+'\n\n'+(c.notes?'## 筆記\n'+c.notes+'\n\n':'')+'---\n';
+      return'# '+c.title+'\n\n**標籤：** '+(Array.isArray(c.contexts)?c.contexts.join(', '):'—')+'\n\n'
+        +DIMS.map(function(d,i){return'## '+d+'\n\n'+(c[KEYS[i]]||'—');}).join('\n\n')
+        +(c.notes?'\n\n## 我的筆記\n\n'+c.notes:'')
+        +(c.ref_links?'\n\n## 參考來源\n\n'+c.ref_links:'')+'\n\n---\n';
     }).join('\n');ext='md';
   }
-  var blob=new Blob([content],{type:'text/plain'});
+  var blob=new Blob([content],{type:'text/plain;charset=utf-8'});
   var url=URL.createObjectURL(blob);
   var a=document.createElement('a');a.href=url;a.download='clinical_'+new Date().toISOString().slice(0,10)+'.'+ext;
   a.click();URL.revokeObjectURL(url);
+  showToast('匯出完成');
 }
 
-// ═══════════════════════════════════════
-// BOOT
-// ═══════════════════════════════════════
+// ── Boot ──
 (function boot(){
-  // 先填入 Supabase 設定讓 auth 可以用
   initSupabase();
   if(!handleAuthCallback()){
-    // 沒有 token，顯示登入頁
-    // 但如果 Supabase 還沒設定，先跳過直接進 app
-    if(!cfg('sb_url')||!cfg('sb_key')){
-      showApp();
-    } else {
-      showLogin();
-    }
+    if(!cfg('sb_url')||!cfg('sb_key')) showApp();
+    else showLogin();
   }
 })();
 </script>

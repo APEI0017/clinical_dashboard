@@ -43,7 +43,7 @@ async function callGemini(model, prompt, content) {
   const url = `https://generativelanguage.googleapis.com/v1/models/${model}:generateContent?key=${key}`;
   const body = {
     contents: [{ parts: [{ text: prompt + '\n\n' + content }] }],
-    generationConfig: { temperature: 0.3, maxOutputTokens: 4096 }
+    generationConfig: { temperature: 0.1, maxOutputTokens: 4096 }
   };
 
   const r = await fetch(url, {
@@ -103,7 +103,7 @@ async function callOpenAI(model, prompt, content) {
     body: JSON.stringify({
       model,
       messages: [{ role: 'user', content: prompt + '\n\n' + content }],
-      temperature: 0.3,
+      temperature: 0.1,
       max_tokens: 4096
     })
   });

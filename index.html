@@ -365,7 +365,25 @@ a:hover{text-decoration:underline}
     <h2 id="vm-title"></h2>
     <div id="vm-meta" style="display:flex;flex-wrap:wrap;gap:4px;margin-bottom:8px"></div>
     <div id="vm-links" style="margin-bottom:6px"></div>
-    <div id="vm-case-area" style="display:none"><div class="content-area" id="vm-case-content"></div></div>
+    <div id="vm-case-area" style="display:none">
+      <div class="content-area" id="vm-case-content" onclick="startCaseEdit()" style="cursor:text" title="點擊編輯"></div>
+      <div id="vm-case-editor" style="display:none">
+        <div class="notes-toolbar">
+          <button class="notes-tool" onclick="caseFormat('**','**')"><b>B</b></button>
+          <button class="notes-tool" onclick="caseFormat('*','*')"><i>I</i></button>
+          <button class="notes-tool" onclick="caseFormat('## ','')">H2</button>
+          <button class="notes-tool" onclick="caseFormat('### ','')">H3</button>
+          <button class="notes-tool" onclick="caseFormat('==','==')">🟡</button>
+          <button class="notes-tool" onclick="caseFormat('- ','')">• 條列</button>
+          <button class="notes-tool" onclick="caseFormat('  - ','')">↳ 縮排</button>
+          <button class="notes-tool" onclick="caseFormat('`','`')">code</button>
+          <button class="notes-tool" style="margin-left:auto;background:var(--blue);color:#fff" onclick="saveCaseEdit()">儲存</button>
+          <button class="notes-tool" onclick="cancelCaseEdit()">取消</button>
+        </div>
+        <textarea class="textarea" id="vm-case-textarea" style="min-height:200px;margin-top:4px"
+          onkeydown="if((event.ctrlKey||event.metaKey)&&event.key==='Enter'){event.preventDefault();saveCaseEdit();}"></textarea>
+      </div>
+    </div>
     <div id="vm-card-area" style="display:none">
       <div class="dim-tabs" id="vm-dims"></div>
       <div class="content-area" id="vm-dim-content" onclick="startDimEdit()" style="cursor:text" title="點擊編輯"></div>
@@ -1090,8 +1108,11 @@ function openCard(id){
   renderViewMeta();
   renderViewLinks();
   if(currentCard.type==='case'){
+    caseEditActive = false;
+    document.getElementById('vm-case-editor').style.display='none';
     document.getElementById('vm-case-area').style.display='block';
     document.getElementById('vm-card-area').style.display='none';
+    document.getElementById('vm-case-content').style.display='block';
     document.getElementById('vm-case-content').innerHTML=renderMd(currentCard.content||'（無內容）');
   } else {
     document.getElementById('vm-case-area').style.display='none';
@@ -1186,6 +1207,56 @@ function renderViewLinks(){
 }
 
 // toggleOEContent removed
+// ── Case inline edit ──
+var caseEditActive = false;
+
+function startCaseEdit(){
+  if(caseEditActive) return;
+  if(!currentCard || currentCard.type !== 'case') return;
+  caseEditActive = true;
+  var raw = currentCard.content || '';
+  document.getElementById('vm-case-content').style.display = 'none';
+  var editor = document.getElementById('vm-case-editor');
+  var ta = document.getElementById('vm-case-textarea');
+  ta.value = raw;
+  editor.style.display = 'block';
+  ta.focus();
+  ta.style.height = 'auto';
+  ta.style.height = Math.max(ta.scrollHeight, 200) + 'px';
+}
+
+function caseFormat(before, after){
+  var ta = document.getElementById('vm-case-textarea');
+  var s = ta.selectionStart, e = ta.selectionEnd;
+  var sel = ta.value.slice(s, e) || '文字';
+  ta.value = ta.value.slice(0,s) + before + sel + after + ta.value.slice(e);
+  ta.focus();
+  ta.setSelectionRange(s + before.length, s + before.length + sel.length);
+}
+
+function saveCaseEdit(){
+  if(!currentCard) return;
+  var ta = document.getElementById('vm-case-textarea');
+  currentCard.content = ta.value;
+  currentCard.auto_keywords = extractKeywords(currentCard.title + ' ' + currentCard.content).join(' ');
+  dbSave(currentCard);
+  renderCases();
+  closeCaseEditor();
+  showToast('已儲存');
+}
+
+function cancelCaseEdit(){
+  closeCaseEditor();
+}
+
+function closeCaseEditor(){
+  caseEditActive = false;
+  document.getElementById('vm-case-editor').style.display = 'none';
+  var contentEl = document.getElementById('vm-case-content');
+  contentEl.style.display = 'block';
+  contentEl.innerHTML = renderMd(currentCard.content || '（無內容）');
+}
+
 // ── Dim inline edit ──
 var dimEditActive = false;
 
@@ -1251,7 +1322,8 @@ function nextDim(){if(currentDim<DIMS.length-1)switchDim(currentDim+1);}
 function renderDimContent(){if(!currentCard) return;document.getElementById('vm-dim-content').innerHTML=renderMd(currentCard[KEYS[currentDim]]||'（無資料）');}
 function closeView(){
   if(dimEditActive) saveDimEdit();
-  dimEditActive=false;
+  if(caseEditActive) saveCaseEdit();
+  dimEditActive=false;caseEditActive=false;
   document.getElementById('view-bg').style.display='none';
   checkReview();
 }

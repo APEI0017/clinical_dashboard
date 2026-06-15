@@ -260,8 +260,23 @@ a:hover{text-decoration:underline}
 
   <!-- Tabs -->
   <div class="tabs">
+    <button class="tab" id="tab-all" onclick="switchTab('all')"><i class="ti ti-layout-grid"></i> 全部</button>
     <button class="tab active" id="tab-cases" onclick="switchTab('cases')"><i class="ti ti-clipboard-list"></i> 個案記錄</button>
     <button class="tab" id="tab-cards" onclick="switchTab('cards')"><i class="ti ti-cards"></i> 知識卡片</button>
+  </div>
+
+  <!-- ══ 全部 ══ -->
+  <div class="tab-panel" id="panel-all">
+    <div class="top-bar">
+      <div class="search-wrap">
+        <i class="ti ti-search"></i>
+        <input class="search-input" id="all-search" placeholder="搜尋所有記錄…" oninput="renderAll()"/>
+      </div>
+      <div id="all-filter-tags" style="display:flex;gap:5px;flex-wrap:wrap"></div>
+      <span id="all-count" style="font-size:12px;color:var(--text3);white-space:nowrap"></span>
+    </div>
+    <div id="all-grid" class="cards-grid"></div>
+    <div id="all-empty" class="empty-state" style="display:none"><i class="ti ti-search"></i><p>找不到符合的記錄</p></div>
   </div>
 
   <!-- ══ 個案記錄 ══ -->
@@ -594,10 +609,13 @@ function saveSettings(){
 }
 function switchTab(tab){
   currentTab=tab;
-  document.getElementById('tab-cases').classList.toggle('active',tab==='cases');
-  document.getElementById('tab-cards').classList.toggle('active',tab==='cards');
-  document.getElementById('panel-cases').classList.toggle('active',tab==='cases');
-  document.getElementById('panel-cards').classList.toggle('active',tab==='cards');
+  ['all','cases','cards'].forEach(function(t){
+    var tabEl=document.getElementById('tab-'+t);
+    var panelEl=document.getElementById('panel-'+t);
+    if(tabEl) tabEl.classList.toggle('active',t===tab);
+    if(panelEl) panelEl.classList.toggle('active',t===tab);
+  });
+  if(tab==='all') renderAll();
 }
 function esc(s){return String(s).replace(/\\/g,'\\\\').replace(/'/g,"\\'");}
 function escHtml(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
@@ -860,7 +878,7 @@ async function loadAllCards(){
   if(!SB_URL||!SB_KEY){renderCases();renderKnowledgeCards();return;}
   try{allCards=await sbFetch('cards?order=created_at.desc');setConn(true);}
   catch(e){setConn(false);var s=cfg('cards_v4');if(s){try{allCards=JSON.parse(s);}catch(e2){}}}
-  checkReview();renderCases();renderKnowledgeCards();
+  checkReview();renderCases();renderKnowledgeCards();if(currentTab==='all')renderAll();
 }
 function setConn(ok){document.getElementById('conn-dot').className='conn-dot '+(ok?'ok':'err');document.getElementById('conn-text').textContent=ok?'已連線':'離線模式';}
 async function dbSave(card){
@@ -1005,6 +1023,63 @@ function checkReview(){
 function showReviewCards(){switchTab('cards');document.getElementById('card-search').value='待複習';renderKnowledgeCards();}
 
 // ── Render ──
+function getAllFiltered(){
+  var s = document.getElementById('all-search') ? document.getElementById('all-search').value.toLowerCase().trim() : '';
+  return allCards.filter(function(c){
+    if(!s) return true;
+    var searchable = [c.title, c.case_number, c.content,
+      c.diagnosis, c.management, c.workup, c.pearl,
+      c.keypoints, c.memory, c.evidence, c.notes, c.auto_keywords
+    ].filter(Boolean).join(' ').toLowerCase();
+    return s.split(/\s+/).every(function(t){ return searchable.includes(t); });
+  });
+}
+
+function renderAll(){
+  var f = getAllFiltered();
+  var grid = document.getElementById('all-grid');
+  var empty = document.getElementById('all-empty');
+  if(!grid) return;
+  document.getElementById('all-count').textContent = f.length + ' 筆';
+  if(!f.length){ grid.innerHTML=''; empty.style.display='block'; return; }
+  empty.style.display='none';
+  var now = new Date();
+  var cutoff = new Date(now - REVIEW_DAYS*86400000);
+  grid.innerHTML = f.map(function(c){
+    var isCase = c.type==='case';
+    var imp = c.importance||'gray';
+    var cm = IMP_COLORS[imp]||IMP_COLORS.gray;
+    var ctxs = Array.isArray(c.contexts)?c.contexts:[];
+    var preview = isCase
+      ? (c.content||'').replace(/[#*=`\[\]]/g,'').slice(0,90)
+      : (c.diagnosis||c.keypoints||'').replace(/[#*=`\[\]]/g,'').slice(0,90);
+    var id = "'"+String(c.id)+"'";
+    var lv = c.last_viewed?new Date(c.last_viewed):new Date(c.created_at);
+    var isReview = !isCase && ((c.review_due&&new Date(c.review_due)<=now)||lv<cutoff);
+    return '<div class="card '+(imp==='gray'?'':'imp-'+imp)+'" onclick="openCard('+id+')">'
+      +(isReview?'<span class="review-badge"><i class="ti ti-bell"></i> 待複習</span>':'')
+      +'<div class="card-hd">'
+      +'<div class="card-title">'
+      +'<span class="chip" style="font-size:10px;padding:1px 6px;margin-right:4px;'+(isCase?'background:var(--green-bg);color:var(--green-text)':'background:var(--blue-bg);color:var(--blue-text)')+'">'+( isCase?'個案':'知識')+'</span>'
+      +escHtml(c.title)+'</div>'
+      +'<div class="card-actions">'
+      +'<button class="icon-btn" onclick="editById(event,'+id+')"><i class="ti ti-edit"></i></button>'
+      +'<button class="icon-btn'+(c.starred?' starred':'')+'" onclick="toggleStar(event,'+id+')"><i class="ti ti-star'+(c.starred?'-filled':'')+'"></i></button>'
+      +'</div></div>'
+      +'<div class="card-chips">'
+      +ctxs.map(function(t){return'<span class="chip chip-ctx">'+t+'</span>';}).join('')
+      +(c.case_number?'<span class="chip chip-case">'+c.case_number+'</span>':'')
+      +'<span style="font-size:10px;color:var(--text3);margin-left:2px">'+cm.emoji+'</span>'
+      +'</div>'
+      +(preview?'<div class="card-preview">'+escHtml(preview)+(preview.length>=90?'…':'')+'</div>':'')
+      +'<div class="card-footer">'
+      +'<span><i class="ti ti-clock"></i> '+(c.created_at||'').slice(0,10)+'</span>'
+      +'<span><i class="ti ti-eye"></i> '+(c.view_count||0)+'</span>'
+      +(c.notes?'<span><i class="ti ti-notes"></i></span>':'')
+      +'</div></div>';
+  }).join('');
+}
+
 function getCasesFiltered(){
   var s=document.getElementById('case-search').value.toLowerCase().trim();
   return allCards.filter(function(c){

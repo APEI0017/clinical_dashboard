@@ -311,6 +311,13 @@ a:hover{text-decoration:underline}
         </div>
         <div style="margin-bottom:10px"><label class="field-label">標籤</label><div class="tags-wrap" id="card-tag-select"></div></div>
         <div style="margin-bottom:10px"><label class="field-label">重要程度</label><div class="tags-wrap" id="card-imp-select"></div></div>
+        <div style="margin-bottom:10px">
+          <label class="field-label">連結個案或知識卡片</label>
+          <div class="link-picker" style="max-height:160px">
+            <input class="link-search" id="new-card-link-search" placeholder="搜尋要連結的記錄…" oninput="renderNewCardLinkPicker()"/>
+            <div id="new-card-link-list"></div>
+          </div>
+        </div>
         <div style="margin-bottom:8px">
           <label class="field-label">參考來源 URL（貼上 OE 內容後自動偵測，或手動填入）</label>
           <input class="plain-input" type="text" id="card-ref-url" placeholder="https://www.openevidence.com/..."/>
@@ -464,6 +471,7 @@ var editSelectedTags = new Set(), editSelectedImp = 'red';
 var filterCaseTags = new Set(), filterCardTags = new Set();
 var dragSrcTag = null;
 var editLinkedIds = new Set();
+var newCardLinkedIds = new Set();
 
 function cfg(k){return localStorage.getItem(k)||'';}
 function setCfg(k,v){localStorage.setItem(k,v);}
@@ -539,6 +547,13 @@ function initApp(){
 }
 
 function toggleSection(id){
+  // 開啟新增卡片時初始化連結選擇器
+  if(id==='newcard-sec'){
+    var body=document.getElementById('newcard-sec-body');
+    if(body&&!body.classList.contains('open')){
+      setTimeout(function(){ renderNewCardLinkPicker(); },100);
+    }
+  }
   var body=document.getElementById(id+'-body');
   var chev=document.getElementById(id+'-chevron');
   if(!body) return;
@@ -933,15 +948,26 @@ function saveKnowledgeCard(){
     ref_links:document.getElementById('card-ref-url').value.trim(),
     diagnosis:aiResult.diagnosis||'',management:aiResult.management||'',workup:aiResult.workup||'',
     pearl:aiResult.pearl||'',keypoints:aiResult.keypoints||'',memory:aiResult.memory||'',evidence:aiResult.evidence||'',
-    notes:'',linked_cards:[],review_due:null,starred:false,view_count:0,last_viewed:null,
+    notes:'',linked_cards:Array.from(newCardLinkedIds),review_due:null,starred:false,view_count:0,last_viewed:null,
     auto_keywords:extractKeywords(title+' '+Object.values(aiResult).join(' ')).join(' '),
     created_at:new Date().toISOString()
   };
-  allCards.unshift(card);dbSave(card);renderKnowledgeCards();
+  allCards.unshift(card);dbSave(card);
+  // 建立雙向連結
+  Array.from(newCardLinkedIds).forEach(function(lid){
+    var lc=allCards.find(function(c){return String(c.id)===String(lid);});
+    if(lc&&!(lc.linked_cards||[]).some(function(x){return String(x)===String(card.id);})){
+      (lc.linked_cards=lc.linked_cards||[]).push(String(card.id));dbSave(lc);
+    }
+  });
+  renderKnowledgeCards();
   document.getElementById('card-title-input').value='';document.getElementById('card-oe-content').value='';document.getElementById('card-ref-url').value='';
   document.getElementById('ai-result-preview').style.display='none';document.getElementById('save-card-btn').style.display='none';
   cardSelectedTags.clear();cardSelectedImp=impLevels[0]?impLevels[0].id:'red';
   renderTagSelector('card-tag-select',cardSelectedTags,'card');renderImpSelector('card-imp-select',cardSelectedImp,'card');
+  newCardLinkedIds.clear();
+  var nls=document.getElementById('new-card-link-search');if(nls)nls.value='';
+  var nll=document.getElementById('new-card-link-list');if(nll)nll.innerHTML='';
   aiResult={};toggleSection('newcard-sec');showToast('卡片已儲存');
 }
 
@@ -1246,6 +1272,33 @@ function editById(e,id){
   currentCard=allCards.find(function(c){return String(c.id)===String(id);});
   if(currentCard) openEdit();
 }
+function renderNewCardLinkPicker(){
+  var s = (document.getElementById('new-card-link-search').value||'').toLowerCase().trim();
+  var candidates = allCards.filter(function(c){
+    if(newCardLinkedIds.has(String(c.id))) return true;
+    if(s) return c.title.toLowerCase().includes(s)||(c.auto_keywords||'').toLowerCase().includes(s);
+    return false;
+  });
+  if(!s){
+    var recent = allCards.filter(function(c){ return !newCardLinkedIds.has(String(c.id)); }).slice(0,5);
+    candidates = candidates.concat(recent);
+  }
+  document.getElementById('new-card-link-list').innerHTML = candidates.length
+    ? candidates.map(function(c){
+        return '<label class="link-item"><input type="checkbox" value="'+c.id+'" '
+          +(newCardLinkedIds.has(String(c.id))?'checked':'')
+          +' onchange="toggleNewCardLink(this)"/> '
+          +(c.type==='case'?'📋 ':'📚 ')+escHtml(c.title)+'</label>';
+      }).join('')
+    : '<p style="font-size:12px;color:var(--text2)">輸入關鍵字搜尋，或新增後自動顯示最新 5 筆</p>';
+}
+
+function toggleNewCardLink(checkbox){
+  var id = checkbox.value;
+  if(checkbox.checked) newCardLinkedIds.add(id);
+  else newCardLinkedIds.delete(id);
+}
+
 function renderLinkPicker(){
   var s=(document.getElementById('link-search').value||'').toLowerCase().trim();
   var linked=Array.from(editLinkedIds);

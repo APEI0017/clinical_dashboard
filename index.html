@@ -320,7 +320,7 @@ a:hover{text-decoration:underline}
         </div>
         <div style="margin-bottom:8px">
           <label class="field-label">參考來源 URL（貼上 OE 內容後自動偵測，或手動填入）</label>
-          <input class="plain-input" type="text" id="card-ref-url" placeholder="https://www.openevidence.com/..."/>
+          <textarea class="textarea" id="card-ref-url" rows="2" style="min-height:60px" placeholder="https://www.openevidence.com/...&#10;https://pubmed.ncbi.nlm.nih.gov/...&#10;（每行一個連結）"></textarea>
         </div>
         <label class="field-label">OE 內容（貼上後按「AI 整理」）</label>
         <textarea class="textarea" id="card-oe-content" rows="8"
@@ -1087,11 +1087,7 @@ function openCard(id){
   var ctxs=Array.isArray(currentCard.contexts)?currentCard.contexts:[];
   var imp=currentCard.importance||'gray',cm=IMP_COLORS[imp]||IMP_COLORS.gray;
   var impLv=impLevels.find(function(x){return x.id===imp;});
-  document.getElementById('vm-meta').innerHTML=
-    '<span style="font-size:12px">'+(impLv?cm.emoji+' '+impLv.label:'')+'</span>'
-    +ctxs.map(function(t){return'<span class="chip chip-ctx">'+t+'</span>';}).join('')
-    +(currentCard.case_number?'<span class="chip chip-case">'+currentCard.case_number+'</span>':'')
-    +(currentCard.type==='case'?'<span class="chip" style="background:var(--green-bg);color:var(--green-text)">個案</span>':'<span class="chip" style="background:var(--blue-bg);color:var(--blue-text)">知識卡片</span>');
+  renderViewMeta();
   renderViewLinks();
   if(currentCard.type==='case'){
     document.getElementById('vm-case-area').style.display='block';
@@ -1113,6 +1109,69 @@ function openCard(id){
   document.getElementById('ref-edit-btn').textContent='編輯';refEditMode=false;
   document.getElementById('view-bg').style.display='flex';
 }
+
+function quickChangeImp(impId){
+  if(!currentCard) return;
+  currentCard.importance = impId;
+  dbSave(currentCard);
+  renderViewMeta();
+  if(currentTab==='cases') renderCases();else renderKnowledgeCards();
+  showToast('重要程度已更新');
+}
+
+function renderViewMeta(){
+  if(!currentCard) return;
+  var imp = currentCard.importance||'gray';
+  var cm = IMP_COLORS[imp]||IMP_COLORS.gray;
+  var ctxs = Array.isArray(currentCard.contexts)?currentCard.contexts:[];
+  var impLv = impLevels.find(function(x){return x.id===imp;});
+  // 使用 DOM 建立，避免字串引號衝突
+  var meta = document.getElementById('vm-meta');
+  meta.innerHTML = '';
+  // 重要程度 chips
+  impLevels.forEach(function(lv){
+    var c2 = IMP_COLORS[lv.color]||IMP_COLORS.gray;
+    var isActive = lv.id === imp;
+    var span = document.createElement('span');
+    span.style.cssText = isActive
+      ? 'background:'+c2.bg+';color:'+c2.text+';border:0.5px solid '+c2.border+';cursor:pointer;font-size:12px;padding:3px 10px;border-radius:20px;display:inline-flex;align-items:center;gap:4px;margin-right:4px;font-weight:500'
+      : 'background:var(--bg2);color:var(--text3);border:0.5px solid var(--border);cursor:pointer;font-size:12px;padding:3px 10px;border-radius:20px;display:inline-flex;align-items:center;gap:4px;margin-right:4px';
+    span.title = '點擊切換重要程度';
+    span.dataset.impId = lv.id;
+    span.onclick = function(){ quickChangeImp(this.dataset.impId); };
+    var dot = document.createElement('span');
+    dot.style.cssText = 'width:7px;height:7px;border-radius:50%;background:'+c2.dot+';flex-shrink:0;display:inline-block';
+    span.appendChild(dot);
+    span.appendChild(document.createTextNode(c2.emoji+' '+lv.label));
+    meta.appendChild(span);
+  });
+  // ctx chips
+  ctxs.forEach(function(t){
+    var span = document.createElement('span');
+    span.className = 'chip chip-ctx';
+    span.textContent = t;
+    meta.appendChild(span);
+  });
+  // case number
+  if(currentCard.case_number){
+    var span = document.createElement('span');
+    span.className = 'chip chip-case';
+    span.textContent = currentCard.case_number;
+    meta.appendChild(span);
+  }
+  // type badge
+  var typeBadge = document.createElement('span');
+  typeBadge.className = 'chip';
+  if(currentCard.type==='case'){
+    typeBadge.style.cssText = 'background:var(--green-bg);color:var(--green-text)';
+    typeBadge.textContent = '個案';
+  } else {
+    typeBadge.style.cssText = 'background:var(--blue-bg);color:var(--blue-text)';
+    typeBadge.textContent = '知識卡片';
+  }
+  meta.appendChild(typeBadge);
+}
+
 
 function renderViewLinks(){
   var linked=currentCard.linked_cards||[];

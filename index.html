@@ -360,10 +360,6 @@ a:hover{text-decoration:underline}
     <div id="vm-links" style="margin-bottom:6px"></div>
     <div id="vm-case-area" style="display:none"><div class="content-area" id="vm-case-content"></div></div>
     <div id="vm-card-area" style="display:none">
-      <div class="dim-nav">
-        <button class="dim-nav-btn" onclick="prevDim()">← 上一個</button>
-        <button class="dim-nav-btn" onclick="nextDim()">下一個 →</button>
-      </div>
       <div class="dim-tabs" id="vm-dims"></div>
       <div class="content-area" id="vm-dim-content" onclick="startDimEdit()" style="cursor:text" title="點擊編輯"></div>
       <div id="vm-dim-editor" style="display:none">
@@ -381,7 +377,10 @@ a:hover{text-decoration:underline}
         </div>
         <textarea class="textarea" id="vm-dim-textarea" style="min-height:200px;margin-top:4px" onkeydown="if((event.ctrlKey||event.metaKey)&&event.key==='Enter'){event.preventDefault();saveDimEdit();}"></textarea>
       </div>
-
+      <div class="dim-nav" style="margin-top:8px">
+        <button class="dim-nav-btn" onclick="prevDim()">← 上一個</button>
+        <button class="dim-nav-btn" onclick="nextDim()">下一個 →</button>
+      </div>
     </div>
     <div class="notes-section" id="vm-notes-section">
       <div class="notes-label"><i class="ti ti-notes"></i> 我的臨床心得</div>

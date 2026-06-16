@@ -1097,7 +1097,7 @@ function renderAll(){
       +escHtml(c.title)+'</div>'
       +'<div class="card-actions">'
       +'<button class="icon-btn" onclick="editById(event,'+id+')"><i class="ti ti-edit"></i></button>'
-      +'<button class="icon-btn'+(c.starred?' starred':'')+'" onclick="toggleStar(event,'+id+')"><i class="ti ti-star" style="'+(c.starred?'color:#EF9F27':'color:var(--text3)')+'"></i></button>'
+      +'<button class="icon-btn'+(c.starred?' starred':'')+'" onclick="toggleStar(event,'+id+')" style="font-size:16px;color:'+(c.starred?'#EF9F27':'var(--text3)')+';">'+(c.starred?'★':'☆')+'</button>'
       +'</div></div>'
       +'<div class="card-chips">'
       +ctxs.map(function(t){return'<span class="chip chip-ctx">'+t+'</span>';}).join('')
@@ -1169,7 +1169,7 @@ function renderCases(){
     return '<div class="card '+(imp==='gray'?'':'imp-'+imp)+'" onclick="openCard('+id+')">'
       +'<div class="card-hd"><div class="card-title">'+escHtml(c.title)+'</div>'
       +'<div class="card-actions"><button class="icon-btn" onclick="editById(event,'+id+')"><i class="ti ti-edit"></i></button>'
-      +'<button class="icon-btn'+(c.starred?' starred':'')+'" onclick="toggleStar(event,'+id+')"><i class="ti ti-star" style="'+(c.starred?'color:#EF9F27':'color:var(--text3)')+'"></i></button></div></div>'
+      +'<button class="icon-btn'+(c.starred?' starred':'')+'" onclick="toggleStar(event,'+id+')" style="font-size:16px;color:'+(c.starred?'#EF9F27':'var(--text3)')+';">'+(c.starred?'★':'☆')+'</button></div></div>'
       +'<div class="card-chips">'+ctxs.map(function(t){return'<span class="chip chip-ctx">'+t+'</span>';}).join('')
       +(c.case_number?'<span class="chip chip-case">'+c.case_number+'</span>':'')+'<span style="font-size:10px;color:var(--text3);margin-left:2px">'+cm.emoji+'</span></div>'
       +(preview?'<div class="card-preview">'+escHtml(preview)+(preview.length>=90?'…':'')+'</div>':'')
@@ -1200,7 +1200,7 @@ function renderKnowledgeCards(){
       +'<div class="card-actions">'
       +(linkedCases?'<span style="font-size:10px;color:var(--purple);padding:3px"><i class="ti ti-clipboard-list"></i>'+linkedCases+'</span>':'')
       +'<button class="icon-btn" onclick="editById(event,'+id+')"><i class="ti ti-edit"></i></button>'
-      +'<button class="icon-btn'+(c.starred?' starred':'')+'" onclick="toggleStar(event,'+id+')"><i class="ti ti-star" style="'+(c.starred?'color:#EF9F27':'color:var(--text3)')+'"></i></button></div></div>'
+      +'<button class="icon-btn'+(c.starred?' starred':'')+'" onclick="toggleStar(event,'+id+')" style="font-size:16px;color:'+(c.starred?'#EF9F27':'var(--text3)')+';">'+(c.starred?'★':'☆')+'</button></div></div>'
       +'<div class="card-chips">'+ctxs.map(function(t){return'<span class="chip chip-ctx">'+t+'</span>';}).join('')
       +'<span style="font-size:10px;color:var(--text3);margin-left:2px">'+cm.emoji+'</span></div>'
       +(preview?'<div class="card-preview">'+escHtml(preview)+(preview.length>=90?'…':'')+'</div>':'')
@@ -1219,10 +1219,12 @@ function toggleStar(e,id){
   // 直接更新 icon，不動 button 的 class
   var target=e.target;
   var icon=target.tagName==='I'?target:target.querySelector('i');
-  if(icon){
-    icon.className='ti ti-star';
-    icon.style.color=c.starred?'#EF9F27':'var(--text3)';
-    icon.style.fontWeight=c.starred?'900':'400';
+  // 更新 Unicode 星星
+  var btn2=e.target;
+  while(btn2&&btn2.tagName!=='BUTTON') btn2=btn2.parentElement;
+  if(btn2){
+    btn2.textContent=c.starred?'★':'☆';
+    btn2.style.color=c.starred?'#EF9F27':'var(--text3)';
   }
 }
 

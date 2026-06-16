@@ -160,6 +160,21 @@ a:hover{text-decoration:underline}
 .google-btn{display:inline-flex;align-items:center;gap:10px;padding:12px 24px;border:0.5px solid var(--border2);border-radius:var(--radius);background:var(--bg);cursor:pointer;font-size:14px;font-weight:500;color:var(--text);transition:all .15s;width:100%;justify-content:center}
 .google-btn:hover{background:var(--bg2)}
 .float-panel{position:fixed;z-index:200;background:var(--bg);border:0.5px solid var(--border2);border-radius:var(--radius);padding:12px;box-shadow:0 4px 12px rgba(0,0,0,.15);min-width:200px}
+/* Case AI analysis */
+.case-ai-block{margin-top:1rem;border-top:1px solid var(--border);padding-top:1rem}
+.case-ai-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.case-ai-title{font-size:12px;font-weight:500;color:var(--text2);display:flex;align-items:center;gap:6px}
+.case-ai-content{background:var(--bg2);border-radius:var(--radius);padding:1rem;font-size:13px;line-height:1.9}
+.case-ai-content h2{font-size:13px;font-weight:600;margin:10px 0 3px;padding-bottom:3px;border-bottom:1px solid var(--border)}
+.case-ai-content strong{font-weight:600}
+.case-ai-kw{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.case-ai-kw-label{font-size:11px;color:var(--text3);width:100%;margin-bottom:2px}
+.case-ai-kw span{font-size:12px;padding:3px 10px;border-radius:20px;background:var(--blue-bg);color:var(--blue-text);cursor:pointer;border:0.5px solid var(--blue)}
+.case-ai-kw span:hover{background:var(--blue);color:#fff}
+.link-suggest{background:var(--amber-bg);border:0.5px solid var(--amber);border-radius:var(--radius);padding:.75rem;margin-top:10px}
+.link-suggest p{font-size:13px;color:var(--amber-text);margin-bottom:8px}
+.link-suggest-cards{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px}
+
 /* Toast */
 .toast{position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%);background:rgba(26,26,26,0.9);color:#fff;font-size:13px;padding:8px 18px;border-radius:20px;z-index:999;pointer-events:none;opacity:0;transition:opacity .2s;white-space:nowrap}
 .toast.show{opacity:1}
@@ -404,6 +419,28 @@ a:hover{text-decoration:underline}
         <textarea class="textarea" id="vm-case-textarea" style="min-height:200px;margin-top:4px"
           onkeydown="if((event.ctrlKey||event.metaKey)&&event.key==='Enter'){event.preventDefault();saveCaseEdit();}"></textarea>
       </div>
+      <!-- AI 分析區塊 -->
+      <div class="case-ai-block">
+        <div class="case-ai-header">
+          <div class="case-ai-title"><i class="ti ti-brain"></i> AI 臨床決策分析</div>
+          <button class="btn btn-green btn-sm" onclick="runCaseAI()" id="case-ai-btn">
+            <i class="ti ti-sparkles"></i> AI 分析
+          </button>
+        </div>
+        <div class="ai-loading" id="case-ai-loading"><div class="spinner"></div><span>分析中…</span></div>
+        <div id="case-ai-result" style="display:none">
+          <div class="case-ai-content" id="case-ai-content"></div>
+          <div class="case-ai-kw" id="case-ai-kw"></div>
+          <div class="link-suggest" id="case-link-suggest" style="display:none">
+            <p><i class="ti ti-link"></i> 找到相關知識卡片，要連結嗎？</p>
+            <div class="link-suggest-cards" id="link-suggest-cards"></div>
+            <div style="display:flex;gap:8px;margin-top:8px">
+              <button class="btn btn-primary btn-sm" onclick="confirmLinkSuggest()">連結選取的</button>
+              <button class="btn btn-outline btn-sm" onclick="dismissLinkSuggest()">略過</button>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
     <div id="vm-card-area" style="display:none">
       <div class="dim-tabs" id="vm-dims"></div>
@@ -494,6 +531,8 @@ var IMP_COLORS = {
   blue:  {dot:'#185FA5',bg:'var(--blue-bg)',   text:'var(--blue-text)', border:'var(--blue)',   emoji:'🔵'},
   gray:  {dot:'#9b9b9b',bg:'var(--bg2)',       text:'var(--text2)',     border:'var(--border2)',emoji:'⚪'}
 };
+var CASE_AI_PROMPT = 'You are integrated into a clinical decision support web system for physicians.\nYour task is NOT to explain or summarize.\nYour task is to convert any clinical case into a structured decision tree.\nOutput must always follow this format:\n1. TRIAGE NODE (Is this immediately life-threatening? yes/no + why)\n2. PRIMARY DECISION PATH (shock type or system failure classification)\n3. CRITICAL RULE-OUTS (must-not-miss conditions)\n4. NEXT ACTIONS (ordered, step-by-step clinical actions within 1\u20133 hours window)\n5. REASSESSMENT TRIGGERS (what changes outcome or decision path)\nRules:\n- Do not include long explanations\n- Do not restate full case\n- Prioritize decision-making under uncertainty\n- If data is missing, explicitly state what would change the branch\n- Assume emergency/ward context unless specified\n請用繁體中文輸出所有內容，專有名詞（藥名、疾病英文縮寫、檢查名稱）保留英文。\n\n臨床個案：';
+
 var AI_PROMPT = '⚠️ 輸出格式規定（必須嚴格遵守）：\n- 所有條列項目必須用「- 」開頭，子項目用「  - 」縮排\n- 次標題用「## 」開頭，子標題用「### 」開頭\n- 重點關鍵字用 **文字** 標示粗體\n- 每個【】段落之間空一行，段落內不要多餘空行\n- 嚴禁純文字換行當條列\n- 嚴禁使用 emoji\n- 嚴禁使用表格（除非資料本身必須比較）\n\n你是住院醫師的臨床教師兼醫學教育專家。請把以下 OpenEvidence 內容整理成結構化摘要，輸出以下七個段落，每段用【】標示，條列式、精簡行動導向。原文內容後加[原文]，補充的知識加[AI補充 (來源 年份)]。\n\n七個維度各有明確範圍，請勿重疊：\n【診斷】怎麼診斷、鑑別診斷要點\n【處置】治療流程、一線藥物劑量、手術適應症\n【Work-up】檢查順序、抽血項目、影像學選擇\n【臨床價值】盲點（Pitfall）、容易漏掉的細節、人文關懷\n【核心知識點】定義、分類、關鍵數字（考試直接考的）\n【記憶法】口訣、聯想法、比喻（不重複前面內容）\n【必考延伸】Guideline 版本年份、爭議點、證據來源（只寫名稱年份，不捏造 URL）\n\n內容：';
 
 var allCards = [], currentCard = null, currentDim = 0, currentTab = 'cases';
@@ -950,7 +989,7 @@ function saveCase(){
     id:'local_'+Date.now(),type:'case',title:title,
     case_number:caseNum||detectCaseNumber(content),
     importance:caseSelectedImp,contexts:Array.from(caseSelectedTags),
-    content:content,notes:'',ref_links:'',linked_cards:[],
+    content:content,notes:'',ref_links:'',ai_analysis:'',linked_cards:[],
     review_due:null,starred:false,view_count:0,last_viewed:null,
     auto_keywords:extractKeywords(title+' '+content).join(' '),
     created_at:new Date().toISOString()
@@ -1250,6 +1289,17 @@ function openCard(id){
     document.getElementById('vm-card-area').style.display='none';
     document.getElementById('vm-case-content').style.display='block';
     document.getElementById('vm-case-content').innerHTML=renderMd(currentCard.content||'（無內容）');
+    // 載入已有的 AI 分析
+    var aiResult = document.getElementById('case-ai-result');
+    var aiLoading = document.getElementById('case-ai-loading');
+    aiLoading.classList.remove('show');
+    if(currentCard.ai_analysis){
+      renderCaseAI(currentCard.ai_analysis);
+      aiResult.style.display='block';
+      document.getElementById('case-link-suggest').style.display='none';
+    } else {
+      aiResult.style.display='none';
+    }
   } else {
     document.getElementById('vm-case-area').style.display='none';
     document.getElementById('vm-card-area').style.display='block';
@@ -1343,6 +1393,164 @@ function renderViewLinks(){
 }
 
 // toggleOEContent removed
+// ── Case AI Analysis ──
+var suggestedLinkIds = [];
+
+async function runCaseAI(){
+  if(!currentCard || currentCard.type !== 'case') return;
+  var caseText = currentCard.content || '';
+  if(!caseText.trim()){ showError('請先填寫臨床記錄內容'); return; }
+
+  var provider = cfg('ai_provider')||'gemini';
+  var model = cfg('ai_model')||'gemini-2.0-flash';
+  var loading = document.getElementById('case-ai-loading');
+  var result = document.getElementById('case-ai-result');
+  var btn = document.getElementById('case-ai-btn');
+
+  loading.classList.add('show');
+  result.style.display = 'none';
+  btn.disabled = true;
+
+  try{
+    var r = await fetch('/api/ai',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({provider:provider, model:model, prompt:CASE_AI_PROMPT, content:caseText})
+    });
+    var data = await r.json();
+    if(data.error) throw new Error(data.error);
+
+    // 儲存 AI 分析結果
+    currentCard.ai_analysis = data.result;
+    dbSave(currentCard);
+
+    // 渲染結果
+    renderCaseAI(data.result);
+    result.style.display = 'block';
+
+    // 搜尋相關知識卡片
+    findRelatedCards(data.result);
+
+  } catch(e){
+    var msg = e.message;
+    var hint = '';
+    if(msg.includes('429')) hint = ' (API 配額已用完)';
+    else if(msg.includes('404')) hint = ' (Model 名稱錯誤)';
+    showError('AI 分析失敗'+hint);
+  }
+
+  loading.classList.remove('show');
+  btn.disabled = false;
+}
+
+function renderCaseAI(text){
+  if(!text) return;
+  // 處理段落
+  var lines = text.split('\n');
+  var html = [];
+  for(var i=0;i<lines.length;i++){
+    var line = lines[i].trim();
+    if(!line) continue;
+    // 數字節點標題
+    if(/^\d+\.\s+[A-Z]/.test(line)){
+      html.push('<h2>'+line+'</h2>');
+    } else if(/^- /.test(line)){
+      html.push('<div style="display:flex;gap:6px;margin:2px 0"><span style="color:var(--blue);flex-shrink:0">•</span><span>'+inlineMd(line.slice(2))+'</span></div>');
+    } else {
+      html.push('<p style="margin:3px 0">'+inlineMd(line)+'</p>');
+    }
+  }
+  document.getElementById('case-ai-content').innerHTML = html.join('');
+}
+
+
+function findRelatedCards(analysisText){
+  // 從 AI 輸出提取關鍵字
+  var keywords = extractKeywords(analysisText);
+  var kwEl = document.getElementById('case-ai-kw');
+
+  if(!keywords.length){ kwEl.innerHTML = ''; return; }
+
+  // 顯示關鍵字 chips
+  var kwHtml = '<div class="case-ai-kw-label">相關關鍵字（點擊搜尋）：</div>';
+  keywords.slice(0,10).forEach(function(kw){
+    var span = document.createElement('span');
+    span.textContent = kw;
+    span.onclick = function(){ searchKwAndSuggest(kw); };
+    kwEl.appendChild(span);
+  });
+  kwEl.insertAdjacentHTML('afterbegin', kwHtml);
+
+  // 自動搜尋相關知識卡片
+  var related = allCards.filter(function(c){
+    if(c.type !== 'knowledge') return false;
+    if((currentCard.linked_cards||[]).some(function(l){ return String(l)===String(c.id); })) return false;
+    var searchable = [c.title, c.auto_keywords, c.diagnosis, c.keypoints].filter(Boolean).join(' ').toLowerCase();
+    return keywords.slice(0,6).some(function(kw){ return searchable.includes(kw.toLowerCase()); });
+  }).slice(0,5);
+
+  if(related.length){
+    suggestedLinkIds = [];
+    var suggestEl = document.getElementById('case-link-suggest');
+    var cardsEl = document.getElementById('link-suggest-cards');
+    cardsEl.innerHTML = related.map(function(c){
+      return '<label style="display:flex;align-items:center;gap:6px;font-size:13px;cursor:pointer">'
+        + '<input type="checkbox" value="'+c.id+'" checked onchange="toggleSuggestLink(this)"/> '
+        + '<span class="chip" style="background:var(--blue-bg);color:var(--blue-text)">📚 '+escHtml(c.title)+'</span>'
+        + '</label>';
+    }).join('');
+    // 預設全選
+    suggestedLinkIds = related.map(function(c){ return String(c.id); });
+    suggestEl.style.display = 'block';
+  } else {
+    document.getElementById('case-link-suggest').style.display = 'none';
+  }
+}
+
+function toggleSuggestLink(checkbox){
+  var id = checkbox.value;
+  if(checkbox.checked){
+    if(suggestedLinkIds.indexOf(id)===-1) suggestedLinkIds.push(id);
+  } else {
+    suggestedLinkIds = suggestedLinkIds.filter(function(x){ return x!==id; });
+  }
+}
+
+function searchKwAndSuggest(kw){
+  // 關鍵字搜尋，切換到全部 tab 顯示結果
+  closeView();
+  switchTab('all');
+  document.getElementById('all-search').value = kw;
+  renderAll();
+}
+
+function confirmLinkSuggest(){
+  if(!currentCard || !suggestedLinkIds.length) return;
+  var existing = currentCard.linked_cards || [];
+  suggestedLinkIds.forEach(function(lid){
+    if(existing.indexOf(lid)===-1) existing.push(lid);
+    // 建立反向連結
+    var lc = allCards.find(function(c){ return String(c.id)===lid; });
+    if(lc){
+      if(!(lc.linked_cards||[]).some(function(x){ return String(x)===String(currentCard.id); })){
+        (lc.linked_cards=lc.linked_cards||[]).push(String(currentCard.id));
+        dbSave(lc);
+      }
+    }
+  });
+  currentCard.linked_cards = existing;
+  dbSave(currentCard);
+  renderViewLinks();
+  document.getElementById('case-link-suggest').style.display = 'none';
+  showToast('已連結 '+suggestedLinkIds.length+' 張知識卡片');
+  suggestedLinkIds = [];
+}
+
+function dismissLinkSuggest(){
+  document.getElementById('case-link-suggest').style.display = 'none';
+  suggestedLinkIds = [];
+}
+
 // ── Case inline edit ──
 var caseEditActive = false;
 

@@ -1212,19 +1212,17 @@ function renderKnowledgeCards(){
 
 function toggleStar(e,id){
   e.stopPropagation();
-  // 嘗試用傳入的 id 找，也嘗試用字串比對
   var c=allCards.find(function(x){return String(x.id)===String(id);});
   if(!c) return;
   c.starred=!c.starred;
-  // 立即更新按鈕外觀，不需要重新渲染整個列表
-  var btn=e.currentTarget||e.target;
-  while(btn&&btn.tagName!=='BUTTON') btn=btn.parentElement;
-  if(btn){
-    btn.className='icon-btn'+(c.starred?' starred':'');
-    var icon=btn.querySelector('i');
-    if(icon) icon.className='ti ti-star'+(c.starred?'-filled':'');
-  }
   dbSave(c);
+  // 直接更新 icon，不動 button 的 class
+  var target=e.target;
+  var icon=target.tagName==='I'?target:target.querySelector('i');
+  if(icon){
+    icon.className='ti ti-star'+(c.starred?'-filled':'');
+    icon.style.color=c.starred?'#EF9F27':'';
+  }
 }
 
 // ── Open card ──

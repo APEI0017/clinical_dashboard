@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 <title>臨床知識看板</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.29.0/dist/tabler-icons.min.css">
 <style>
 :root{
   --bg:#fff;--bg2:#f8f8f7;--bg3:#f1f0eb;
@@ -1097,7 +1097,7 @@ function renderAll(){
       +escHtml(c.title)+'</div>'
       +'<div class="card-actions">'
       +'<button class="icon-btn" onclick="editById(event,'+id+')"><i class="ti ti-edit"></i></button>'
-      +'<button class="icon-btn'+(c.starred?' starred':'')+'" onclick="toggleStar(event,'+id+')"><i class="ti ti-star'+(c.starred?'-filled':'')+'"></i></button>'
+      +'<button class="icon-btn'+(c.starred?' starred':'')+'" onclick="toggleStar(event,'+id+')"><i class="ti ti-star" style="'+(c.starred?'color:#EF9F27':'color:var(--text3)')+'"></i></button>'
       +'</div></div>'
       +'<div class="card-chips">'
       +ctxs.map(function(t){return'<span class="chip chip-ctx">'+t+'</span>';}).join('')
@@ -1169,7 +1169,7 @@ function renderCases(){
     return '<div class="card '+(imp==='gray'?'':'imp-'+imp)+'" onclick="openCard('+id+')">'
       +'<div class="card-hd"><div class="card-title">'+escHtml(c.title)+'</div>'
       +'<div class="card-actions"><button class="icon-btn" onclick="editById(event,'+id+')"><i class="ti ti-edit"></i></button>'
-      +'<button class="icon-btn'+(c.starred?' starred':'')+'" onclick="toggleStar(event,'+id+')"><i class="ti ti-star'+(c.starred?'-filled':'')+'"></i></button></div></div>'
+      +'<button class="icon-btn'+(c.starred?' starred':'')+'" onclick="toggleStar(event,'+id+')"><i class="ti ti-star" style="'+(c.starred?'color:#EF9F27':'color:var(--text3)')+'"></i></button></div></div>'
       +'<div class="card-chips">'+ctxs.map(function(t){return'<span class="chip chip-ctx">'+t+'</span>';}).join('')
       +(c.case_number?'<span class="chip chip-case">'+c.case_number+'</span>':'')+'<span style="font-size:10px;color:var(--text3);margin-left:2px">'+cm.emoji+'</span></div>'
       +(preview?'<div class="card-preview">'+escHtml(preview)+(preview.length>=90?'…':'')+'</div>':'')
@@ -1200,7 +1200,7 @@ function renderKnowledgeCards(){
       +'<div class="card-actions">'
       +(linkedCases?'<span style="font-size:10px;color:var(--purple);padding:3px"><i class="ti ti-clipboard-list"></i>'+linkedCases+'</span>':'')
       +'<button class="icon-btn" onclick="editById(event,'+id+')"><i class="ti ti-edit"></i></button>'
-      +'<button class="icon-btn'+(c.starred?' starred':'')+'" onclick="toggleStar(event,'+id+')"><i class="ti ti-star'+(c.starred?'-filled':'')+'"></i></button></div></div>'
+      +'<button class="icon-btn'+(c.starred?' starred':'')+'" onclick="toggleStar(event,'+id+')"><i class="ti ti-star" style="'+(c.starred?'color:#EF9F27':'color:var(--text3)')+'"></i></button></div></div>'
       +'<div class="card-chips">'+ctxs.map(function(t){return'<span class="chip chip-ctx">'+t+'</span>';}).join('')
       +'<span style="font-size:10px;color:var(--text3);margin-left:2px">'+cm.emoji+'</span></div>'
       +(preview?'<div class="card-preview">'+escHtml(preview)+(preview.length>=90?'…':'')+'</div>':'')
@@ -1220,8 +1220,9 @@ function toggleStar(e,id){
   var target=e.target;
   var icon=target.tagName==='I'?target:target.querySelector('i');
   if(icon){
-    icon.className='ti ti-star'+(c.starred?'-filled':'');
-    icon.style.color=c.starred?'#EF9F27':'';
+    icon.className='ti ti-star';
+    icon.style.color=c.starred?'#EF9F27':'var(--text3)';
+    icon.style.fontWeight=c.starred?'900':'400';
   }
 }
 
